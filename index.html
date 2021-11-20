@@ -182,7 +182,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-11-20 21:17:39 / 修改时间：21:25:58" itemprop="dateCreated datePublished" datetime="2021-11-20T21:17:39+08:00">2021-11-20</time>
+              <time title="创建时间：2021-11-20 21:17:39 / 修改时间：21:39:37" itemprop="dateCreated datePublished" datetime="2021-11-20T21:17:39+08:00">2021-11-20</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -206,7 +206,8 @@
 
       
           <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给出集合[1,2,3,…,n]，其所有元素共有n! 种排列。<br>按大小顺序列出所有排列情况，并一一标记，当n = 3 时, 所有排列如下：<br>“123”<br>“132”<br>“213”<br>“231”<br>“312”<br>“321”<br>给定n 和k，返回第k个排列。</p>
-<h1 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h1>
+<h1 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h1><h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p>public String getPermutation(int n, int k) {<br>        if (n ==1){<br>            return “1”;<br>        }<br>        //创建一个阶乘的数组，进行统计<br>        k–;<br>        int[][] count = new int[n - 1][2];<br>        count[0][0] = 1;<br>        for (int i = 1;i&lt;count.length;i++){<br>            count[i][0] = count[i-1][0]*(i+1);<br>        }<br>        int[] ints = new int[n];<br>        for (int i = 0;i&lt;n;i++){<br>            ints[i] = i+1;<br>        }<br>        //开始逐个从数组中取出数组<br>        String str = new String();<br>        for (int i = count.length-1;i&gt;=0;i–){<br>            count[i][1] = k/count[i][0];<br>            int counter = -1;<br>            for (int j = 0;j&lt;ints.length;j++){<br>                if (ints[j] != 0){<br>                    counter++;<br>                    if (counter==count[i][1]){<br>                        str+=ints[j];<br>                        ints[j] =0;<br>                        break;<br>                    }<br>                }<br>            }<br>            k %= count[i][0];<br>        }<br>        for (int o:ints){<br>            if (o != 0){<br>                str+=o;<br>                break;<br>            }<br>        }<br>        return str;<br>    }</p>
+
       
     </div>
 
