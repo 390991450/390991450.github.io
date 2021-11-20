@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"390991450.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="题目给出集合[1,2,3,…,n]，其所有元素共有n! 种排列。按大小顺序列出所有排列情况，并一一标记，当n &#x3D; 3 时, 所有排列如下：“123”“132”“213”“231”“312”“321”给定n 和k，返回第k个排列。 解析代码public String getPermutation(int n, int k) {        if (n &#x3D;&#x3D;1){            return">
+  <meta name="description" content="题目    给出集合[1,2,3,...,n]，其所有元素共有n! 种排列。     按大小顺序列出所有排列情况，并一一标记，当n &#x3D; 3 时, 所有排列如下：     &quot;123&quot;     &quot;132&quot;     &quot;213&quot;     &quot;231&quot;     &quot;312&quot;     &quot;321&quot;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="排列序列">
 <meta property="og:url" content="https://390991450.github.io/2021/11/20/%E6%8E%92%E5%88%97%E5%BA%8F%E5%88%97/index.html">
 <meta property="og:site_name" content="每天一点儿">
-<meta property="og:description" content="题目给出集合[1,2,3,…,n]，其所有元素共有n! 种排列。按大小顺序列出所有排列情况，并一一标记，当n &#x3D; 3 时, 所有排列如下：“123”“132”“213”“231”“312”“321”给定n 和k，返回第k个排列。 解析代码public String getPermutation(int n, int k) {        if (n &#x3D;&#x3D;1){            return">
+<meta property="og:description" content="题目    给出集合[1,2,3,...,n]，其所有元素共有n! 种排列。     按大小顺序列出所有排列情况，并一一标记，当n &#x3D; 3 时, 所有排列如下：     &quot;123&quot;     &quot;132&quot;     &quot;213&quot;     &quot;231&quot;     &quot;312&quot;     &quot;321&quot;">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-11-20T13:17:39.000Z">
-<meta property="article:modified_time" content="2021-11-20T13:39:37.458Z">
+<meta property="article:modified_time" content="2021-11-20T14:54:31.152Z">
 <meta property="article:author" content="征途">
 <meta property="article:tag" content="数学分析">
 <meta property="article:tag" content="困难">
@@ -186,7 +186,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-11-20 21:17:39 / 修改时间：21:39:37" itemprop="dateCreated datePublished" datetime="2021-11-20T21:17:39+08:00">2021-11-20</time>
+              <time title="创建时间：2021-11-20 21:17:39 / 修改时间：22:54:31" itemprop="dateCreated datePublished" datetime="2021-11-20T21:17:39+08:00">2021-11-20</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -209,8 +209,21 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给出集合[1,2,3,…,n]，其所有元素共有n! 种排列。<br>按大小顺序列出所有排列情况，并一一标记，当n = 3 时, 所有排列如下：<br>“123”<br>“132”<br>“213”<br>“231”<br>“312”<br>“321”<br>给定n 和k，返回第k个排列。</p>
-<h1 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h1><h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p>public String getPermutation(int n, int k) {<br>        if (n ==1){<br>            return “1”;<br>        }<br>        //创建一个阶乘的数组，进行统计<br>        k–;<br>        int[][] count = new int[n - 1][2];<br>        count[0][0] = 1;<br>        for (int i = 1;i&lt;count.length;i++){<br>            count[i][0] = count[i-1][0]*(i+1);<br>        }<br>        int[] ints = new int[n];<br>        for (int i = 0;i&lt;n;i++){<br>            ints[i] = i+1;<br>        }<br>        //开始逐个从数组中取出数组<br>        String str = new String();<br>        for (int i = count.length-1;i&gt;=0;i–){<br>            count[i][1] = k/count[i][0];<br>            int counter = -1;<br>            for (int j = 0;j&lt;ints.length;j++){<br>                if (ints[j] != 0){<br>                    counter++;<br>                    if (counter==count[i][1]){<br>                        str+=ints[j];<br>                        ints[j] =0;<br>                        break;<br>                    }<br>                }<br>            }<br>            k %= count[i][0];<br>        }<br>        for (int o:ints){<br>            if (o != 0){<br>                str+=o;<br>                break;<br>            }<br>        }<br>        return str;<br>    }</p>
+        <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><pre><code>    给出集合[1,2,3,...,n]，其所有元素共有n! 种排列。
+    按大小顺序列出所有排列情况，并一一标记，当n = 3 时, 所有排列如下：
+    &quot;123&quot;
+    &quot;132&quot;
+    &quot;213&quot;
+    &quot;231&quot;
+    &quot;312&quot;
+    &quot;321&quot;
+    给定n 和k，返回第k个排列。
+</code></pre>
+<span id="more"></span>
+<h1 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h1><p>因为数字从小到大排列，所以可以直接由每位的数字来确定该数字所处位置。<br>如例中所示首位确定时，后两位能产生2！种变化，当第二位确定时，最后一位便确定。k的范围是1~6，12，34，56各一组。<br>需要对k处理方便计算，令k–，则k–除以2！可以正好被拆分开，再取得余数，用于确定下一位。<br>若k为5，则第一位的数字为第(5+1/2!)+1个数字,第二位的数字为(0/1!)+1个数字，第三位为剩下的最后一个数字。</p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">public String getPermutation(int n, int k) &#123;</span><br><span class="line">        if (n ==1)&#123;</span><br><span class="line">            return &quot;1&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">        //创建一个阶乘的数组，进行统计</span><br><span class="line">        k--;</span><br><span class="line">        int[][] count = new int[n - 1][2];</span><br><span class="line">        count[0][0] = 1;</span><br><span class="line">        for (int i = 1;i&lt;count.length;i++)&#123;</span><br><span class="line">            count[i][0] = count[i-1][0]*(i+1);</span><br><span class="line">        &#125;</span><br><span class="line">        int[] ints = new int[n];</span><br><span class="line">        for (int i = 0;i&lt;n;i++)&#123;</span><br><span class="line">            ints[i] = i+1;</span><br><span class="line">        &#125;</span><br><span class="line">        //开始逐个从数组中取出数组</span><br><span class="line">        String str = new String();</span><br><span class="line">        for (int i = count.length-1;i&gt;=0;i--)&#123;</span><br><span class="line">            count[i][1] = k/count[i][0];</span><br><span class="line">            int counter = -1;</span><br><span class="line">            for (int j = 0;j&lt;ints.length;j++)&#123;</span><br><span class="line">                if (ints[j] != 0)&#123;</span><br><span class="line">                    counter++;</span><br><span class="line">                    if (counter==count[i][1])&#123;</span><br><span class="line">                        str+=ints[j];</span><br><span class="line">                        ints[j] =0;</span><br><span class="line">                        break;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            k %= count[i][0];</span><br><span class="line">        &#125;</span><br><span class="line">        for (int o:ints)&#123;</span><br><span class="line">            if (o != 0)&#123;</span><br><span class="line">                str+=o;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return str;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
 
     </div>
 
@@ -230,8 +243,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/11/20/hello-world/" rel="prev" title="Hello World">
-      <i class="fa fa-chevron-left"></i> Hello World
+    <a href="/2021/11/20/%E6%9C%80%E9%95%BF%E5%92%8C%E8%B0%90%E5%AD%90%E5%BA%8F%E5%88%97/" rel="prev" title="最长和谐子序列">
+      <i class="fa fa-chevron-left"></i> 最长和谐子序列
     </a></div>
       <div class="post-nav-item"></div>
     </div>
@@ -321,7 +334,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

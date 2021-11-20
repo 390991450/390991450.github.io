@@ -182,7 +182,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-11-20 21:17:39 / 修改时间：21:39:37" itemprop="dateCreated datePublished" datetime="2021-11-20T21:17:39+08:00">2021-11-20</time>
+              <time title="创建时间：2021-11-20 21:17:39 / 修改时间：22:54:31" itemprop="dateCreated datePublished" datetime="2021-11-20T21:17:39+08:00">2021-11-20</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -205,9 +205,24 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给出集合[1,2,3,…,n]，其所有元素共有n! 种排列。<br>按大小顺序列出所有排列情况，并一一标记，当n = 3 时, 所有排列如下：<br>“123”<br>“132”<br>“213”<br>“231”<br>“312”<br>“321”<br>给定n 和k，返回第k个排列。</p>
-<h1 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h1><h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p>public String getPermutation(int n, int k) {<br>        if (n ==1){<br>            return “1”;<br>        }<br>        //创建一个阶乘的数组，进行统计<br>        k–;<br>        int[][] count = new int[n - 1][2];<br>        count[0][0] = 1;<br>        for (int i = 1;i&lt;count.length;i++){<br>            count[i][0] = count[i-1][0]*(i+1);<br>        }<br>        int[] ints = new int[n];<br>        for (int i = 0;i&lt;n;i++){<br>            ints[i] = i+1;<br>        }<br>        //开始逐个从数组中取出数组<br>        String str = new String();<br>        for (int i = count.length-1;i&gt;=0;i–){<br>            count[i][1] = k/count[i][0];<br>            int counter = -1;<br>            for (int j = 0;j&lt;ints.length;j++){<br>                if (ints[j] != 0){<br>                    counter++;<br>                    if (counter==count[i][1]){<br>                        str+=ints[j];<br>                        ints[j] =0;<br>                        break;<br>                    }<br>                }<br>            }<br>            k %= count[i][0];<br>        }<br>        for (int o:ints){<br>            if (o != 0){<br>                str+=o;<br>                break;<br>            }<br>        }<br>        return str;<br>    }</p>
-
+          <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><pre><code>    给出集合[1,2,3,...,n]，其所有元素共有n! 种排列。
+    按大小顺序列出所有排列情况，并一一标记，当n = 3 时, 所有排列如下：
+    &quot;123&quot;
+    &quot;132&quot;
+    &quot;213&quot;
+    &quot;231&quot;
+    &quot;312&quot;
+    &quot;321&quot;
+    给定n 和k，返回第k个排列。
+</code></pre>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/11/20/%E6%8E%92%E5%88%97%E5%BA%8F%E5%88%97/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -226,7 +241,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://390991450.github.io/2021/11/20/hello-world/">
+    <link itemprop="mainEntityOfPage" href="https://390991450.github.io/2021/11/20/%E6%9C%80%E9%95%BF%E5%92%8C%E8%B0%90%E5%AD%90%E5%BA%8F%E5%88%97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -240,7 +255,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/11/20/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
+            <a href="/2021/11/20/%E6%9C%80%E9%95%BF%E5%92%8C%E8%B0%90%E5%AD%90%E5%BA%8F%E5%88%97/" class="post-title-link" itemprop="url">最长和谐子序列</a>
         </h2>
 
         <div class="post-meta">
@@ -249,8 +264,18 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2021-11-20 17:12:48" itemprop="dateCreated datePublished" datetime="2021-11-20T17:12:48+08:00">2021-11-20</time>
+              <time title="创建时间：2021-11-20 21:17:39 / 修改时间：23:41:24" itemprop="dateCreated datePublished" datetime="2021-11-20T21:17:39+08:00">2021-11-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/leetcode%E8%A7%A3%E6%9E%90/" itemprop="url" rel="index"><span itemprop="name">leetcode解析</span></a>
+                </span>
             </span>
 
           
@@ -264,20 +289,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
+          <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><pre><code>    和谐数组是指一个数组里元素的最大值和最小值之间的差别 正好是 1 。
+    现在，给你一个整数数组 nums ，请你在所有可能的子序列中找到最长的和谐子序列的长度。
+    数组的子序列是一个由数组派生出来的序列，它可以通过删除一些元素或不删除元素、且不改变其余元素的顺序而得到。
+示例：
+    输入：nums = [1,3,2,2,5,2,3,7]
+    输出：5
+    解释：最长的和谐子序列是 [3,2,2,2,3]
+</code></pre>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/11/20/%E6%9C%80%E9%95%BF%E5%92%8C%E8%B0%90%E5%AD%90%E5%BA%8F%E5%88%97/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -373,7 +400,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
