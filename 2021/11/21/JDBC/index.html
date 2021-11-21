@@ -20,20 +20,19 @@
     var CONFIG = {"hostname":"390991450.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="基本知识1、初始容量为1&lt;&lt;42、负载因子为0.75，到达负载因子时2次幂扩展3、通过hashcode计算存放位置">
+  <meta name="description" content="快速入门12345678910111213141516171819&#x2F;&#x2F;前置工作，在项目下创建一个文件夹，将mysql.jar文件拷贝到该目录下      &#x2F;&#x2F;点击add to project加入到项目中。实现driver的抽象类。      &#x2F;&#x2F; 1注册驱动      Driver driver &#x3D; new Driver();      &#x2F;&#x2F;2得到连接,mysql连接本质是socket连接">
 <meta property="og:type" content="article">
-<meta property="og:title" content="hashmap的扩容与&amp;运算问题">
-<meta property="og:url" content="https://390991450.github.io/2021/11/20/hashmap%E7%9A%84%E6%89%A9%E5%AE%B9%E4%B8%8E/index.html">
+<meta property="og:title" content="JDBC">
+<meta property="og:url" content="https://390991450.github.io/2021/11/21/JDBC/index.html">
 <meta property="og:site_name" content="每天一点儿">
-<meta property="og:description" content="基本知识1、初始容量为1&lt;&lt;42、负载因子为0.75，到达负载因子时2次幂扩展3、通过hashcode计算存放位置">
+<meta property="og:description" content="快速入门12345678910111213141516171819&#x2F;&#x2F;前置工作，在项目下创建一个文件夹，将mysql.jar文件拷贝到该目录下      &#x2F;&#x2F;点击add to project加入到项目中。实现driver的抽象类。      &#x2F;&#x2F; 1注册驱动      Driver driver &#x3D; new Driver();      &#x2F;&#x2F;2得到连接,mysql连接本质是socket连接">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-11-20T15:52:02.000Z">
-<meta property="article:modified_time" content="2021-11-21T00:09:17.248Z">
+<meta property="article:published_time" content="2021-11-21T01:09:10.000Z">
+<meta property="article:modified_time" content="2021-11-21T01:39:13.495Z">
 <meta property="article:author" content="征途">
-<meta property="article:tag" content="hashmap">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://390991450.github.io/2021/11/20/hashmap%E7%9A%84%E6%89%A9%E5%AE%B9%E4%B8%8E/">
+<link rel="canonical" href="https://390991450.github.io/2021/11/21/JDBC/">
 
 
 <script id="page-configurations">
@@ -46,7 +45,7 @@
   };
 </script>
 
-  <title>hashmap的扩容与&运算问题 | 每天一点儿</title>
+  <title>JDBC | 每天一点儿</title>
   
 
 
@@ -189,7 +188,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://390991450.github.io/2021/11/20/hashmap%E7%9A%84%E6%89%A9%E5%AE%B9%E4%B8%8E/">
+    <link itemprop="mainEntityOfPage" href="https://390991450.github.io/2021/11/21/JDBC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -202,7 +201,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          hashmap的扩容与&运算问题
+          JDBC
         </h1>
 
         <div class="post-meta">
@@ -211,27 +210,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2021-11-20 23:52:02" itemprop="dateCreated datePublished" datetime="2021-11-20T23:52:02+08:00">2021-11-20</time>
+              <time title="创建时间：2021-11-21 09:09:10 / 修改时间：09:39:13" itemprop="dateCreated datePublished" datetime="2021-11-21T09:09:10+08:00">2021-11-21</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-21 08:09:17" itemprop="dateModified" datetime="2021-11-21T08:09:17+08:00">2021-11-21</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">java学习笔记</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" itemprop="url" rel="index"><span itemprop="name">源码分析</span></a>
+                  <a href="/categories/JDBC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">JDBC学习笔记</span></a>
                 </span>
             </span>
 
@@ -246,10 +235,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="基本知识"><a href="#基本知识" class="headerlink" title="基本知识"></a>基本知识</h1><p>1、初始容量为1&lt;&lt;4<br>2、负载因子为0.75，到达负载因子时2次幂扩展<br>3、通过hashcode计算存放位置</p>
-<span id="more"></span>
-<h1 id="hashcode的计算"><a href="#hashcode的计算" class="headerlink" title="hashcode的计算"></a>hashcode的计算</h1><p>1、获取hash值h，将h&gt;&gt;&gt;16后再与自身异或。<br>这是因为在计算hashmap存放位置时只取低位，正常运算会丢失高位的信息。这样处理后也可以将高位<br>的信息保留，减少冲突的可能性。<br>2、取模运算:(length-1)&amp;hash。<br>在这里可以解释为什么扩容是是2次幂，一般情况下，计算位置是需要%计算，但当length的长度为2的<br>次幂的时候，取余运算可以转化成上面的位与运算，大大节省了计算时间。</p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/ysocean/p/9054804.html">来源</a></p>
+        <h1 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h1><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">//前置工作，在项目下创建一个文件夹，将mysql.jar文件拷贝到该目录下</span><br><span class="line">      //点击<span class="keyword">add</span> <span class="keyword">to</span> project加入到项目中。实现driver的抽象类。</span><br><span class="line">      // <span class="number">1</span>注册驱动</span><br><span class="line">      Driver driver = <span class="built_in">new</span> Driver();</span><br><span class="line">      //<span class="number">2</span>得到连接,mysql连接本质是socket连接</span><br><span class="line">      String url = &quot;jdbc:mysql://主机ip:端口/数据库名&quot;;</span><br><span class="line">      Properties properties = <span class="built_in">new</span> Properties();</span><br><span class="line">      properties.setProperty(&quot;user&quot;,&quot;用户名&quot;);</span><br><span class="line">      properties.setProperty(&quot;password&quot;,&quot;密码&quot;);</span><br><span class="line">      <span class="keyword">Connection</span> <span class="keyword">connect</span> = driver.<span class="keyword">connect</span>(url, properties);//这个<span class="keyword">connect</span>等同于socket</span><br><span class="line">      //<span class="number">3</span>执行<span class="keyword">sql</span></span><br><span class="line">      String <span class="keyword">sql</span> = &quot;要执行的sql语句&quot;;</span><br><span class="line">      //生成语法的执行器,返回值为更改的行数</span><br><span class="line">      <span class="keyword">Statement</span> <span class="keyword">statement</span> = <span class="keyword">connect</span>.createStatement();</span><br><span class="line">      <span class="type">int</span> <span class="keyword">rows</span> = <span class="keyword">statement</span>.executeUpdate(<span class="keyword">sql</span>);</span><br><span class="line">      //关闭连接资源</span><br><span class="line">      <span class="keyword">statement</span>.<span class="keyword">close</span>();</span><br><span class="line">      <span class="keyword">connect</span>.<span class="keyword">close</span>();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -258,9 +244,6 @@
     
 
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/hashmap/" rel="tag"># hashmap</a>
-          </div>
 
         
 
@@ -268,12 +251,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/11/20/%E6%9C%80%E9%95%BF%E5%92%8C%E8%B0%90%E5%AD%90%E5%BA%8F%E5%88%97/" rel="prev" title="最长和谐子序列">
-      <i class="fa fa-chevron-left"></i> 最长和谐子序列
+    <a href="/2021/11/20/hashmap%E7%9A%84%E6%89%A9%E5%AE%B9%E4%B8%8E/" rel="prev" title="hashmap的扩容与&运算问题">
+      <i class="fa fa-chevron-left"></i> hashmap的扩容与&运算问题
     </a></div>
       <div class="post-nav-item">
-    <a href="/2021/11/21/JDBC/" rel="next" title="JDBC">
-      JDBC <i class="fa fa-chevron-right"></i>
+    <a href="/2021/11/21/%E5%8C%BA%E9%97%B4%E5%86%85%E6%9F%A5%E8%AF%A2%E6%95%B0%E5%AD%97%E9%A2%91%E7%8E%87/" rel="next" title="区间内查询数字频率">
+      区间内查询数字频率 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -333,7 +316,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">基本知识</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#hashcode%E7%9A%84%E8%AE%A1%E7%AE%97"><span class="nav-number">2.</span> <span class="nav-text">hashcode的计算</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8"><span class="nav-number">1.</span> <span class="nav-text">快速入门</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

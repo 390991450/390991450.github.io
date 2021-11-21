@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"390991450.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="题目    给出集合[1,2,3,...,n]，其所有元素共有n! 种排列。     按大小顺序列出所有排列情况，并一一标记，当n &#x3D; 3 时, 所有排列如下：     &quot;123&quot;     &quot;132&quot;     &quot;213&quot;     &quot;231&quot;     &quot;312&quot;     &quot;321&quot;">
+  <meta name="description" content="题目    请你设计一个数据结构，它能求出给定子数组内一个给定值的频率。     子数组中一个值的频率指的是这个子数组中这个值的出现次数。     请你实现RangeFreqQuery类：     RangeFreqQuery(int[] arr)用下标从 0开始的整数数组arr构造一个类的实例。     int query(int left, int right, int value)返回子数组">
 <meta property="og:type" content="article">
-<meta property="og:title" content="排列序列">
-<meta property="og:url" content="https://390991450.github.io/2021/11/20/%E6%8E%92%E5%88%97%E5%BA%8F%E5%88%97/index.html">
+<meta property="og:title" content="区间内查询数字频率">
+<meta property="og:url" content="https://390991450.github.io/2021/11/21/%E5%8C%BA%E9%97%B4%E5%86%85%E6%9F%A5%E8%AF%A2%E6%95%B0%E5%AD%97%E9%A2%91%E7%8E%87/index.html">
 <meta property="og:site_name" content="每天一点儿">
-<meta property="og:description" content="题目    给出集合[1,2,3,...,n]，其所有元素共有n! 种排列。     按大小顺序列出所有排列情况，并一一标记，当n &#x3D; 3 时, 所有排列如下：     &quot;123&quot;     &quot;132&quot;     &quot;213&quot;     &quot;231&quot;     &quot;312&quot;     &quot;321&quot;">
+<meta property="og:description" content="题目    请你设计一个数据结构，它能求出给定子数组内一个给定值的频率。     子数组中一个值的频率指的是这个子数组中这个值的出现次数。     请你实现RangeFreqQuery类：     RangeFreqQuery(int[] arr)用下标从 0开始的整数数组arr构造一个类的实例。     int query(int left, int right, int value)返回子数组">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-11-20T13:17:39.000Z">
-<meta property="article:modified_time" content="2021-11-20T15:58:35.449Z">
+<meta property="article:published_time" content="2021-11-21T12:12:05.000Z">
+<meta property="article:modified_time" content="2021-11-21T14:00:49.539Z">
 <meta property="article:author" content="征途">
-<meta property="article:tag" content="数学分析">
+<meta property="article:tag" content="二分查找">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://390991450.github.io/2021/11/20/%E6%8E%92%E5%88%97%E5%BA%8F%E5%88%97/">
+<link rel="canonical" href="https://390991450.github.io/2021/11/21/%E5%8C%BA%E9%97%B4%E5%86%85%E6%9F%A5%E8%AF%A2%E6%95%B0%E5%AD%97%E9%A2%91%E7%8E%87/">
 
 
 <script id="page-configurations">
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>排列序列 | 每天一点儿</title>
+  <title>区间内查询数字频率 | 每天一点儿</title>
   
 
 
@@ -189,7 +189,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://390991450.github.io/2021/11/20/%E6%8E%92%E5%88%97%E5%BA%8F%E5%88%97/">
+    <link itemprop="mainEntityOfPage" href="https://390991450.github.io/2021/11/21/%E5%8C%BA%E9%97%B4%E5%86%85%E6%9F%A5%E8%AF%A2%E6%95%B0%E5%AD%97%E9%A2%91%E7%8E%87/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -202,7 +202,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          排列序列
+          区间内查询数字频率
         </h1>
 
         <div class="post-meta">
@@ -213,7 +213,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-11-20 21:17:39 / 修改时间：23:58:35" itemprop="dateCreated datePublished" datetime="2021-11-20T21:17:39+08:00">2021-11-20</time>
+              <time title="创建时间：2021-11-21 20:12:05 / 修改时间：22:00:49" itemprop="dateCreated datePublished" datetime="2021-11-21T20:12:05+08:00">2021-11-21</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -240,21 +240,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><pre><code>    给出集合[1,2,3,...,n]，其所有元素共有n! 种排列。
-    按大小顺序列出所有排列情况，并一一标记，当n = 3 时, 所有排列如下：
-    &quot;123&quot;
-    &quot;132&quot;
-    &quot;213&quot;
-    &quot;231&quot;
-    &quot;312&quot;
-    &quot;321&quot;
-    给定n 和k，返回第k个排列。
+        <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><pre><code>    请你设计一个数据结构，它能求出给定子数组内一个给定值的频率。
+    子数组中一个值的频率指的是这个子数组中这个值的出现次数。
+    请你实现RangeFreqQuery类：
+    RangeFreqQuery(int[] arr)用下标从 0开始的整数数组arr构造一个类的实例。
+    int query(int left, int right, int value)返回子数组arr[left...right]中value的频率。
+    一个子数组指的是数组中一段连续的元素。arr[left...right]指的是 nums中包含下标left和
+    right在内的中间一段连续元素。
 </code></pre>
 <span id="more"></span>
-<h1 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h1><p>因为数字从小到大排列，所以可以直接由每位的数字来确定该数字所处位置。<br>如例中所示首位确定时，后两位能产生2！种变化，当第二位确定时，最后一位便确定。k的范围是1~6，12，34，56各一组。<br>需要对k处理方便计算，令k–，则k–除以2！可以正好被拆分开，再取得余数，用于确定下一位。<br>若k为5，则第一位的数字为第(5+1/2!)+1个数字,第二位的数字为(0/1!)+1个数字，第三位为剩下的最后一个数字。</p>
-<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">public String getPermutation(int n, int k) &#123;</span><br><span class="line">        if (n ==1)&#123;</span><br><span class="line">            return &quot;1&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">        //创建一个阶乘的数组，进行统计</span><br><span class="line">        k--;</span><br><span class="line">        int[][] count = new int[n - 1][2];</span><br><span class="line">        count[0][0] = 1;</span><br><span class="line">        for (int i = 1;i&lt;count.length;i++)&#123;</span><br><span class="line">            count[i][0] = count[i-1][0]*(i+1);</span><br><span class="line">        &#125;</span><br><span class="line">        int[] ints = new int[n];</span><br><span class="line">        for (int i = 0;i&lt;n;i++)&#123;</span><br><span class="line">            ints[i] = i+1;</span><br><span class="line">        &#125;</span><br><span class="line">        //开始逐个从数组中取出数组</span><br><span class="line">        String str = new String();</span><br><span class="line">        for (int i = count.length-1;i&gt;=0;i--)&#123;</span><br><span class="line">            count[i][1] = k/count[i][0];</span><br><span class="line">            int counter = -1;</span><br><span class="line">            for (int j = 0;j&lt;ints.length;j++)&#123;</span><br><span class="line">                if (ints[j] != 0)&#123;</span><br><span class="line">                    counter++;</span><br><span class="line">                    if (counter==count[i][1])&#123;</span><br><span class="line">                        str+=ints[j];</span><br><span class="line">                        ints[j] =0;</span><br><span class="line">                        break;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            k %= count[i][0];</span><br><span class="line">        &#125;</span><br><span class="line">        for (int o:ints)&#123;</span><br><span class="line">            if (o != 0)&#123;</span><br><span class="line">                str+=o;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return str;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-
+<pre><code>    输入：
+    [&quot;RangeFreqQuery&quot;, &quot;query&quot;, &quot;query&quot;]
+    [[[12, 33, 4, 56, 22, 2, 34, 33, 22, 12, 34, 56]], [1, 2, 4], [0, 11, 33]]
+    输出：
+    [null, 1, 2]
+</code></pre>
+<h1 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h1><p>这道题使用暴力算法很简单，但示例有时间和内存限制，必须对算法进行优化。<br>创建一个hashmap，key存储要查询的数字，value中存储一个list，list存储出现的位置。<br>即使这样优化也会超时，所以在遍历list的时候还要使用二分查找，在这里要深度理解二分查找。</p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RangeFreqQuery</span> </span>&#123;</span><br><span class="line">    int[] array;</span><br><span class="line">    <span class="comment">//ArrayList list;//存放数字出现频率</span></span><br><span class="line">    HashMap map;<span class="comment">//存放list的钥匙库</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> RangeFreqQuery(int[] arr) &#123;</span><br><span class="line">        array = <span class="keyword">new</span> <span class="type">int</span>[arr.length];</span><br><span class="line">        <span class="comment">//list = new ArrayList();</span></span><br><span class="line">        map = <span class="keyword">new</span> <span class="type">HashMap</span>();</span><br><span class="line">        <span class="keyword">for</span> (int i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!map.containsKey(arr[i]))&#123;</span><br><span class="line">                ArrayList list = <span class="keyword">new</span> <span class="type">ArrayList</span>();</span><br><span class="line">                list.add(i);</span><br><span class="line">                map.put(arr[i],list);</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                ArrayList list = (ArrayList) map.<span class="keyword">get</span>(arr[i]);</span><br><span class="line">                list.add(i);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> int query(int left, int right, int value) &#123;</span><br><span class="line">        ArrayList list = (ArrayList) map.<span class="keyword">get</span>(value);</span><br><span class="line">        <span class="keyword">if</span> (list == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            int <span class="keyword">new</span><span class="type">right</span> = list.size()<span class="number">-1</span>;</span><br><span class="line">            int <span class="keyword">new</span><span class="type">left</span> = <span class="number">0</span>;</span><br><span class="line">            <span class="comment">//考虑两种找不到的情况。list的第一位比right大，list的末位比left小</span></span><br><span class="line">            <span class="keyword">if</span> ((int)list.<span class="keyword">get</span>(<span class="number">0</span>)&gt;right||(int)list.<span class="keyword">get</span>(<span class="keyword">new</span><span class="type">right</span>)&lt;left)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//使用二分查找左，右指针位置</span></span><br><span class="line">            <span class="comment">//找到的左指针要求其指向的数字&gt;=left，即指向left或者第一个大于它的数字</span></span><br><span class="line">            <span class="keyword">while</span> (<span class="keyword">new</span><span class="type">left</span> != <span class="keyword">new</span><span class="type">right</span>)&#123;</span><br><span class="line">                int mid = (<span class="keyword">new</span><span class="type">left</span>+<span class="keyword">new</span><span class="type">right</span>)/<span class="number">2</span>;</span><br><span class="line">                <span class="keyword">if</span> ((int)list.<span class="keyword">get</span>(mid) &gt;= left)&#123;</span><br><span class="line">                    <span class="keyword">new</span><span class="type">right</span> = mid;<span class="comment">//因为目标数字最后总在截取范围的后段，需要不断舍去前半部分的数字</span></span><br><span class="line">                &#125;<span class="keyword">else</span> &#123;			   <span class="comment">//所以mid尽量取小(left+right)/2。</span></span><br><span class="line">                    <span class="keyword">new</span><span class="type">left</span> = mid+<span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            int leftnum = <span class="keyword">new</span><span class="type">left</span>;</span><br><span class="line">            <span class="keyword">new</span><span class="type">right</span> = list.size()<span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">new</span><span class="type">left</span> = <span class="number">0</span>;</span><br><span class="line">            <span class="comment">//找到的右指针要求其指向的数字&lt;=right，即指向right或者第一个小于它的数字</span></span><br><span class="line">            <span class="keyword">while</span> (<span class="keyword">new</span><span class="type">left</span> != <span class="keyword">new</span><span class="type">right</span>)&#123;</span><br><span class="line">                int mid = (<span class="keyword">new</span><span class="type">left</span>+<span class="keyword">new</span><span class="type">right</span>+<span class="number">1</span>)/<span class="number">2</span>;</span><br><span class="line">                <span class="keyword">if</span> ((int)list.<span class="keyword">get</span>(mid) &lt;= right)&#123;</span><br><span class="line">                    <span class="keyword">new</span><span class="type">left</span> = mid;<span class="comment">//因为目标数字最后总在截取范围的前段，需要不断舍去前后部分的数字</span></span><br><span class="line">                &#125;<span class="keyword">else</span> &#123;			  <span class="comment">//所以mid尽量取大(left+right+1)/2。</span></span><br><span class="line">                    <span class="keyword">new</span><span class="type">right</span> = mid<span class="number">-1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            int rightnum = <span class="keyword">new</span><span class="type">right</span>;</span><br><span class="line">            <span class="keyword">return</span> rightnum-leftnum+<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -264,7 +266,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90/" rel="tag"># 数学分析</a>
+              <a href="/tags/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" rel="tag"># 二分查找</a>
           </div>
 
         
@@ -272,11 +274,11 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2021/11/20/%E6%9C%80%E9%95%BF%E5%92%8C%E8%B0%90%E5%AD%90%E5%BA%8F%E5%88%97/" rel="next" title="最长和谐子序列">
-      最长和谐子序列 <i class="fa fa-chevron-right"></i>
+    <a href="/2021/11/21/JDBC/" rel="prev" title="JDBC">
+      <i class="fa fa-chevron-left"></i> JDBC
     </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
