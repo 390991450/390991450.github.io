@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"390991450.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="我的学习笔记">
+  <meta name="description" content="如何确定合适的线程数根据任务需要执行计算的时间占比分配线程数。如：4核，任务中计算占比25%的任务分配16线程。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="多线程高并发">
 <meta property="og:url" content="https://390991450.github.io/2021/11/26/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E9%AB%98%E5%B9%B6%E5%8F%91/index.html">
 <meta property="og:site_name" content="每天一点儿">
-<meta property="og:description" content="我的学习笔记">
+<meta property="og:description" content="如何确定合适的线程数根据任务需要执行计算的时间占比分配线程数。如：4核，任务中计算占比25%的任务分配16线程。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-11-26T11:42:46.000Z">
-<meta property="article:modified_time" content="2021-11-26T11:42:46.615Z">
+<meta property="article:modified_time" content="2021-11-27T12:20:45.837Z">
 <meta property="article:author" content="征途">
 <meta name="twitter:card" content="summary">
 
@@ -213,6 +213,22 @@
 
               <time title="创建时间：2021-11-26 19:42:46" itemprop="dateCreated datePublished" datetime="2021-11-26T19:42:46+08:00">2021-11-26</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-11-27 20:20:45" itemprop="dateModified" datetime="2021-11-27T20:20:45+08:00">2021-11-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E9%AB%98%E5%B9%B6%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">多线程高并发</span></a>
+                </span>
+            </span>
 
           
 
@@ -225,7 +241,18 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <h1 id="如何确定合适的线程数"><a href="#如何确定合适的线程数" class="headerlink" title="如何确定合适的线程数"></a>如何确定合适的线程数</h1><p>根据任务需要执行计算的时间占比分配线程数。如：4核，任务中计算占比25%的任务分配16线程。</p>
+<span id="more"></span>
+<h1 id="缓存行编程技巧"><a href="#缓存行编程技巧" class="headerlink" title="缓存行编程技巧"></a>缓存行编程技巧</h1><p>前提知识：缓存行每次从内存拉取64bytes的内容。同一缓存行在不同cpu中同时处理时需要不断对齐。<br>例：<br>创建一个类，类中存放一个long型数据，创建一个2容量这个类的数组，启动两个线程分别对这两个<br>类的long型数据处理。时间记作t1。<br>创建一个与上面相似的类，但在其中的long型数据前和后分别填充7个无用的long型数据，再执行与<br>上面相同的操作。时间记作t2。<br>结果是t2会比t1短很多。原因是，第一个类中，两个要处理的数据会处于同一缓存行，在处理时需要不断<br>的对齐。二第二个类中，因为无用long型数据的填充，使得两个被操作的数据无法处于同一缓存行，不用对齐。</p>
+<h1 id="指令重排"><a href="#指令重排" class="headerlink" title="指令重排"></a>指令重排</h1><p>问题：<br>在cpu执行语句时，happens-before规则约束后，可能会在执行过程中发生指令重排，<br>宏观表现为语句的倒转。而这种问题会导致this引用逃逸。如下面的代码就可能会输出0。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public class ThisEscape&#123;</span><br><span class="line">	private int num = 0;</span><br><span class="line">	public ThisEscape()&#123;</span><br><span class="line">		new Thread(()-&gt;System.out.println(this.num)).start();</span><br><span class="line">	&#125; </span><br><span class="line">	public static void mian(String[] args)throw Exception&#123;</span><br><span class="line">		new ThisEscape();</span><br><span class="line">		System.in.read();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>分析：num的初始在汇编中有三步，创建空间，赋值，再指向。但this一开始就指向了他本身，所以可能<br>在num没有初始化完成时就调用了this指针，将num发送出去。<br>如何避免：不要在构造方法中启动线程</p>
+<h1 id="提高并发效率"><a href="#提高并发效率" class="headerlink" title="提高并发效率"></a>提高并发效率</h1><p>合理的上锁，不要锁太多没必要的内容导致并发效率降低。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//给整个函数上锁</span><br><span class="line">public synchronized ...()&#123;&#125;</span><br><span class="line">//给部分代码上锁，注意静态方法中锁只能是本身的类对象</span><br><span class="line">synchronized(类对象)&#123;要执行的代码&#125;</span><br></pre></td></tr></table></figure>
+<p>double check lock<br>在给部分代码上锁的过程中一般会进行判断，但注意不可以只在上锁前进行判断，因为线程可能会在任意<br>阶段发生切换，多个线程同时挤进判断语句中也会发生，所以在锁内要再加判断，如果情况变了，要归还锁。<br>这种上锁方式，只对内层进行上锁仍然可以起到相同的效果，但加入外层锁后可以减少上锁解锁的过程，<br>提升代码效率。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//单例模式取得对象</span><br><span class="line">if(INSTANCE == null)&#123;</span><br><span class="line">	synchronized(当前类)&#123;</span><br><span class="line">		if(INSTANCE == null)&#123;</span><br><span class="line">			INSTANCE = new 类对象;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个双锁仍旧有问题，new对象时如果发生指令重排，当只指向地址但未赋值时，此时恰好又有另一个线程访问对象，就会访问到未初始的对象。(虽然被锁定，但是上锁的代码和未上锁的代码是可以访问到中间态的)(java高版本已经解决了这个问题)<br>cpu级防止指令交换：添加屏障指令<br>jvm中防止指令交换：四种内存屏障Load-Store<br>java中防止指令交换：在修饰的前面加volatile</p>
+
     </div>
 
     
@@ -305,6 +332,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E7%A1%AE%E5%AE%9A%E5%90%88%E9%80%82%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">如何确定合适的线程数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E8%A1%8C%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7"><span class="nav-number">2.</span> <span class="nav-text">缓存行编程技巧</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8C%87%E4%BB%A4%E9%87%8D%E6%8E%92"><span class="nav-number">3.</span> <span class="nav-text">指令重排</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E9%AB%98%E5%B9%B6%E5%8F%91%E6%95%88%E7%8E%87"><span class="nav-number">4.</span> <span class="nav-text">提高并发效率</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -320,14 +348,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

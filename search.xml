@@ -334,12 +334,28 @@
   <entry>
     <title>多线程高并发</title>
     <url>/2021/11/26/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E9%AB%98%E5%B9%B6%E5%8F%91/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<h1 id="如何确定合适的线程数"><a href="#如何确定合适的线程数" class="headerlink" title="如何确定合适的线程数"></a>如何确定合适的线程数</h1><p>根据任务需要执行计算的时间占比分配线程数。如：4核，任务中计算占比25%的任务分配16线程。</p>
+<span id="more"></span>
+<h1 id="缓存行编程技巧"><a href="#缓存行编程技巧" class="headerlink" title="缓存行编程技巧"></a>缓存行编程技巧</h1><p>前提知识：缓存行每次从内存拉取64bytes的内容。同一缓存行在不同cpu中同时处理时需要不断对齐。<br>例：<br>创建一个类，类中存放一个long型数据，创建一个2容量这个类的数组，启动两个线程分别对这两个<br>类的long型数据处理。时间记作t1。<br>创建一个与上面相似的类，但在其中的long型数据前和后分别填充7个无用的long型数据，再执行与<br>上面相同的操作。时间记作t2。<br>结果是t2会比t1短很多。原因是，第一个类中，两个要处理的数据会处于同一缓存行，在处理时需要不断<br>的对齐。二第二个类中，因为无用long型数据的填充，使得两个被操作的数据无法处于同一缓存行，不用对齐。</p>
+<h1 id="指令重排"><a href="#指令重排" class="headerlink" title="指令重排"></a>指令重排</h1><p>问题：<br>在cpu执行语句时，happens-before规则约束后，可能会在执行过程中发生指令重排，<br>宏观表现为语句的倒转。而这种问题会导致this引用逃逸。如下面的代码就可能会输出0。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public class ThisEscape&#123;</span><br><span class="line">	private int num = 0;</span><br><span class="line">	public ThisEscape()&#123;</span><br><span class="line">		new Thread(()-&gt;System.out.println(this.num)).start();</span><br><span class="line">	&#125; </span><br><span class="line">	public static void mian(String[] args)throw Exception&#123;</span><br><span class="line">		new ThisEscape();</span><br><span class="line">		System.in.read();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>分析：num的初始在汇编中有三步，创建空间，赋值，再指向。但this一开始就指向了他本身，所以可能<br>在num没有初始化完成时就调用了this指针，将num发送出去。<br>如何避免：不要在构造方法中启动线程</p>
+<h1 id="提高并发效率"><a href="#提高并发效率" class="headerlink" title="提高并发效率"></a>提高并发效率</h1><p>合理的上锁，不要锁太多没必要的内容导致并发效率降低。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//给整个函数上锁</span><br><span class="line">public synchronized ...()&#123;&#125;</span><br><span class="line">//给部分代码上锁，注意静态方法中锁只能是本身的类对象</span><br><span class="line">synchronized(类对象)&#123;要执行的代码&#125;</span><br></pre></td></tr></table></figure>
+<p>double check lock<br>在给部分代码上锁的过程中一般会进行判断，但注意不可以只在上锁前进行判断，因为线程可能会在任意<br>阶段发生切换，多个线程同时挤进判断语句中也会发生，所以在锁内要再加判断，如果情况变了，要归还锁。<br>这种上锁方式，只对内层进行上锁仍然可以起到相同的效果，但加入外层锁后可以减少上锁解锁的过程，<br>提升代码效率。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//单例模式取得对象</span><br><span class="line">if(INSTANCE == null)&#123;</span><br><span class="line">	synchronized(当前类)&#123;</span><br><span class="line">		if(INSTANCE == null)&#123;</span><br><span class="line">			INSTANCE = new 类对象;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个双锁仍旧有问题，new对象时如果发生指令重排，当只指向地址但未赋值时，此时恰好又有另一个线程访问对象，就会访问到未初始的对象。(虽然被锁定，但是上锁的代码和未上锁的代码是可以访问到中间态的)(java高版本已经解决了这个问题)<br>cpu级防止指令交换：添加屏障指令<br>jvm中防止指令交换：四种内存屏障Load-Store<br>java中防止指令交换：在修饰的前面加volatile</p>
+]]></content>
+      <categories>
+        <category>多线程高并发</category>
+      </categories>
   </entry>
   <entry>
     <title>进程与线程</title>
     <url>/2021/11/26/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/</url>
-    <content><![CDATA[<p>1.进程要分配一大部分的内存，而线程只需要分配一部分栈就可以了.<br>2.一个程序至少有一个进程,一个进程至少有一个线程.<br>3.进程是资源分配的最小单位，线程是程序执行的最小单位。<br>4.一个线程可以创建和撤销另一个线程，同一个进程中的多个线程之间可以并发执行<br>线程栈：<br>1.方便函数调用，当调用子函数时，可以把当前函数的信息压入栈中，<br>再在栈的顶端压入返回地址，当子函数调用结束后再弹栈即可。<br>2.多任务支持，当有必要进行任务切换时，对当前信息存储，再读入<br>另一个任务的信息即可。</p>
+    <content><![CDATA[<p>1.进程要分配一大部分的内存，而线程只需要分配一部分栈就可以了.<br>2.一个程序至少有一个进程,一个进程至少有一个线程.<br>3.进程是资源分配的最小单位，线程是程序执行的最小单位。<br>4.一个线程可以创建和撤销另一个线程，同一个进程中的多个线程之间可以并发执行</p>
+<span id="more"></span>
+<p>线程栈：<br>1.方便函数调用，当调用子函数时，可以把当前函数的信息压入栈中，<br>再在栈的顶端压入返回地址，当子函数调用结束后再弹栈即可。<br>2.多任务支持，当有必要进行任务切换时，对当前信息存储，再读入<br>另一个任务的信息即可。</p>
 ]]></content>
       <categories>
         <category>面试题</category>
@@ -347,5 +363,70 @@
       <tags>
         <tag>进程，线程</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>多线程基础</title>
+    <url>/2021/11/27/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<h1 id="进程与线程"><a href="#进程与线程" class="headerlink" title="进程与线程"></a>进程与线程</h1><p>1.进程要分配一大部分的内存，而线程只需要分配一部分栈就可以了.<br>2.一个程序至少有一个进程,一个进程至少有一个线程.<br>3.进程是资源分配的最小单位，线程是程序执行的最小单位。<br>4.一个线程可以创建和撤销另一个线程，同一个进程中的多个线程之间可以并发执行</p>
+<span id="more"></span>    
+<p>线程栈：<br>1.方便函数调用，当调用子函数时，可以把当前函数的信息压入栈中，<br>再在栈的顶端压入返回地址，当子函数调用结束后再弹栈即可。<br>2.多任务支持，当有必要进行任务切换时，对当前信息存储，再读入<br>另一个任务的信息即可。</p>
+<h1 id="并发与并行"><a href="#并发与并行" class="headerlink" title="并发与并行"></a>并发与并行</h1><p>并发：单一cpu交替执行多任务，宏观表现同时进行的情况称为并发。<br>并行：多个cpu同时执行多个任务，宏观表现与微观均为同时进行。</p>
+<h1 id="创建线程"><a href="#创建线程" class="headerlink" title="创建线程"></a>创建线程</h1><p>1.继承Thread类，重写run方法<br>2.实现Runnabel接口，重写run方法<br>实现Runnabel接口的启动：重写完run方法后，在主方法中创建对象，再把这个对象<br>交给Thread进行静态代理，再启动对应的thread。</p>
+<h1 id="停止线程"><a href="#停止线程" class="headerlink" title="停止线程"></a>停止线程</h1><p>1.线程执行完毕自动停止<br>2.在run方法中使用一个变量控制线程，想要停止时改变run方法中的这个变量。</p>
+<h1 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h1><p>1.setName<br>2.getName<br>3.start<br>4.run<br>5.setPriority<br>6.getPriority<br>7.sleep<br>8.interrupt//一般用于中断休眠<br>9.yield//尝试性礼让<br>10.join//插队</p>
+<h1 id="释放锁的情况"><a href="#释放锁的情况" class="headerlink" title="释放锁的情况"></a>释放锁的情况</h1><p>1.线程结束 2.线程异常 3.线程中断 4.wait()<br>sleep，yield，suspend不会释放锁。</p>
+]]></content>
+      <categories>
+        <category>多线程基础</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>javaweb</title>
+    <url>/2021/11/28/javaweb/</url>
+    <content><![CDATA[<h1 id="html和css"><a href="#html和css" class="headerlink" title="html和css"></a>html和css</h1><span id="more"></span>
+<h2 id="html常用标签"><a href="#html常用标签" class="headerlink" title="html常用标签"></a>html常用标签</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;br/&gt;换行</span><br><span class="line">&lt;hr/&gt;水平线</span><br><span class="line">&lt;front&gt;&lt;/front&gt;修改文本大小，颜色，样式(color,face,size)</span><br><span class="line">&lt;h1-6&gt;1-6标题(align=对齐方式)</span><br><span class="line">&lt;a&gt;&lt;/a&gt;超链接(herf=域名,target=选择发生跳转的页面)</span><br><span class="line">&lt;ul&gt;&lt;/ul&gt;无序列表</span><br><span class="line">&lt;li&gt;&lt;/li&gt;列表项</span><br><span class="line">&lt;img/&gt;图片(src=路径,width=宽,height=高,border=边框宽度,alt=图片消失时提示)</span><br><span class="line">&lt;ifanme&gt;&lt;/ifanme&gt;子页面(src=子页面文件路径,width,height,name用于超链接选择target)</span><br><span class="line">文本</span><br><span class="line">&lt;div&gt;&lt;/div&gt;默认独占一行</span><br><span class="line">&lt;span&gt;&lt;/span&gt;长度为封装数据的长度</span><br><span class="line">&lt;p&gt;&lt;/p&gt;上下各占一行</span><br><span class="line">表格</span><br><span class="line">&lt;table&gt;&lt;/table&gt;表格(align,border,width,height,cellspacing=单元格间距)</span><br><span class="line">&lt;tr&gt;&lt;/tr&gt;表格行</span><br><span class="line">&lt;th&gt;&lt;/th&gt;居中加粗的单元格</span><br><span class="line">&lt;td&gt;&lt;/td&gt;单元格(align,colspan=行占用单元格数量,rowspan=列占用单元格数量)</span><br><span class="line">&lt;b&gt;&lt;/b&gt;加粗</span><br><span class="line">表单</span><br><span class="line">&lt;from&gt;&lt;/form&gt;表单(action=提交的服务器地址,method=get/post提交方式)</span><br><span class="line">&lt;input/&gt;输入栏(type=输入类型,value=默认值)</span><br><span class="line">&lt;input/&gt;单选框(type=&quot;radio&quot;,name=分组)</span><br><span class="line">&lt;select&gt;&lt;/select&gt;下拉列框</span><br><span class="line">&lt;option&gt;&lt;/option&gt;选项</span><br><span class="line">&lt;textarea&gt;&lt;/textarea&gt;多行文本输入框(row,cols= 每行字数)</span><br><span class="line">&lt;input type=&quot;reset&quot; value=&quot;重置&quot;/&gt;</span><br><span class="line">&lt;input type=&quot;sbmit&quot; value=&quot;提交&quot;/&gt;</span><br><span class="line">表单提交时，数据没发给服务器的三种情况：</span><br><span class="line">1.没有使用name命名</span><br><span class="line">2.单选、复选、下拉列表的选项都需要添加value属性</span><br><span class="line">3.表单项不在form中</span><br></pre></td></tr></table></figure>
+<h2 id="常用字符实体"><a href="#常用字符实体" class="headerlink" title="常用字符实体"></a>常用字符实体</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">空格：&amp;nbsp;</span><br><span class="line">小于号：&amp;lt;</span><br><span class="line">大于号：&amp;gt;</span><br><span class="line">双引号：&amp;quot;</span><br><span class="line">单引号：&amp;apos;</span><br></pre></td></tr></table></figure>
+<h2 id="css和html的结合"><a href="#css和html的结合" class="headerlink" title="css和html的结合"></a>css和html的结合</h2><p>1.在标签的style属性上设置”key:value value”,修改标签样式<br>2.在head标签中使用style标签定义，style标签中使用css语法。<br>3.把css样式写为一个文件，通过link标签引入。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;link rel = &quot;stylesheet&quot;type=&quot;text/css&quot;href&quot;文件路径&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="选择器"><a href="#选择器" class="headerlink" title="选择器"></a>选择器</h2><p>1.标签选择器: 标签名{}<br>2.id选择器： #id{}<br>3.class选择器： .class{}<br>4.组合选择器<br>class选择器与id选择器的区别：id选择器的值是唯一的，class选择器可以多标签公用。</p>
+<h1 id="js"><a href="#js" class="headerlink" title="js"></a>js</h1><h2 id="js和html代码的结合"><a href="#js和html代码的结合" class="headerlink" title="js和html代码的结合"></a>js和html代码的结合</h2><p>1.在head或者body标签中使用script标签写js代码<br>2.使用script标签引入js文件</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span> <span class="attr">src</span>=<span class="string">&quot;path&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="与java语法不同部分"><a href="#与java语法不同部分" class="headerlink" title="与java语法不同部分"></a>与java语法不同部分</h2><p>赋值使用var对任意类型赋值。<br>==与===，前者只比较字面值，后者比较数值与类型。<br>逻辑运算与c相同，所有数值可做布尔类型变量。0，null，undefined，””为false。<br>&amp;&amp;运算，当表达式全为真时返回最后一个表达式的值，有假式返回第一个为假的表达式值。<br>||运算，当表达式全为假时返回最后一个表达式的值，有真时返回第一个为真的表达式值。<br>数组中可以放类型不同的数据，且长度可变。 var arr = [];<br>函数定义：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">function 函数名(形参)&#123;&#125;</span><br><span class="line">var 函数名 = function(形参)&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>函数不允许重载，只会覆盖。<br>所有js函数都有隐藏参数arguments，等于java的Object…，所有参数都在他的数组中。<br>对象的定义方法与c语言结构体类似，不同的是可以在其中定义函数。</p>
+<h2 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h2><p>onload 加载完成事件(body)<br>onclick 单机事件(button)<br>onblur 失去焦点事件(input)<br>onchange 内容改变事件(select,input)<br>onsubmit 提交事件(form)(通过返回false阻止提交事件)</p>
+<h2 id="DOM"><a href="#DOM" class="headerlink" title="DOM"></a>DOM</h2><p>document文件通过树结构管理所有html中的对象(所有标签对象化)<br>document结构及方法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">var document&#123;</span><br><span class="line">	var id = ;</span><br><span class="line">	var tagName= ;</span><br><span class="line">	var parentNode= ;</span><br><span class="line">	var children= ;</span><br><span class="line">	var value= ;</span><br><span class="line">	var tpye= ;</span><br><span class="line">	var innerHTML= ;(起始标签到终止标签的中间内容)</span><br><span class="line">&#125;</span><br><span class="line">document.getElementById()</span><br><span class="line">document.getElementByName()</span><br><span class="line">document.getElementByTagName(标签名)</span><br><span class="line">document.createElement(标签名)</span><br></pre></td></tr></table></figure>
+<p>正则表达式对文本的验证</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">var patt = 正则表达式;</span><br><span class="line">if(patt.test(文本))&#123;</span><br><span class="line"></span><br><span class="line">	&#125;else&#123;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>java web</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>组合总和</title>
+    <url>/2021/11/28/%E7%BB%84%E5%90%88%E6%80%BB%E5%92%8C/</url>
+    <content><![CDATA[<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给定一个数组candidates和一个目标数target，找出candidates中所有可以使数字和为target的组合。<br>candidates中的每个数字在每个组合中只能使用一次。<br>注意：解集不能包含重复的组合</p>
+<span id="more"></span>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>本题难点在于如何去重，解决办法是将数组排序，在循环内添加判断，如果与上一个相同，跳过即可。这样处理可以去掉同层所有重复数字，但不同层的数字仍然可以重复。</p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">List&lt;List&lt;Integer&gt;&gt; answer;</span><br><span class="line"></span><br><span class="line">    public List&lt;List&lt;Integer&gt;&gt; combinationSum2(int[] candidates, int target) &#123;</span><br><span class="line">        Arrays.sort(candidates);</span><br><span class="line">        int[] ints = new int[candidates.length + 1];</span><br><span class="line">        for (int i =0;i&lt;candidates.length;i++)&#123;</span><br><span class="line">            ints[i] = candidates[i];</span><br><span class="line">        &#125;</span><br><span class="line">        answer = new ArrayList&lt;List&lt;Integer&gt;&gt;();</span><br><span class="line">        tarckBack(ints, target, 0, 0, new ArrayList&lt;Integer&gt;());</span><br><span class="line">        return answer;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void tarckBack(int[] candidates, int target, int start, int sum, ArrayList&lt;Integer&gt; list) &#123;</span><br><span class="line">        if (sum == target) &#123;</span><br><span class="line">            ArrayList&lt;Integer&gt; list1 = new ArrayList&lt;&gt;(list);</span><br><span class="line">            answer.add(list1);</span><br><span class="line">        &#125; else if (sum &lt; target) &#123;</span><br><span class="line">            for (int i = start; i &lt; candidates.length-1; i++) &#123;</span><br><span class="line">                //同层去重</span><br><span class="line">                if (i&gt;start&amp;&amp;candidates[i]==candidates[i-1])&#123;</span><br><span class="line">                    continue;</span><br><span class="line">                &#125;</span><br><span class="line">                list.add(candidates[i]);</span><br><span class="line">                tarckBack(candidates, target, i+1, sum + candidates[i], list);</span><br><span class="line">                list.remove(list.size() - 1);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>leetcode解析</category>
+        <category>中等</category>
+      </categories>
+      <tags>
+        <tag>回溯</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>正则表达式</title>
+    <url>/2021/11/29/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
+    <content><![CDATA[<h1 id="java中的正则表达式"><a href="#java中的正则表达式" class="headerlink" title="java中的正则表达式"></a>java中的正则表达式</h1><h2 id="正则表达式的使用"><a href="#正则表达式的使用" class="headerlink" title="正则表达式的使用"></a>正则表达式的使用</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//创建一个pattern对象</span><br><span class="line">new Pattern.complie(&quot;正则表达式&quot;);</span><br><span class="line">//创建一个匹配对象</span><br><span class="line">new pattern.matcher(文本);</span><br><span class="line">//开始循环匹配,find返回找到的内容</span><br><span class="line">while(matcher.find())&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h2 id="matcher-group"><a href="#matcher-group" class="headerlink" title="matcher.group()"></a>matcher.group()</h2><p>group(0)中存放找到的所有内容的index。<br>group(n)中存放第n个()中的内容的index。</p>
+]]></content>
+      <categories>
+        <category>正则表达式</category>
+      </categories>
   </entry>
 </search>
