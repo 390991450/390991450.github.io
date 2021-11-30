@@ -381,29 +381,6 @@
       </categories>
   </entry>
   <entry>
-    <title>javaweb</title>
-    <url>/2021/11/28/javaweb/</url>
-    <content><![CDATA[<h1 id="html和css"><a href="#html和css" class="headerlink" title="html和css"></a>html和css</h1><span id="more"></span>
-<h2 id="html常用标签"><a href="#html常用标签" class="headerlink" title="html常用标签"></a>html常用标签</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;br/&gt;换行</span><br><span class="line">&lt;hr/&gt;水平线</span><br><span class="line">&lt;front&gt;&lt;/front&gt;修改文本大小，颜色，样式(color,face,size)</span><br><span class="line">&lt;h1-6&gt;1-6标题(align=对齐方式)</span><br><span class="line">&lt;a&gt;&lt;/a&gt;超链接(herf=域名,target=选择发生跳转的页面)</span><br><span class="line">&lt;ul&gt;&lt;/ul&gt;无序列表</span><br><span class="line">&lt;li&gt;&lt;/li&gt;列表项</span><br><span class="line">&lt;img/&gt;图片(src=路径,width=宽,height=高,border=边框宽度,alt=图片消失时提示)</span><br><span class="line">&lt;ifanme&gt;&lt;/ifanme&gt;子页面(src=子页面文件路径,width,height,name用于超链接选择target)</span><br><span class="line">文本</span><br><span class="line">&lt;div&gt;&lt;/div&gt;默认独占一行</span><br><span class="line">&lt;span&gt;&lt;/span&gt;长度为封装数据的长度</span><br><span class="line">&lt;p&gt;&lt;/p&gt;上下各占一行</span><br><span class="line">表格</span><br><span class="line">&lt;table&gt;&lt;/table&gt;表格(align,border,width,height,cellspacing=单元格间距)</span><br><span class="line">&lt;tr&gt;&lt;/tr&gt;表格行</span><br><span class="line">&lt;th&gt;&lt;/th&gt;居中加粗的单元格</span><br><span class="line">&lt;td&gt;&lt;/td&gt;单元格(align,colspan=行占用单元格数量,rowspan=列占用单元格数量)</span><br><span class="line">&lt;b&gt;&lt;/b&gt;加粗</span><br><span class="line">表单</span><br><span class="line">&lt;from&gt;&lt;/form&gt;表单(action=提交的服务器地址,method=get/post提交方式)</span><br><span class="line">&lt;input/&gt;输入栏(type=输入类型,value=默认值)</span><br><span class="line">&lt;input/&gt;单选框(type=&quot;radio&quot;,name=分组)</span><br><span class="line">&lt;select&gt;&lt;/select&gt;下拉列框</span><br><span class="line">&lt;option&gt;&lt;/option&gt;选项</span><br><span class="line">&lt;textarea&gt;&lt;/textarea&gt;多行文本输入框(row,cols= 每行字数)</span><br><span class="line">&lt;input type=&quot;reset&quot; value=&quot;重置&quot;/&gt;</span><br><span class="line">&lt;input type=&quot;sbmit&quot; value=&quot;提交&quot;/&gt;</span><br><span class="line">表单提交时，数据没发给服务器的三种情况：</span><br><span class="line">1.没有使用name命名</span><br><span class="line">2.单选、复选、下拉列表的选项都需要添加value属性</span><br><span class="line">3.表单项不在form中</span><br></pre></td></tr></table></figure>
-<h2 id="常用字符实体"><a href="#常用字符实体" class="headerlink" title="常用字符实体"></a>常用字符实体</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">空格：&amp;nbsp;</span><br><span class="line">小于号：&amp;lt;</span><br><span class="line">大于号：&amp;gt;</span><br><span class="line">双引号：&amp;quot;</span><br><span class="line">单引号：&amp;apos;</span><br></pre></td></tr></table></figure>
-<h2 id="css和html的结合"><a href="#css和html的结合" class="headerlink" title="css和html的结合"></a>css和html的结合</h2><p>1.在标签的style属性上设置”key:value value”,修改标签样式<br>2.在head标签中使用style标签定义，style标签中使用css语法。<br>3.把css样式写为一个文件，通过link标签引入。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;link rel = &quot;stylesheet&quot;type=&quot;text/css&quot;href&quot;文件路径&quot;/&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="选择器"><a href="#选择器" class="headerlink" title="选择器"></a>选择器</h2><p>1.标签选择器: 标签名{}<br>2.id选择器： #id{}<br>3.class选择器： .class{}<br>4.组合选择器<br>class选择器与id选择器的区别：id选择器的值是唯一的，class选择器可以多标签公用。</p>
-<h1 id="js"><a href="#js" class="headerlink" title="js"></a>js</h1><h2 id="js和html代码的结合"><a href="#js和html代码的结合" class="headerlink" title="js和html代码的结合"></a>js和html代码的结合</h2><p>1.在head或者body标签中使用script标签写js代码<br>2.使用script标签引入js文件</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span> <span class="attr">src</span>=<span class="string">&quot;path&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="与java语法不同部分"><a href="#与java语法不同部分" class="headerlink" title="与java语法不同部分"></a>与java语法不同部分</h2><p>赋值使用var对任意类型赋值。<br>==与===，前者只比较字面值，后者比较数值与类型。<br>逻辑运算与c相同，所有数值可做布尔类型变量。0，null，undefined，””为false。<br>&amp;&amp;运算，当表达式全为真时返回最后一个表达式的值，有假式返回第一个为假的表达式值。<br>||运算，当表达式全为假时返回最后一个表达式的值，有真时返回第一个为真的表达式值。<br>数组中可以放类型不同的数据，且长度可变。 var arr = [];<br>函数定义：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">function 函数名(形参)&#123;&#125;</span><br><span class="line">var 函数名 = function(形参)&#123;&#125;</span><br></pre></td></tr></table></figure>
-<p>函数不允许重载，只会覆盖。<br>所有js函数都有隐藏参数arguments，等于java的Object…，所有参数都在他的数组中。<br>对象的定义方法与c语言结构体类似，不同的是可以在其中定义函数。</p>
-<h2 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h2><p>onload 加载完成事件(body)<br>onclick 单机事件(button)<br>onblur 失去焦点事件(input)<br>onchange 内容改变事件(select,input)<br>onsubmit 提交事件(form)(通过返回false阻止提交事件)</p>
-<h2 id="DOM"><a href="#DOM" class="headerlink" title="DOM"></a>DOM</h2><p>document文件通过树结构管理所有html中的对象(所有标签对象化)<br>document结构及方法</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">var document&#123;</span><br><span class="line">	var id = ;</span><br><span class="line">	var tagName= ;</span><br><span class="line">	var parentNode= ;</span><br><span class="line">	var children= ;</span><br><span class="line">	var value= ;</span><br><span class="line">	var tpye= ;</span><br><span class="line">	var innerHTML= ;(起始标签到终止标签的中间内容)</span><br><span class="line">&#125;</span><br><span class="line">document.getElementById()</span><br><span class="line">document.getElementByName()</span><br><span class="line">document.getElementByTagName(标签名)</span><br><span class="line">document.createElement(标签名)</span><br></pre></td></tr></table></figure>
-<p>正则表达式对文本的验证</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">var patt = 正则表达式;</span><br><span class="line">if(patt.test(文本))&#123;</span><br><span class="line"></span><br><span class="line">	&#125;else&#123;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>java web</category>
-      </categories>
-  </entry>
-  <entry>
     <title>组合总和</title>
     <url>/2021/11/28/%E7%BB%84%E5%90%88%E6%80%BB%E5%92%8C/</url>
     <content><![CDATA[<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给定一个数组candidates和一个目标数target，找出candidates中所有可以使数字和为target的组合。<br>candidates中的每个数字在每个组合中只能使用一次。<br>注意：解集不能包含重复的组合</p>
@@ -421,12 +398,761 @@
   <entry>
     <title>正则表达式</title>
     <url>/2021/11/29/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
-    <content><![CDATA[<h1 id="java中的正则表达式"><a href="#java中的正则表达式" class="headerlink" title="java中的正则表达式"></a>java中的正则表达式</h1><h2 id="正则表达式的使用"><a href="#正则表达式的使用" class="headerlink" title="正则表达式的使用"></a>正则表达式的使用</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//创建一个pattern对象</span><br><span class="line">new Pattern.complie(&quot;正则表达式&quot;);</span><br><span class="line">//创建一个匹配对象</span><br><span class="line">new pattern.matcher(文本);</span><br><span class="line">//开始循环匹配,find返回找到的内容</span><br><span class="line">while(matcher.find())&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    <content><![CDATA[<h1 id="正则表达式语法"><a href="#正则表达式语法" class="headerlink" title="正则表达式语法"></a>正则表达式语法</h1><p>注意：要正确使用转义字符。java：\\，其他\。</p>
 <span id="more"></span>
+<h2 id="限定符"><a href="#限定符" class="headerlink" title="限定符"></a>限定符</h2><table>
+<thead>
+<tr>
+<th>符号</th>
+<th>解释</th>
+<th>示例</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*</td>
+<td>克林闭包</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>+</td>
+<td>正闭包</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>?</td>
+<td>可重复0次或1次</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>{n}</td>
+<td>只能输入n个字符</td>
+<td>[abcd]{3}</td>
+<td>abcd四字母组成的3长度字符串</td>
+</tr>
+<tr>
+<td>{n,}</td>
+<td>至少n个字符</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>{n,m}</td>
+<td>至少n个，至多m个字符</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>?</td>
+<td>非贪婪匹配</td>
+<td>\\d+?</td>
+<td>输出尽可能短的数字串，默认是输出尽可能长的</td>
+</tr>
+</tbody></table>
+<h2 id="选择匹配符"><a href="#选择匹配符" class="headerlink" title="选择匹配符"></a>选择匹配符</h2><table>
+<thead>
+<tr>
+<th>符号</th>
+<th>解释</th>
+<th>示例</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>|</td>
+<td>匹配”|”之前或之后的内容</td>
+<td>ab|cd</td>
+<td>ab或cd</td>
+</tr>
+</tbody></table>
+<h2 id="分组组合和反向引用符"><a href="#分组组合和反向引用符" class="headerlink" title="分组组合和反向引用符"></a>分组组合和反向引用符</h2><table>
+<thead>
+<tr>
+<th>符号</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>(pattern)</td>
+<td>非命名捕获分组，使用index查询</td>
+</tr>
+<tr>
+<td>(?&lt;name&gt;pattern)</td>
+<td>命名捕获分组，可以使用组名或index查询</td>
+</tr>
+<tr>
+<td>(?:pattern)</td>
+<td>匹配但不捕获分组index，无法靠index查找。作用：apple(?:|s)=(apple|apples)</td>
+</tr>
+<tr>
+<td>(?=pattern)</td>
+<td>匹配但不捕获分组信息。作用：win(?=7|8|9),会找到win后面是7，8，9的win，但不会匹配win10的win</td>
+</tr>
+<tr>
+<td>(?!pattern)</td>
+<td>该表达式与上一个式子作用相反。</td>
+</tr>
+</tbody></table>
+<h2 id="字符匹配符"><a href="#字符匹配符" class="headerlink" title="字符匹配符"></a>字符匹配符</h2><table>
+<thead>
+<tr>
+<th>符号</th>
+<th>解释</th>
+<th>示例</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>[]</td>
+<td>可接收的字符列表</td>
+<td>[efgh]</td>
+<td>efgh中的任意一个字符</td>
+</tr>
+<tr>
+<td>[^]</td>
+<td>不接收的字符列表</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>-</td>
+<td>连字符</td>
+<td>A-Z</td>
+<td>A—Z间的的所有字符</td>
+</tr>
+<tr>
+<td>.</td>
+<td>匹配除\n以外的任何字符</td>
+<td>a..b</td>
+<td>a开头，b结尾，4长度字符</td>
+</tr>
+<tr>
+<td>\\d</td>
+<td>匹配单个数字，相当[0-9]</td>
+<td>\\d{3}(\\d)?</td>
+<td>包含三个或四个数字的字符串</td>
+</tr>
+<tr>
+<td>\\D</td>
+<td>匹配单个非数字</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>\\w</td>
+<td>匹配单个数字，字母</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>\\W</td>
+<td>匹配单个非数字且非字母的字符</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody></table>
+<h2 id="定位符"><a href="#定位符" class="headerlink" title="定位符"></a>定位符</h2><table>
+<thead>
+<tr>
+<th>符号</th>
+<th>解释</th>
+<th>示例</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>^</td>
+<td>指定起始符</td>
+<td>^[0-9]+[a-z]*</td>
+<td>以至少一个数字开头，后面任意长度字母的字符串</td>
+</tr>
+<tr>
+<td>$</td>
+<td>指定结束符</td>
+<td>^[0-9]\-[a-z]+$</td>
+<td>以数字开头接-并且至少一个字母结尾的字符串</td>
+</tr>
+<tr>
+<td>\\b</td>
+<td>匹配目标字符串的边界</td>
+<td>han\\b</td>
+<td>空格前或结尾的都为han</td>
+</tr>
+<tr>
+<td>\\B</td>
+<td>匹配目标字符串的非边界</td>
+<td>han\\B</td>
+<td>han出现在非边界的位置</td>
+</tr>
+</tbody></table>
+<h2 id="反向引用"><a href="#反向引用" class="headerlink" title="反向引用"></a>反向引用</h2><p>使用括号捕获的内容可以在这个括号后被重复使用，从而写出比较实用的匹配模式。<br>内部反向引用：\\分组号。外部反向引用：$分组号。(用于外部函数中的调用)<br>例：(\\d)(\\d)\\2\\1,这个表达式可以匹配一个四字符长度的回文字符串。</p>
+<h1 id="java中的正则表达式"><a href="#java中的正则表达式" class="headerlink" title="java中的正则表达式"></a>java中的正则表达式</h1><h2 id="正则表达式的使用"><a href="#正则表达式的使用" class="headerlink" title="正则表达式的使用"></a>正则表达式的使用</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//创建一个pattern对象</span><br><span class="line">new Pattern.complie(&quot;正则表达式&quot;);</span><br><span class="line">//创建一个匹配对象</span><br><span class="line">new pattern.matcher(文本);</span><br><span class="line">//开始循环匹配,find返回找到的内容</span><br><span class="line">while(matcher.find())&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<!-- more -->
 <h2 id="matcher-group"><a href="#matcher-group" class="headerlink" title="matcher.group()"></a>matcher.group()</h2><p>group(0)中存放找到的所有内容的index。<br>group(n)中存放第n个()中的内容的index。</p>
+<h2 id="常用类"><a href="#常用类" class="headerlink" title="常用类"></a>常用类</h2><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Pattern.matches(正则表达式,匹配内容)</td>
+<td>返回一个布尔值表示是否整体匹配</td>
+</tr>
+<tr>
+<td>matcher.start()</td>
+<td>返回匹配字符串的首字符index</td>
+</tr>
+<tr>
+<td>matcher.end()</td>
+<td>返回匹配字符串末尾字符index+1</td>
+</tr>
+<tr>
+<td>matcher.matches</td>
+<td>返回一个布尔值表示是否整体匹配</td>
+</tr>
+<tr>
+<td>matcher.replaceAll(替换内容)</td>
+<td>将匹配的字符串替换为输入的替换内容。注意：原本的文本内容不会发生变换，只是返回一个被替换的字符串</td>
+</tr>
+<tr>
+<td>matcher.replaceAll(被替换内容,替换内容)</td>
+<td>将匹配到的内容的被替换内容替换为替换内容</td>
+</tr>
+</tbody></table>
+<h2 id="String类中的正则表达式"><a href="#String类中的正则表达式" class="headerlink" title="String类中的正则表达式"></a>String类中的正则表达式</h2><p>String类有部分方法是支持正则表达式的。<br>str.matches(正则表达式) 判断是否完全匹配<br>str.split(正则表达式)依据正则表达进行分割<br>str.replaceAll(正则表达式,替换内容)将与正则表达匹配的内容替换为替换内容</p>
 ]]></content>
       <categories>
         <category>正则表达式</category>
       </categories>
+  </entry>
+  <entry>
+    <title>第k个最小的素数分数</title>
+    <url>/2021/11/30/%E7%AC%ACk%E4%B8%AA%E6%9C%80%E5%B0%8F%E7%9A%84%E7%B4%A0%E6%95%B0%E5%88%86%E6%95%B0/</url>
+    <content><![CDATA[<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给你一个按递增顺序排序的数组arr和一个整数k。数组arr由1和若干素数组成，且其中所有整数互不相同。<br>对于每对满足0&lt; i &lt; j &lt; arr.length 的 i 和 j ，可以得到分数 arr[i] / arr[j] 。</p>
+<span id="more"></span>
+<h1 id="堆排序分析"><a href="#堆排序分析" class="headerlink" title="堆排序分析"></a>堆排序分析</h1><p>这道题是对java中堆排序的练习。为了提高运算速度，需要对堆的入堆进行筛选。因为只需要取得第k个小的分数，构建一个大根堆，存放最小的7个分数，当堆大于7时，加入的分数如果大于堆顶，则没必要加入，如果小于堆顶，则弹出堆顶再加入当前分数。全部入堆结束后堆顶就是答案。</p>
+<h1 id="堆排序代码"><a href="#堆排序代码" class="headerlink" title="堆排序代码"></a>堆排序代码</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public int[] kthSmallestPrimeFraction(int[] arr, int k) &#123;</span><br><span class="line">        //把所有分数串连起来</span><br><span class="line">        ArrayList list = new ArrayList();</span><br><span class="line">        for (int i = 0;i&lt; arr.length-1;i++)&#123;</span><br><span class="line">            for (int j = 0;j&lt;i+1;j++)&#123;</span><br><span class="line">                int[] ints = &#123;arr[j],arr[i+1]&#125;;</span><br><span class="line">                list.add(ints);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        //创建堆</span><br><span class="line">        Queue heap= new PriorityQueue(new Comparator() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public int compare(Object o1, Object o2) &#123;</span><br><span class="line">                int[] int1 = (int[]) o1;</span><br><span class="line">                int[] int2 = (int[]) o2;</span><br><span class="line">                return int2[0]*int1[1]-int1[0]*int2[1];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        //把这些元素放入堆中</span><br><span class="line">        for (Object o:list)&#123;</span><br><span class="line">            int[] int1 = (int[]) heap.peek();</span><br><span class="line">            int[] int2 = (int[]) o;</span><br><span class="line">            if (heap.size()&gt;=k&amp;&amp;int1[0]*int2[1]&gt;int1[1]*int2[0])&#123;</span><br><span class="line">                heap.poll();</span><br><span class="line">                heap.offer(o);</span><br><span class="line">            &#125;else if (heap.size()&lt;k)&#123;</span><br><span class="line">                heap.offer(o);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return (int[]) heap.poll();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h1 id="归并排序分析"><a href="#归并排序分析" class="headerlink" title="归并排序分析"></a>归并排序分析</h1><p>因为1/n&lt;2/n&lt;…这道题其实可以看作length-1条有序数组的排序。所以可以使用归并来处理，使用一个小根堆管理所有数组的第一个数字，此时这个堆中包含所有数组的最小数，所以当弹出时必定为整体的最小数。我们要做的就是弹出k个堆顶，每次弹出时加入数组的后一个数字。</p>
+<h1 id="归并排序代码"><a href="#归并排序代码" class="headerlink" title="归并排序代码"></a>归并排序代码</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public int[] kthSmallestPrimeFraction(int[] arr, int k) &#123;</span><br><span class="line">        int n = arr.length;</span><br><span class="line">        //制定小根堆的规则</span><br><span class="line">        PriorityQueue&lt;int[]&gt; q = new PriorityQueue&lt;&gt;((a,b)-&gt;&#123;</span><br><span class="line">            double i1 = arr[a[0]] * 1.0 / arr[a[1]], i2 = arr[b[0]] * 1.0 / arr[b[1]];</span><br><span class="line">            return Double.compare(i1, i2);</span><br><span class="line">        &#125;);</span><br><span class="line">        //加入所有数组的第一个数</span><br><span class="line">        for (int i = 1; i &lt; n; i++) q.add(new int[]&#123;0, i&#125;);</span><br><span class="line">        while (k-- &gt; 1) &#123;</span><br><span class="line">            //弹出堆顶，加入这个数的下一个数</span><br><span class="line">            int[] poll = q.poll();</span><br><span class="line">            int i = poll[0], j = poll[1];</span><br><span class="line">            if (i + 1 &lt; j) q.add(new int[]&#123;i + 1, j&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        int[] poll = q.poll();</span><br><span class="line">        return new int[]&#123;arr[poll[0]], arr[poll[1]]&#125;;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>leetcode解析</category>
+        <category>困难</category>
+      </categories>
+      <tags>
+        <tag>堆</tag>
+        <tag>归并</tag>
+        <tag>队列</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>javaweb</title>
+    <url>/2021/11/28/javaweb/</url>
+    <content><![CDATA[<h1 id="html和css"><a href="#html和css" class="headerlink" title="html和css"></a>html和css</h1><span id="more"></span>
+<h2 id="html常用标签"><a href="#html常用标签" class="headerlink" title="html常用标签"></a>html常用标签</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;br/&gt;换行</span><br><span class="line">&lt;hr/&gt;水平线</span><br><span class="line">&lt;front&gt;&lt;/front&gt;修改文本大小，颜色，样式(color,face,size)</span><br><span class="line">&lt;h1-6&gt;1-6标题(align=对齐方式)</span><br><span class="line">&lt;a&gt;&lt;/a&gt;超链接(herf=域名,target=选择发生跳转的页面)</span><br><span class="line">&lt;ul&gt;&lt;/ul&gt;无序列表</span><br><span class="line">&lt;li&gt;&lt;/li&gt;列表项</span><br><span class="line">&lt;img/&gt;图片(src=路径,width=宽,height=高,border=边框宽度,alt=图片消失时提示)</span><br><span class="line">&lt;ifanme&gt;&lt;/ifanme&gt;子页面(src=子页面文件路径,width,height,name用于超链接选择target)</span><br><span class="line">文本</span><br><span class="line">&lt;div&gt;&lt;/div&gt;默认独占一行</span><br><span class="line">&lt;span&gt;&lt;/span&gt;长度为封装数据的长度</span><br><span class="line">&lt;p&gt;&lt;/p&gt;上下各占一行</span><br><span class="line">表格</span><br><span class="line">&lt;table&gt;&lt;/table&gt;表格(align,border,width,height,cellspacing=单元格间距)</span><br><span class="line">&lt;tr&gt;&lt;/tr&gt;表格行</span><br><span class="line">&lt;th&gt;&lt;/th&gt;居中加粗的单元格</span><br><span class="line">&lt;td&gt;&lt;/td&gt;单元格(align,colspan=行占用单元格数量,rowspan=列占用单元格数量)</span><br><span class="line">&lt;b&gt;&lt;/b&gt;加粗</span><br><span class="line">表单</span><br><span class="line">&lt;from&gt;&lt;/form&gt;表单(action=提交的服务器地址,method=get/post提交方式)</span><br><span class="line">&lt;input/&gt;输入栏(type=输入类型,value=默认值)</span><br><span class="line">&lt;input/&gt;单选框(type=&quot;radio&quot;,name=分组)</span><br><span class="line">&lt;select&gt;&lt;/select&gt;下拉列框</span><br><span class="line">&lt;option&gt;&lt;/option&gt;选项</span><br><span class="line">&lt;textarea&gt;&lt;/textarea&gt;多行文本输入框(row,cols= 每行字数)</span><br><span class="line">&lt;input type=&quot;reset&quot; value=&quot;重置&quot;/&gt;</span><br><span class="line">&lt;input type=&quot;sbmit&quot; value=&quot;提交&quot;/&gt;</span><br><span class="line">表单提交时，数据没发给服务器的三种情况：</span><br><span class="line">1.没有使用name命名</span><br><span class="line">2.单选、复选、下拉列表的选项都需要添加value属性</span><br><span class="line">3.表单项不在form中</span><br></pre></td></tr></table></figure>
+<h2 id="常用字符实体"><a href="#常用字符实体" class="headerlink" title="常用字符实体"></a>常用字符实体</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">空格：&amp;nbsp;</span><br><span class="line">小于号：&amp;lt;</span><br><span class="line">大于号：&amp;gt;</span><br><span class="line">双引号：&amp;quot;</span><br><span class="line">单引号：&amp;apos;</span><br></pre></td></tr></table></figure>
+<h2 id="css和html的结合"><a href="#css和html的结合" class="headerlink" title="css和html的结合"></a>css和html的结合</h2><p>1.在标签的style属性上设置”key:value value”,修改标签样式<br>2.在head标签中使用style标签定义，style标签中使用css语法。<br>3.把css样式写为一个文件，通过link标签引入。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;link rel = &quot;stylesheet&quot;type=&quot;text/css&quot;href&quot;文件路径&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="选择器"><a href="#选择器" class="headerlink" title="选择器"></a>选择器</h2><p>1.标签选择器: 标签名{}<br>2.id选择器： #id{}<br>3.class选择器： .class{}<br>4.组合选择器<br>class选择器与id选择器的区别：id选择器的值是唯一的，class选择器可以多标签公用。</p>
+<h1 id="js"><a href="#js" class="headerlink" title="js"></a>js</h1><h2 id="js和html代码的结合"><a href="#js和html代码的结合" class="headerlink" title="js和html代码的结合"></a>js和html代码的结合</h2><p>1.在head或者body标签中使用script标签写js代码<br>2.使用script标签引入js文件</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span> <span class="attr">src</span>=<span class="string">&quot;path&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="与java语法不同部分"><a href="#与java语法不同部分" class="headerlink" title="与java语法不同部分"></a>与java语法不同部分</h2><p>赋值使用var对任意类型赋值。<br>==与===，前者只比较字面值，后者比较数值与类型。<br>逻辑运算与c相同，所有数值可做布尔类型变量。0，null，undefined，””为false。<br>&amp;&amp;运算，当表达式全为真时返回最后一个表达式的值，有假式返回第一个为假的表达式值。<br>||运算，当表达式全为假时返回最后一个表达式的值，有真时返回第一个为真的表达式值。<br>数组中可以放类型不同的数据，且长度可变。 var arr = [];<br>函数定义：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">function 函数名(形参)&#123;&#125;</span><br><span class="line">var 函数名 = function(形参)&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>函数不允许重载，只会覆盖。<br>所有js函数都有隐藏参数arguments，等于java的Object…，所有参数都在他的数组中。<br>对象的定义方法与c语言结构体类似，不同的是可以在其中定义函数。</p>
+<h2 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h2><p>事件分为静态注册与动态注册。<br>onload 加载完成事件(body)<br>onclick 单机事件(button)<br>onblur 失去焦点事件(input)<br>onchange 内容改变事件(select,input)<br>onsubmit 提交事件(form)(通过返回false阻止提交事件)</p>
+<h2 id="DOM"><a href="#DOM" class="headerlink" title="DOM"></a>DOM</h2><p>document文件通过树结构管理所有html中的对象(所有标签对象化)<br>document结构及方法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">var document&#123;</span><br><span class="line">	var id = ;</span><br><span class="line">	var tagName= ;</span><br><span class="line">	var parentNode= ;</span><br><span class="line">	var children= ;</span><br><span class="line">	var value= ;</span><br><span class="line">	var tpye= ;</span><br><span class="line">	var innerHTML= ;(起始标签到终止标签的中间内容)</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br><span class="line">document.getElementById()</span><br><span class="line">//下面的两种返回的是集合，操作与数组相同</span><br><span class="line">document.getElementsByName()</span><br><span class="line">document.getElementsByTagName(标签名)</span><br><span class="line">document.createElement(标签名)</span><br></pre></td></tr></table></figure>
+<p>因为语句是从上往下执行，非函数内取得dom对象时可能对象还未创建，要想在外部取得，一般置于window.onload = function(){}中。</p>
+<h2 id="正则表达式对文本的验证"><a href="#正则表达式对文本的验证" class="headerlink" title="正则表达式对文本的验证"></a>正则表达式对文本的验证</h2><p><a href="https://390991450.github.io/2021/11/29/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/#more">正则表达的规则</a><br>正则表达式判断用户名是否合法案例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;html lang=&quot;zh_CN&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;UTF-8&quot;&gt;</span><br><span class="line">    &lt;title&gt;标题&lt;/title&gt;</span><br><span class="line">    &lt;script type=&quot;text/javascript&quot;&gt;</span><br><span class="line">        function onclickFun()&#123;</span><br><span class="line">            var usernameObj = document.getElementById(&quot;username&quot;);</span><br><span class="line">            var userText = usernameObj.value;</span><br><span class="line">            var patt = /^\w&#123;5,12&#125;$/;</span><br><span class="line">            var spanObj = document.getElementById(&quot;tips&quot;);</span><br><span class="line">            if (patt.test(userText))&#123;</span><br><span class="line">                spanObj.innerHTML = &quot;输入正确&quot;</span><br><span class="line">            &#125;else &#123;</span><br><span class="line">                spanObj.innerHTML = &quot;请输入正确的用户名&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &lt;/script&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    用户名：&lt;input type=&quot;text&quot; id=&quot;username&quot;/&gt;</span><br><span class="line">&lt;!--这个属于静态注册--&gt;</span><br><span class="line">    &lt;span id=&quot;tips&quot; style=&quot;color: red;&quot;&gt;&lt;/span&gt;</span><br><span class="line">&lt;!--    这个属于动态注册--&gt;</span><br><span class="line">    &lt;button onclick=&quot;onclickFun()&quot;&gt;校验&lt;/button&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="节点的常用方法或属性"><a href="#节点的常用方法或属性" class="headerlink" title="节点的常用方法或属性"></a>节点的常用方法或属性</h2><table>
+<thead>
+<tr>
+<th>方法或属性</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>getElementsByTagName()</td>
+<td>获取当前节点指定标签类型的子节点</td>
+</tr>
+<tr>
+<td>appendChild(字节点)</td>
+<td>添加一个字节点</td>
+</tr>
+<tr>
+<td>childNodes</td>
+<td>获取当前节点的所有子节点</td>
+</tr>
+<tr>
+<td>firstChild</td>
+<td>取得第一个字节点</td>
+</tr>
+<tr>
+<td>lastChile</td>
+<td>取得最后一个子节点</td>
+</tr>
+<tr>
+<td>parentNode</td>
+<td>取得当前父节点</td>
+</tr>
+<tr>
+<td>nextSibling</td>
+<td>取得下一个节点</td>
+</tr>
+<tr>
+<td>previousSibling</td>
+<td>取得上一个节点</td>
+</tr>
+<tr>
+<td>className</td>
+<td>获取或设置标签的class属性</td>
+</tr>
+<tr>
+<td>innerHTML</td>
+<td>获取或设置起始标签到结束标签的内容(可以有其他标签)</td>
+</tr>
+<tr>
+<td>innerText</td>
+<td>获取或设置起始标签到结束标签的文本</td>
+</tr>
+</tbody></table>
+<h1 id="“jQuery”"><a href="#“jQuery”" class="headerlink" title="“jQuery”"></a>“jQuery”</h1><h2 id="核心函数"><a href="#核心函数" class="headerlink" title="核心函数"></a>核心函数</h2><p>1.传入参数为函数时：表示页面加载完成之后。相当于window.onload = function(){}<br>2.传入参数为HTML字符串时：会帮我们创建这些HTML标签插入到指定位置。$().appendto(标签);<br>3.传入参数为选择器字符串时：根据选择器样式用对应方法查询dom对象。(也可以填入组合选择器”,”表示或”.”表示且。结果顺序为页面中的顺序)<br>4.传入参数为dom时：会把这个对象转化为”jQuery”对象</p>
+<h2 id="“jQuery”对象及方法"><a href="#“jQuery”对象及方法" class="headerlink" title="“jQuery”对象及方法"></a>“jQuery”对象及方法</h2><p>“jQuery”对象本质是dom对象的数组，同时封装了一系列函数。所有dom对象经由”jQuery”获得时都会被封装为”jQuery”对象，取得时使用index取得。<br>使用”jQuery”对象注册事件时不再需要使用动态或静态注册，而是通过调用”jQuery”所带的事件方法实现对象注册。</p>
+<h3 id="属性获取"><a href="#属性获取" class="headerlink" title="属性获取"></a>属性获取</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$(function(){})</td>
+<td>页面加载完成事件</td>
+</tr>
+<tr>
+<td>.val()</td>
+<td>获取，修改“表单项”的value</td>
+</tr>
+<tr>
+<td>.val([“value”])</td>
+<td>指定表单项被选中的项(单复选框，下拉列表)</td>
+</tr>
+<tr>
+<td>.html()</td>
+<td>设置和获取所有dom的innerHTML</td>
+</tr>
+<tr>
+<td>.text()</td>
+<td>设置和获取所有dom的text</td>
+</tr>
+<tr>
+<td>.attr()</td>
+<td>设置和获取指定属性值(一个参数为获取，两个参数为设置，可以设置未定义属性)</td>
+</tr>
+<tr>
+<td>.prop()</td>
+<td>设置和获取指定属性值(可处理checked等会出现undefined情况的属性)</td>
+</tr>
+<tr>
+<td>.each()</td>
+<td>遍历dom对象,用this取得</td>
+</tr>
+</tbody></table>
+<h3 id="增删改"><a href="#增删改" class="headerlink" title="增删改"></a>增删改</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>a.appendTo(b)</td>
+<td>把a插入到b的子元素，成为最后一个子元素</td>
+</tr>
+<tr>
+<td>a.prependTo(b)</td>
+<td>把a插入到b的子元素，成为第一个子元素</td>
+</tr>
+<tr>
+<td>a.insertAfter(b)</td>
+<td>-</td>
+</tr>
+<tr>
+<td>a.insertBefore</td>
+<td>-</td>
+</tr>
+<tr>
+<td>a.replaceWith(b)</td>
+<td>用b替换a</td>
+</tr>
+<tr>
+<td>a.replaceAll(b)</td>
+<td>用a替换b</td>
+</tr>
+<tr>
+<td>a.remove()</td>
+<td>删除a</td>
+</tr>
+<tr>
+<td>a.empty()</td>
+<td>清空a内容</td>
+</tr>
+</tbody></table>
+<h3 id="css样式"><a href="#css样式" class="headerlink" title="css样式"></a>css样式</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>.css(“key”,”value”…)</td>
+<td>为当前”jQuery”中对象设置样式</td>
+</tr>
+<tr>
+<td>.addClass()</td>
+<td>添加样式</td>
+</tr>
+<tr>
+<td>.removeClass()</td>
+<td>移除样式</td>
+</tr>
+<tr>
+<td>.toggleClass()</td>
+<td>有就删除，没有就添加样式</td>
+</tr>
+<tr>
+<td>.offset()</td>
+<td>返回坐标(左上角作为坐标)</td>
+</tr>
+</tbody></table>
+<h3 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h3><p>第一个参数为时间，第二个为回调函数(动画结束后调用的函数)。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>.show()</td>
+<td>将隐藏显示</td>
+</tr>
+<tr>
+<td>.hide()</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.toggle()</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.fadeIn()</td>
+<td>淡入</td>
+</tr>
+<tr>
+<td>.fadeOut()</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.fadeTo()</td>
+<td>指定时间内到指定透明度</td>
+</tr>
+</tbody></table>
+<h3 id="事件-1"><a href="#事件-1" class="headerlink" title="事件"></a>事件</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>.click(function(){})</td>
+<td>有函数为绑定单击事件，无函数为触发事件</td>
+</tr>
+<tr>
+<td>.blur(function(){})</td>
+<td>失去焦点事件</td>
+</tr>
+<tr>
+<td>.load(function(){})</td>
+<td>加载事件</td>
+</tr>
+<tr>
+<td>.change(function(){})</td>
+<td>内容改变事件</td>
+</tr>
+<tr>
+<td>.submit(function(){})</td>
+<td>提交事件</td>
+</tr>
+<tr>
+<td>.mouseover(function(){})</td>
+<td>鼠标移入事件</td>
+</tr>
+<tr>
+<td>.mouseout(function(){})</td>
+<td>鼠标移出事件</td>
+</tr>
+<tr>
+<td>.bind(‘一个或多个事件’,function(){})</td>
+<td>绑定事件，多个时用空格隔开</td>
+</tr>
+<tr>
+<td>.one()</td>
+<td>与bind使用方法相同，但每个事件只能响应一次</td>
+</tr>
+<tr>
+<td>.unbind()</td>
+<td>与bind相反，解除事件绑定</td>
+</tr>
+<tr>
+<td>.live()</td>
+<td>用于绑定事件，特点是即使这个元素是后面发生修改或才动态创建出来的也能绑定</td>
+</tr>
+</tbody></table>
+<h3 id="选择器-1"><a href="#选择器-1" class="headerlink" title="选择器"></a>选择器</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>层级选择器</td>
+<td></td>
+</tr>
+<tr>
+<td>$(“基本选择器1 基本选择器2”)</td>
+<td>获取所有在标签1中的所有标签2</td>
+</tr>
+<tr>
+<td>$(“基本选择器1 基本选择器2”)</td>
+<td>获取父标签是标签1的所有标签2</td>
+</tr>
+<tr>
+<td>$(“基本选择器1 + 基本选择器2”)</td>
+<td>获取上一个兄弟标签是标签1的所有标签2</td>
+</tr>
+<tr>
+<td>$(“基本选择器1 ~ 基本选择器2”)</td>
+<td>获取标签1后的所有同级的标签2</td>
+</tr>
+<tr>
+<td>基本过滤选择器</td>
+<td></td>
+</tr>
+<tr>
+<td>$(“基本选择器1:first”)</td>
+<td>获取第一个标签1</td>
+</tr>
+<tr>
+<td>$(“基本选择器1:last”)</td>
+<td>获取最后一个标签1</td>
+</tr>
+<tr>
+<td>$(“基本选择器1:even”)</td>
+<td>获取所有index为偶数的标签1</td>
+</tr>
+<tr>
+<td>$(“基本选择器1:odd”)</td>
+<td>-</td>
+</tr>
+<tr>
+<td>$(“基本选择器1:eq(index)”)</td>
+<td>-</td>
+</tr>
+<tr>
+<td>$(“基本选择器1:gt(index)”)</td>
+<td>获取所有index大于这个index的标签1</td>
+</tr>
+<tr>
+<td>$(“基本选择器1:lt(index)”)</td>
+<td>获取所有index小于这个index的标签1</td>
+</tr>
+<tr>
+<td>$(“:header”)</td>
+<td>获取所有标题元素</td>
+</tr>
+<tr>
+<td>$(“:animated”)</td>
+<td>获取所有在执行动画的标签</td>
+</tr>
+<tr>
+<td>$(“基本选择器1:not(…)”)</td>
+<td>相当于上面操作的取反</td>
+</tr>
+<tr>
+<td>内容过滤选择器</td>
+<td></td>
+</tr>
+<tr>
+<td>$(“基本选择器:contains(‘str’)”)</td>
+<td>获取文本内容包含str的标签</td>
+</tr>
+<tr>
+<td>$(“基本选择器:empty”)</td>
+<td>获取文本内容为空的标签</td>
+</tr>
+<tr>
+<td>$(“基本选择器:parent”)</td>
+<td>获取文本内容不为空或者有子元素的标签</td>
+</tr>
+<tr>
+<td>$(“基本选择器1:has(选择器2)”)</td>
+<td>获取子元素有标签2的所有标签1</td>
+</tr>
+<tr>
+<td>属性过滤选择器</td>
+<td></td>
+</tr>
+<tr>
+<td>$(“基本选择器[属性名]”)</td>
+<td>获取包含这个属性的标签</td>
+</tr>
+<tr>
+<td>$(“基本选择器[属性名=’value’]”)</td>
+<td>-</td>
+</tr>
+<tr>
+<td>$(“基本选择器[属性名!=’value’]”)</td>
+<td>获取不含有这属性和有这个属性但值不匹配的标签</td>
+</tr>
+<tr>
+<td>$(“基本选择器[属性名^=’value’]”)</td>
+<td>获取有这个属性，且属性值以此开始的标签</td>
+</tr>
+<tr>
+<td>$(“基本选择器[属性名*=’value’]”)</td>
+<td>获取有这个属性，且包含属性值的标签</td>
+</tr>
+<tr>
+<td>$(“基本选择器[][]…”)</td>
+<td>多重选择</td>
+</tr>
+<tr>
+<td>表单过滤选择器</td>
+<td></td>
+</tr>
+<tr>
+<td>$(“:type类型”)</td>
+<td>选择type类型符合的标签</td>
+</tr>
+<tr>
+<td>$(“:enabled”)</td>
+<td>选择可用的标签</td>
+</tr>
+<tr>
+<td>$(“:disabled”)</td>
+<td>选择不可用的标签</td>
+</tr>
+<tr>
+<td>$(“:checked”)</td>
+<td>选择所有选择的标签(单选复选框)</td>
+</tr>
+<tr>
+<td>$(“:selected”)</td>
+<td>匹配所有选择的option元素</td>
+</tr>
+<tr>
+<td>元素筛选</td>
+<td></td>
+</tr>
+<tr>
+<td>.eq()</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.first()</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.last()</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.filter(exp)</td>
+<td>再次过滤</td>
+</tr>
+<tr>
+<td>.is(exp)</td>
+<td>判断是否满足这个选择器,一个为真即为真</td>
+</tr>
+<tr>
+<td>.has(exp)</td>
+<td>返回子元素满足选择器的元素</td>
+</tr>
+<tr>
+<td>.not(exp)</td>
+<td>删除满足选择器的元素</td>
+</tr>
+<tr>
+<td>.children(exp)</td>
+<td>返回此元素中满足此选择器的子元素</td>
+</tr>
+<tr>
+<td>.find(exp)</td>
+<td>返回此元素中满足此选择器的后代元素</td>
+</tr>
+<tr>
+<td>.next()</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.nextAll()</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.nextUntil()</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.parent()</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.prev(exp)</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.prevAll()</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.prevUntil()</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.siblings(exp)</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.add(exp)</td>
+<td>向当前”jQuery”加入满足选择器的元素</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>java web</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>第n位数字</title>
+    <url>/2021/11/30/%E7%AC%ACn%E4%BD%8D%E6%95%B0%E5%AD%97/</url>
+    <content><![CDATA[<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给你一个整数n，请你在无限的整数序列[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, …]中找出并返回第n位上的数字。</p>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>本题有时间限制，所以要找到一些规律：n位数字中有n<em>9</em>10^(n-1)位数字，根据这个规律判断数字的位数。</p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public int findNthDigit(int n) &#123;</span><br><span class="line">        if (n&lt;10)&#123;</span><br><span class="line">            return n;</span><br><span class="line">        &#125;</span><br><span class="line">        //答案的长度</span><br><span class="line">        int numLength = 0;</span><br><span class="line">        //可能范围,使用long防止溢出</span><br><span class="line">        long count = 0;</span><br><span class="line">        while (count&lt;n)&#123;</span><br><span class="line">            numLength++;</span><br><span class="line">            count+=numLength*9*Math.pow(10,numLength-1);</span><br><span class="line">        &#125;</span><br><span class="line">        count-=numLength*9*Math.pow(10,numLength-1);</span><br><span class="line">        //判断第几位数字</span><br><span class="line">        int k = (int) (n-count)%numLength;</span><br><span class="line">        if (k==0)&#123;</span><br><span class="line">            k=numLength;</span><br><span class="line">        &#125;</span><br><span class="line">        //判断第几个数字</span><br><span class="line">        int index = (int) (n-count+1)/numLength;</span><br><span class="line">        //找到这个数字</span><br><span class="line">        int answerNum = (int) Math.pow(10,numLength-1)+index-1;</span><br><span class="line">        return Integer.valueOf(String.valueOf(answerNum).substring(k-1,k));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>leetcode解析</category>
+        <category>中等</category>
+      </categories>
+      <tags>
+        <tag>数学分析</tag>
+      </tags>
   </entry>
 </search>

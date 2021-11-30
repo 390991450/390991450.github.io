@@ -28,7 +28,7 @@
 <meta property="og:description" content="html和css">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-11-28T07:19:13.000Z">
-<meta property="article:modified_time" content="2021-11-29T03:51:31.617Z">
+<meta property="article:modified_time" content="2021-11-30T13:24:59.421Z">
 <meta property="article:author" content="征途">
 <meta name="twitter:card" content="summary">
 
@@ -218,7 +218,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-29 11:51:31" itemprop="dateModified" datetime="2021-11-29T11:51:31+08:00">2021-11-29</time>
+                <time title="修改时间：2021-11-30 21:24:59" itemprop="dateModified" datetime="2021-11-30T21:24:59+08:00">2021-11-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -252,11 +252,480 @@
 <h2 id="与java语法不同部分"><a href="#与java语法不同部分" class="headerlink" title="与java语法不同部分"></a>与java语法不同部分</h2><p>赋值使用var对任意类型赋值。<br>==与===，前者只比较字面值，后者比较数值与类型。<br>逻辑运算与c相同，所有数值可做布尔类型变量。0，null，undefined，””为false。<br>&amp;&amp;运算，当表达式全为真时返回最后一个表达式的值，有假式返回第一个为假的表达式值。<br>||运算，当表达式全为假时返回最后一个表达式的值，有真时返回第一个为真的表达式值。<br>数组中可以放类型不同的数据，且长度可变。 var arr = [];<br>函数定义：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">function 函数名(形参)&#123;&#125;</span><br><span class="line">var 函数名 = function(形参)&#123;&#125;</span><br></pre></td></tr></table></figure>
 <p>函数不允许重载，只会覆盖。<br>所有js函数都有隐藏参数arguments，等于java的Object…，所有参数都在他的数组中。<br>对象的定义方法与c语言结构体类似，不同的是可以在其中定义函数。</p>
-<h2 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h2><p>onload 加载完成事件(body)<br>onclick 单机事件(button)<br>onblur 失去焦点事件(input)<br>onchange 内容改变事件(select,input)<br>onsubmit 提交事件(form)(通过返回false阻止提交事件)</p>
+<h2 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h2><p>事件分为静态注册与动态注册。<br>onload 加载完成事件(body)<br>onclick 单机事件(button)<br>onblur 失去焦点事件(input)<br>onchange 内容改变事件(select,input)<br>onsubmit 提交事件(form)(通过返回false阻止提交事件)</p>
 <h2 id="DOM"><a href="#DOM" class="headerlink" title="DOM"></a>DOM</h2><p>document文件通过树结构管理所有html中的对象(所有标签对象化)<br>document结构及方法</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var document&#123;</span><br><span class="line">	var id = ;</span><br><span class="line">	var tagName= ;</span><br><span class="line">	var parentNode= ;</span><br><span class="line">	var children= ;</span><br><span class="line">	var value= ;</span><br><span class="line">	var tpye= ;</span><br><span class="line">	var innerHTML= ;(起始标签到终止标签的中间内容)</span><br><span class="line">&#125;</span><br><span class="line">document.getElementById()</span><br><span class="line">document.getElementByName()</span><br><span class="line">document.getElementByTagName(标签名)</span><br><span class="line">document.createElement(标签名)</span><br></pre></td></tr></table></figure>
-<p>正则表达式对文本的验证</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var patt = 正则表达式;</span><br><span class="line">if(patt.test(文本))&#123;</span><br><span class="line"></span><br><span class="line">	&#125;else&#123;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">var document&#123;</span><br><span class="line">	var id = ;</span><br><span class="line">	var tagName= ;</span><br><span class="line">	var parentNode= ;</span><br><span class="line">	var children= ;</span><br><span class="line">	var value= ;</span><br><span class="line">	var tpye= ;</span><br><span class="line">	var innerHTML= ;(起始标签到终止标签的中间内容)</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br><span class="line">document.getElementById()</span><br><span class="line">//下面的两种返回的是集合，操作与数组相同</span><br><span class="line">document.getElementsByName()</span><br><span class="line">document.getElementsByTagName(标签名)</span><br><span class="line">document.createElement(标签名)</span><br></pre></td></tr></table></figure>
+<p>因为语句是从上往下执行，非函数内取得dom对象时可能对象还未创建，要想在外部取得，一般置于window.onload = function(){}中。</p>
+<h2 id="正则表达式对文本的验证"><a href="#正则表达式对文本的验证" class="headerlink" title="正则表达式对文本的验证"></a>正则表达式对文本的验证</h2><p><a href="https://390991450.github.io/2021/11/29/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/#more">正则表达的规则</a><br>正则表达式判断用户名是否合法案例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;html lang=&quot;zh_CN&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;UTF-8&quot;&gt;</span><br><span class="line">    &lt;title&gt;标题&lt;/title&gt;</span><br><span class="line">    &lt;script type=&quot;text/javascript&quot;&gt;</span><br><span class="line">        function onclickFun()&#123;</span><br><span class="line">            var usernameObj = document.getElementById(&quot;username&quot;);</span><br><span class="line">            var userText = usernameObj.value;</span><br><span class="line">            var patt = /^\w&#123;5,12&#125;$/;</span><br><span class="line">            var spanObj = document.getElementById(&quot;tips&quot;);</span><br><span class="line">            if (patt.test(userText))&#123;</span><br><span class="line">                spanObj.innerHTML = &quot;输入正确&quot;</span><br><span class="line">            &#125;else &#123;</span><br><span class="line">                spanObj.innerHTML = &quot;请输入正确的用户名&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &lt;/script&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    用户名：&lt;input type=&quot;text&quot; id=&quot;username&quot;/&gt;</span><br><span class="line">&lt;!--这个属于静态注册--&gt;</span><br><span class="line">    &lt;span id=&quot;tips&quot; style=&quot;color: red;&quot;&gt;&lt;/span&gt;</span><br><span class="line">&lt;!--    这个属于动态注册--&gt;</span><br><span class="line">    &lt;button onclick=&quot;onclickFun()&quot;&gt;校验&lt;/button&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="节点的常用方法或属性"><a href="#节点的常用方法或属性" class="headerlink" title="节点的常用方法或属性"></a>节点的常用方法或属性</h2><table>
+<thead>
+<tr>
+<th>方法或属性</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>getElementsByTagName()</td>
+<td>获取当前节点指定标签类型的子节点</td>
+</tr>
+<tr>
+<td>appendChild(字节点)</td>
+<td>添加一个字节点</td>
+</tr>
+<tr>
+<td>childNodes</td>
+<td>获取当前节点的所有子节点</td>
+</tr>
+<tr>
+<td>firstChild</td>
+<td>取得第一个字节点</td>
+</tr>
+<tr>
+<td>lastChile</td>
+<td>取得最后一个子节点</td>
+</tr>
+<tr>
+<td>parentNode</td>
+<td>取得当前父节点</td>
+</tr>
+<tr>
+<td>nextSibling</td>
+<td>取得下一个节点</td>
+</tr>
+<tr>
+<td>previousSibling</td>
+<td>取得上一个节点</td>
+</tr>
+<tr>
+<td>className</td>
+<td>获取或设置标签的class属性</td>
+</tr>
+<tr>
+<td>innerHTML</td>
+<td>获取或设置起始标签到结束标签的内容(可以有其他标签)</td>
+</tr>
+<tr>
+<td>innerText</td>
+<td>获取或设置起始标签到结束标签的文本</td>
+</tr>
+</tbody></table>
+<h1 id="“jQuery”"><a href="#“jQuery”" class="headerlink" title="“jQuery”"></a>“jQuery”</h1><h2 id="核心函数"><a href="#核心函数" class="headerlink" title="核心函数"></a>核心函数</h2><p>1.传入参数为函数时：表示页面加载完成之后。相当于window.onload = function(){}<br>2.传入参数为HTML字符串时：会帮我们创建这些HTML标签插入到指定位置。$().appendto(标签);<br>3.传入参数为选择器字符串时：根据选择器样式用对应方法查询dom对象。(也可以填入组合选择器”,”表示或”.”表示且。结果顺序为页面中的顺序)<br>4.传入参数为dom时：会把这个对象转化为”jQuery”对象</p>
+<h2 id="“jQuery”对象及方法"><a href="#“jQuery”对象及方法" class="headerlink" title="“jQuery”对象及方法"></a>“jQuery”对象及方法</h2><p>“jQuery”对象本质是dom对象的数组，同时封装了一系列函数。所有dom对象经由”jQuery”获得时都会被封装为”jQuery”对象，取得时使用index取得。<br>使用”jQuery”对象注册事件时不再需要使用动态或静态注册，而是通过调用”jQuery”所带的事件方法实现对象注册。</p>
+<h3 id="属性获取"><a href="#属性获取" class="headerlink" title="属性获取"></a>属性获取</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$(function(){})</td>
+<td>页面加载完成事件</td>
+</tr>
+<tr>
+<td>.val()</td>
+<td>获取，修改“表单项”的value</td>
+</tr>
+<tr>
+<td>.val([“value”])</td>
+<td>指定表单项被选中的项(单复选框，下拉列表)</td>
+</tr>
+<tr>
+<td>.html()</td>
+<td>设置和获取所有dom的innerHTML</td>
+</tr>
+<tr>
+<td>.text()</td>
+<td>设置和获取所有dom的text</td>
+</tr>
+<tr>
+<td>.attr()</td>
+<td>设置和获取指定属性值(一个参数为获取，两个参数为设置，可以设置未定义属性)</td>
+</tr>
+<tr>
+<td>.prop()</td>
+<td>设置和获取指定属性值(可处理checked等会出现undefined情况的属性)</td>
+</tr>
+<tr>
+<td>.each()</td>
+<td>遍历dom对象,用this取得</td>
+</tr>
+</tbody></table>
+<h3 id="增删改"><a href="#增删改" class="headerlink" title="增删改"></a>增删改</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>a.appendTo(b)</td>
+<td>把a插入到b的子元素，成为最后一个子元素</td>
+</tr>
+<tr>
+<td>a.prependTo(b)</td>
+<td>把a插入到b的子元素，成为第一个子元素</td>
+</tr>
+<tr>
+<td>a.insertAfter(b)</td>
+<td>-</td>
+</tr>
+<tr>
+<td>a.insertBefore</td>
+<td>-</td>
+</tr>
+<tr>
+<td>a.replaceWith(b)</td>
+<td>用b替换a</td>
+</tr>
+<tr>
+<td>a.replaceAll(b)</td>
+<td>用a替换b</td>
+</tr>
+<tr>
+<td>a.remove()</td>
+<td>删除a</td>
+</tr>
+<tr>
+<td>a.empty()</td>
+<td>清空a内容</td>
+</tr>
+</tbody></table>
+<h3 id="css样式"><a href="#css样式" class="headerlink" title="css样式"></a>css样式</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>.css(“key”,”value”…)</td>
+<td>为当前”jQuery”中对象设置样式</td>
+</tr>
+<tr>
+<td>.addClass()</td>
+<td>添加样式</td>
+</tr>
+<tr>
+<td>.removeClass()</td>
+<td>移除样式</td>
+</tr>
+<tr>
+<td>.toggleClass()</td>
+<td>有就删除，没有就添加样式</td>
+</tr>
+<tr>
+<td>.offset()</td>
+<td>返回坐标(左上角作为坐标)</td>
+</tr>
+</tbody></table>
+<h3 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h3><p>第一个参数为时间，第二个为回调函数(动画结束后调用的函数)。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>.show()</td>
+<td>将隐藏显示</td>
+</tr>
+<tr>
+<td>.hide()</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.toggle()</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.fadeIn()</td>
+<td>淡入</td>
+</tr>
+<tr>
+<td>.fadeOut()</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.fadeTo()</td>
+<td>指定时间内到指定透明度</td>
+</tr>
+</tbody></table>
+<h3 id="事件-1"><a href="#事件-1" class="headerlink" title="事件"></a>事件</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>.click(function(){})</td>
+<td>有函数为绑定单击事件，无函数为触发事件</td>
+</tr>
+<tr>
+<td>.blur(function(){})</td>
+<td>失去焦点事件</td>
+</tr>
+<tr>
+<td>.load(function(){})</td>
+<td>加载事件</td>
+</tr>
+<tr>
+<td>.change(function(){})</td>
+<td>内容改变事件</td>
+</tr>
+<tr>
+<td>.submit(function(){})</td>
+<td>提交事件</td>
+</tr>
+<tr>
+<td>.mouseover(function(){})</td>
+<td>鼠标移入事件</td>
+</tr>
+<tr>
+<td>.mouseout(function(){})</td>
+<td>鼠标移出事件</td>
+</tr>
+<tr>
+<td>.bind(‘一个或多个事件’,function(){})</td>
+<td>绑定事件，多个时用空格隔开</td>
+</tr>
+<tr>
+<td>.one()</td>
+<td>与bind使用方法相同，但每个事件只能响应一次</td>
+</tr>
+<tr>
+<td>.unbind()</td>
+<td>与bind相反，解除事件绑定</td>
+</tr>
+<tr>
+<td>.live()</td>
+<td>用于绑定事件，特点是即使这个元素是后面发生修改或才动态创建出来的也能绑定</td>
+</tr>
+</tbody></table>
+<h3 id="选择器-1"><a href="#选择器-1" class="headerlink" title="选择器"></a>选择器</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>层级选择器</td>
+<td></td>
+</tr>
+<tr>
+<td>$(“基本选择器1 基本选择器2”)</td>
+<td>获取所有在标签1中的所有标签2</td>
+</tr>
+<tr>
+<td>$(“基本选择器1 基本选择器2”)</td>
+<td>获取父标签是标签1的所有标签2</td>
+</tr>
+<tr>
+<td>$(“基本选择器1 + 基本选择器2”)</td>
+<td>获取上一个兄弟标签是标签1的所有标签2</td>
+</tr>
+<tr>
+<td>$(“基本选择器1 ~ 基本选择器2”)</td>
+<td>获取标签1后的所有同级的标签2</td>
+</tr>
+<tr>
+<td>基本过滤选择器</td>
+<td></td>
+</tr>
+<tr>
+<td>$(“基本选择器1:first”)</td>
+<td>获取第一个标签1</td>
+</tr>
+<tr>
+<td>$(“基本选择器1:last”)</td>
+<td>获取最后一个标签1</td>
+</tr>
+<tr>
+<td>$(“基本选择器1:even”)</td>
+<td>获取所有index为偶数的标签1</td>
+</tr>
+<tr>
+<td>$(“基本选择器1:odd”)</td>
+<td>-</td>
+</tr>
+<tr>
+<td>$(“基本选择器1:eq(index)”)</td>
+<td>-</td>
+</tr>
+<tr>
+<td>$(“基本选择器1:gt(index)”)</td>
+<td>获取所有index大于这个index的标签1</td>
+</tr>
+<tr>
+<td>$(“基本选择器1:lt(index)”)</td>
+<td>获取所有index小于这个index的标签1</td>
+</tr>
+<tr>
+<td>$(“:header”)</td>
+<td>获取所有标题元素</td>
+</tr>
+<tr>
+<td>$(“:animated”)</td>
+<td>获取所有在执行动画的标签</td>
+</tr>
+<tr>
+<td>$(“基本选择器1:not(…)”)</td>
+<td>相当于上面操作的取反</td>
+</tr>
+<tr>
+<td>内容过滤选择器</td>
+<td></td>
+</tr>
+<tr>
+<td>$(“基本选择器:contains(‘str’)”)</td>
+<td>获取文本内容包含str的标签</td>
+</tr>
+<tr>
+<td>$(“基本选择器:empty”)</td>
+<td>获取文本内容为空的标签</td>
+</tr>
+<tr>
+<td>$(“基本选择器:parent”)</td>
+<td>获取文本内容不为空或者有子元素的标签</td>
+</tr>
+<tr>
+<td>$(“基本选择器1:has(选择器2)”)</td>
+<td>获取子元素有标签2的所有标签1</td>
+</tr>
+<tr>
+<td>属性过滤选择器</td>
+<td></td>
+</tr>
+<tr>
+<td>$(“基本选择器[属性名]”)</td>
+<td>获取包含这个属性的标签</td>
+</tr>
+<tr>
+<td>$(“基本选择器[属性名=’value’]”)</td>
+<td>-</td>
+</tr>
+<tr>
+<td>$(“基本选择器[属性名!=’value’]”)</td>
+<td>获取不含有这属性和有这个属性但值不匹配的标签</td>
+</tr>
+<tr>
+<td>$(“基本选择器[属性名^=’value’]”)</td>
+<td>获取有这个属性，且属性值以此开始的标签</td>
+</tr>
+<tr>
+<td>$(“基本选择器[属性名*=’value’]”)</td>
+<td>获取有这个属性，且包含属性值的标签</td>
+</tr>
+<tr>
+<td>$(“基本选择器[][]…”)</td>
+<td>多重选择</td>
+</tr>
+<tr>
+<td>表单过滤选择器</td>
+<td></td>
+</tr>
+<tr>
+<td>$(“:type类型”)</td>
+<td>选择type类型符合的标签</td>
+</tr>
+<tr>
+<td>$(“:enabled”)</td>
+<td>选择可用的标签</td>
+</tr>
+<tr>
+<td>$(“:disabled”)</td>
+<td>选择不可用的标签</td>
+</tr>
+<tr>
+<td>$(“:checked”)</td>
+<td>选择所有选择的标签(单选复选框)</td>
+</tr>
+<tr>
+<td>$(“:selected”)</td>
+<td>匹配所有选择的option元素</td>
+</tr>
+<tr>
+<td>元素筛选</td>
+<td></td>
+</tr>
+<tr>
+<td>.eq()</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.first()</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.last()</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.filter(exp)</td>
+<td>再次过滤</td>
+</tr>
+<tr>
+<td>.is(exp)</td>
+<td>判断是否满足这个选择器,一个为真即为真</td>
+</tr>
+<tr>
+<td>.has(exp)</td>
+<td>返回子元素满足选择器的元素</td>
+</tr>
+<tr>
+<td>.not(exp)</td>
+<td>删除满足选择器的元素</td>
+</tr>
+<tr>
+<td>.children(exp)</td>
+<td>返回此元素中满足此选择器的子元素</td>
+</tr>
+<tr>
+<td>.find(exp)</td>
+<td>返回此元素中满足此选择器的后代元素</td>
+</tr>
+<tr>
+<td>.next()</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.nextAll()</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.nextUntil()</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.parent()</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.prev(exp)</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.prevAll()</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.prevUntil()</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.siblings(exp)</td>
+<td>-</td>
+</tr>
+<tr>
+<td>.add(exp)</td>
+<td>向当前”jQuery”加入满足选择器的元素</td>
+</tr>
+</tbody></table>
+
     </div>
 
     
@@ -336,7 +805,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#html%E5%92%8Ccss"><span class="nav-number">1.</span> <span class="nav-text">html和css</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#html%E5%B8%B8%E7%94%A8%E6%A0%87%E7%AD%BE"><span class="nav-number">1.1.</span> <span class="nav-text">html常用标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%AD%97%E7%AC%A6%E5%AE%9E%E4%BD%93"><span class="nav-number">1.2.</span> <span class="nav-text">常用字符实体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#css%E5%92%8Chtml%E7%9A%84%E7%BB%93%E5%90%88"><span class="nav-number">1.3.</span> <span class="nav-text">css和html的结合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E5%99%A8"><span class="nav-number">1.4.</span> <span class="nav-text">选择器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#js"><span class="nav-number">2.</span> <span class="nav-text">js</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#js%E5%92%8Chtml%E4%BB%A3%E7%A0%81%E7%9A%84%E7%BB%93%E5%90%88"><span class="nav-number">2.1.</span> <span class="nav-text">js和html代码的结合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8Ejava%E8%AF%AD%E6%B3%95%E4%B8%8D%E5%90%8C%E9%83%A8%E5%88%86"><span class="nav-number">2.2.</span> <span class="nav-text">与java语法不同部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6"><span class="nav-number">2.3.</span> <span class="nav-text">事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DOM"><span class="nav-number">2.4.</span> <span class="nav-text">DOM</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#html%E5%92%8Ccss"><span class="nav-number">1.</span> <span class="nav-text">html和css</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#html%E5%B8%B8%E7%94%A8%E6%A0%87%E7%AD%BE"><span class="nav-number">1.1.</span> <span class="nav-text">html常用标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%AD%97%E7%AC%A6%E5%AE%9E%E4%BD%93"><span class="nav-number">1.2.</span> <span class="nav-text">常用字符实体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#css%E5%92%8Chtml%E7%9A%84%E7%BB%93%E5%90%88"><span class="nav-number">1.3.</span> <span class="nav-text">css和html的结合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E5%99%A8"><span class="nav-number">1.4.</span> <span class="nav-text">选择器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#js"><span class="nav-number">2.</span> <span class="nav-text">js</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#js%E5%92%8Chtml%E4%BB%A3%E7%A0%81%E7%9A%84%E7%BB%93%E5%90%88"><span class="nav-number">2.1.</span> <span class="nav-text">js和html代码的结合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8Ejava%E8%AF%AD%E6%B3%95%E4%B8%8D%E5%90%8C%E9%83%A8%E5%88%86"><span class="nav-number">2.2.</span> <span class="nav-text">与java语法不同部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6"><span class="nav-number">2.3.</span> <span class="nav-text">事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DOM"><span class="nav-number">2.4.</span> <span class="nav-text">DOM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%AF%B9%E6%96%87%E6%9C%AC%E7%9A%84%E9%AA%8C%E8%AF%81"><span class="nav-number">2.5.</span> <span class="nav-text">正则表达式对文本的验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8A%82%E7%82%B9%E7%9A%84%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%E6%88%96%E5%B1%9E%E6%80%A7"><span class="nav-number">2.6.</span> <span class="nav-text">节点的常用方法或属性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E2%80%9CjQuery%E2%80%9D"><span class="nav-number">3.</span> <span class="nav-text">“jQuery”</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E5%87%BD%E6%95%B0"><span class="nav-number">3.1.</span> <span class="nav-text">核心函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%80%9CjQuery%E2%80%9D%E5%AF%B9%E8%B1%A1%E5%8F%8A%E6%96%B9%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text">“jQuery”对象及方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7%E8%8E%B7%E5%8F%96"><span class="nav-number">3.2.1.</span> <span class="nav-text">属性获取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A2%9E%E5%88%A0%E6%94%B9"><span class="nav-number">3.2.2.</span> <span class="nav-text">增删改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#css%E6%A0%B7%E5%BC%8F"><span class="nav-number">3.2.3.</span> <span class="nav-text">css样式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E7%94%BB"><span class="nav-number">3.2.4.</span> <span class="nav-text">动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6-1"><span class="nav-number">3.2.5.</span> <span class="nav-text">事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E5%99%A8-1"><span class="nav-number">3.2.6.</span> <span class="nav-text">选择器</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -352,7 +821,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">25</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -365,7 +834,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

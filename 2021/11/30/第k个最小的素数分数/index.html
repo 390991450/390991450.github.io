@@ -20,20 +20,22 @@
     var CONFIG = {"hostname":"390991450.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="题目数字n代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且有效的 括号组合。有效括号组合需满足：左括号必须以正确的顺序闭合。">
+  <meta name="description" content="题目给你一个按递增顺序排序的数组arr和一个整数k。数组arr由1和若干素数组成，且其中所有整数互不相同。对于每对满足0&lt; i &lt; j &lt; arr.length 的 i 和 j ，可以得到分数 arr[i] &#x2F; arr[j] 。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="括号生成">
-<meta property="og:url" content="https://390991450.github.io/2021/11/25/%E6%8B%AC%E5%8F%B7%E7%94%9F%E6%88%90/index.html">
+<meta property="og:title" content="第k个最小的素数分数">
+<meta property="og:url" content="https://390991450.github.io/2021/11/30/%E7%AC%ACk%E4%B8%AA%E6%9C%80%E5%B0%8F%E7%9A%84%E7%B4%A0%E6%95%B0%E5%88%86%E6%95%B0/index.html">
 <meta property="og:site_name" content="每天一点儿">
-<meta property="og:description" content="题目数字n代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且有效的 括号组合。有效括号组合需满足：左括号必须以正确的顺序闭合。">
+<meta property="og:description" content="题目给你一个按递增顺序排序的数组arr和一个整数k。数组arr由1和若干素数组成，且其中所有整数互不相同。对于每对满足0&lt; i &lt; j &lt; arr.length 的 i 和 j ，可以得到分数 arr[i] &#x2F; arr[j] 。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-11-25T14:33:11.000Z">
-<meta property="article:modified_time" content="2021-11-26T02:01:04.026Z">
+<meta property="article:published_time" content="2021-11-29T16:01:49.000Z">
+<meta property="article:modified_time" content="2021-11-30T01:57:48.348Z">
 <meta property="article:author" content="征途">
-<meta property="article:tag" content="回溯">
+<meta property="article:tag" content="堆">
+<meta property="article:tag" content="归并">
+<meta property="article:tag" content="队列">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://390991450.github.io/2021/11/25/%E6%8B%AC%E5%8F%B7%E7%94%9F%E6%88%90/">
+<link rel="canonical" href="https://390991450.github.io/2021/11/30/%E7%AC%ACk%E4%B8%AA%E6%9C%80%E5%B0%8F%E7%9A%84%E7%B4%A0%E6%95%B0%E5%88%86%E6%95%B0/">
 
 
 <script id="page-configurations">
@@ -46,7 +48,7 @@
   };
 </script>
 
-  <title>括号生成 | 每天一点儿</title>
+  <title>第k个最小的素数分数 | 每天一点儿</title>
   
 
 
@@ -189,7 +191,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://390991450.github.io/2021/11/25/%E6%8B%AC%E5%8F%B7%E7%94%9F%E6%88%90/">
+    <link itemprop="mainEntityOfPage" href="https://390991450.github.io/2021/11/30/%E7%AC%ACk%E4%B8%AA%E6%9C%80%E5%B0%8F%E7%9A%84%E7%B4%A0%E6%95%B0%E5%88%86%E6%95%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -202,7 +204,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          括号生成
+          第k个最小的素数分数
         </h1>
 
         <div class="post-meta">
@@ -211,16 +213,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2021-11-25 22:33:11" itemprop="dateCreated datePublished" datetime="2021-11-25T22:33:11+08:00">2021-11-25</time>
+              <time title="创建时间：2021-11-30 00:01:49 / 修改时间：09:57:48" itemprop="dateCreated datePublished" datetime="2021-11-30T00:01:49+08:00">2021-11-30</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-26 10:01:04" itemprop="dateModified" datetime="2021-11-26T10:01:04+08:00">2021-11-26</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -231,7 +227,7 @@
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/leetcode%E8%A7%A3%E6%9E%90/%E4%B8%AD%E7%AD%89/" itemprop="url" rel="index"><span itemprop="name">中等</span></a>
+                  <a href="/categories/leetcode%E8%A7%A3%E6%9E%90/%E5%9B%B0%E9%9A%BE/" itemprop="url" rel="index"><span itemprop="name">困难</span></a>
                 </span>
             </span>
 
@@ -246,10 +242,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>数字n代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且有效的 括号组合。<br>有效括号组合需满足：左括号必须以正确的顺序闭合。</p>
+        <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给你一个按递增顺序排序的数组arr和一个整数k。数组arr由1和若干素数组成，且其中所有整数互不相同。<br>对于每对满足0&lt; i &lt; j &lt; arr.length 的 i 和 j ，可以得到分数 arr[i] / arr[j] 。</p>
 <span id="more"></span>
-<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>创建回溯，使str既可以添加(也可以添加)。但需要对添加的条件进行约束。<br>再对str是否完成进行判断。</p>
-<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;String&gt; answer;</span><br><span class="line">    public List&lt;String&gt; generateParenthesis(<span class="built_in">int</span> <span class="built_in">n</span>) &#123;</span><br><span class="line">        answer = new ArrayList&lt;String&gt;();</span><br><span class="line">        tarckback(<span class="built_in">n</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="string">&quot;&quot;</span>);</span><br><span class="line">        return answer;</span><br><span class="line">    &#125;</span><br><span class="line">    public void tarckback(<span class="built_in">int</span> <span class="built_in">n</span>,<span class="built_in">int</span> <span class="built_in">left</span>,<span class="built_in">int</span> <span class="built_in">right</span>,String str)&#123;</span><br><span class="line">        <span class="built_in">if</span> (<span class="built_in">left</span>&lt;<span class="built_in">n</span>) &#123;</span><br><span class="line">            tarckback(<span class="built_in">n</span>,<span class="built_in">left</span>+<span class="number">1</span>,<span class="built_in">right</span>,str+<span class="string">&quot;(&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">if</span> (<span class="built_in">left</span>&gt;<span class="built_in">right</span>) &#123;</span><br><span class="line">            tarckback(<span class="built_in">n</span>,<span class="built_in">left</span>,<span class="built_in">right</span>+<span class="number">1</span>,str+<span class="string">&quot;)&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">if</span> (str.length() == <span class="number">2</span>*<span class="built_in">n</span>)&#123;</span><br><span class="line">            answer.add(str);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h1 id="堆排序分析"><a href="#堆排序分析" class="headerlink" title="堆排序分析"></a>堆排序分析</h1><p>这道题是对java中堆排序的练习。为了提高运算速度，需要对堆的入堆进行筛选。因为只需要取得第k个小的分数，构建一个大根堆，存放最小的7个分数，当堆大于7时，加入的分数如果大于堆顶，则没必要加入，如果小于堆顶，则弹出堆顶再加入当前分数。全部入堆结束后堆顶就是答案。</p>
+<h1 id="堆排序代码"><a href="#堆排序代码" class="headerlink" title="堆排序代码"></a>堆排序代码</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">public int[] kthSmallestPrimeFraction(int[] arr, int k) &#123;</span><br><span class="line">        //把所有分数串连起来</span><br><span class="line">        ArrayList list = new ArrayList();</span><br><span class="line">        for (int i = 0;i&lt; arr.length-1;i++)&#123;</span><br><span class="line">            for (int j = 0;j&lt;i+1;j++)&#123;</span><br><span class="line">                int[] ints = &#123;arr[j],arr[i+1]&#125;;</span><br><span class="line">                list.add(ints);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        //创建堆</span><br><span class="line">        Queue heap= new PriorityQueue(new Comparator() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public int compare(Object o1, Object o2) &#123;</span><br><span class="line">                int[] int1 = (int[]) o1;</span><br><span class="line">                int[] int2 = (int[]) o2;</span><br><span class="line">                return int2[0]*int1[1]-int1[0]*int2[1];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        //把这些元素放入堆中</span><br><span class="line">        for (Object o:list)&#123;</span><br><span class="line">            int[] int1 = (int[]) heap.peek();</span><br><span class="line">            int[] int2 = (int[]) o;</span><br><span class="line">            if (heap.size()&gt;=k&amp;&amp;int1[0]*int2[1]&gt;int1[1]*int2[0])&#123;</span><br><span class="line">                heap.poll();</span><br><span class="line">                heap.offer(o);</span><br><span class="line">            &#125;else if (heap.size()&lt;k)&#123;</span><br><span class="line">                heap.offer(o);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return (int[]) heap.poll();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h1 id="归并排序分析"><a href="#归并排序分析" class="headerlink" title="归并排序分析"></a>归并排序分析</h1><p>因为1/n&lt;2/n&lt;…这道题其实可以看作length-1条有序数组的排序。所以可以使用归并来处理，使用一个小根堆管理所有数组的第一个数字，此时这个堆中包含所有数组的最小数，所以当弹出时必定为整体的最小数。我们要做的就是弹出k个堆顶，每次弹出时加入数组的后一个数字。</p>
+<h1 id="归并排序代码"><a href="#归并排序代码" class="headerlink" title="归并排序代码"></a>归并排序代码</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public int[] kthSmallestPrimeFraction(int[] arr, int k) &#123;</span><br><span class="line">        int n = arr.length;</span><br><span class="line">        //制定小根堆的规则</span><br><span class="line">        PriorityQueue&lt;int[]&gt; q = new PriorityQueue&lt;&gt;((a,b)-&gt;&#123;</span><br><span class="line">            double i1 = arr[a[0]] * 1.0 / arr[a[1]], i2 = arr[b[0]] * 1.0 / arr[b[1]];</span><br><span class="line">            return Double.compare(i1, i2);</span><br><span class="line">        &#125;);</span><br><span class="line">        //加入所有数组的第一个数</span><br><span class="line">        for (int i = 1; i &lt; n; i++) q.add(new int[]&#123;0, i&#125;);</span><br><span class="line">        while (k-- &gt; 1) &#123;</span><br><span class="line">            //弹出堆顶，加入这个数的下一个数</span><br><span class="line">            int[] poll = q.poll();</span><br><span class="line">            int i = poll[0], j = poll[1];</span><br><span class="line">            if (i + 1 &lt; j) q.add(new int[]&#123;i + 1, j&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        int[] poll = q.poll();</span><br><span class="line">        return new int[]&#123;arr[poll[0]], arr[poll[1]]&#125;;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -258,7 +256,9 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E5%9B%9E%E6%BA%AF/" rel="tag"># 回溯</a>
+              <a href="/tags/%E5%A0%86/" rel="tag"># 堆</a>
+              <a href="/tags/%E5%BD%92%E5%B9%B6/" rel="tag"># 归并</a>
+              <a href="/tags/%E9%98%9F%E5%88%97/" rel="tag"># 队列</a>
           </div>
 
         
@@ -267,12 +267,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/11/25/%E5%88%A0%E9%99%A4%E5%80%92%E6%95%B0%E7%AC%ACn%E4%B8%AA%E8%8A%82%E7%82%B9/" rel="prev" title="删除倒数第n个节点">
-      <i class="fa fa-chevron-left"></i> 删除倒数第n个节点
+    <a href="/2021/11/29/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" rel="prev" title="正则表达式">
+      <i class="fa fa-chevron-left"></i> 正则表达式
     </a></div>
       <div class="post-nav-item">
-    <a href="/2021/11/26/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E9%AB%98%E5%B9%B6%E5%8F%91/" rel="next" title="多线程高并发">
-      多线程高并发 <i class="fa fa-chevron-right"></i>
+    <a href="/2021/11/30/%E7%AC%ACn%E4%BD%8D%E6%95%B0%E5%AD%97/" rel="next" title="第n位数字">
+      第n位数字 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -332,7 +332,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text">代码</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A0%86%E6%8E%92%E5%BA%8F%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">堆排序分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A0%86%E6%8E%92%E5%BA%8F%E4%BB%A3%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text">堆排序代码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E5%88%86%E6%9E%90"><span class="nav-number">4.</span> <span class="nav-text">归并排序分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E4%BB%A3%E7%A0%81"><span class="nav-number">5.</span> <span class="nav-text">归并排序代码</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
