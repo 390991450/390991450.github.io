@@ -77,21 +77,6 @@
       </tags>
   </entry>
   <entry>
-    <title>hashmap的扩容与&amp;运算问题</title>
-    <url>/2021/11/20/hashmap%E7%9A%84%E6%89%A9%E5%AE%B9%E4%B8%8E/</url>
-    <content><![CDATA[<h1 id="基本知识"><a href="#基本知识" class="headerlink" title="基本知识"></a>基本知识</h1><p>1、初始容量为1&lt;&lt;4<br>2、负载因子为0.75，到达负载因子时2次幂扩展<br>3、通过hashcode计算存放位置</p>
-<span id="more"></span>
-<h1 id="hashcode的计算"><a href="#hashcode的计算" class="headerlink" title="hashcode的计算"></a>hashcode的计算</h1><p>1、获取hash值h，将h&gt;&gt;&gt;16后再与自身异或。<br>这是因为在计算hashmap存放位置时只取低位，正常运算会丢失高位的信息。这样处理后也可以将高位<br>的信息保留，减少冲突的可能性。<br>2、取模运算:(length-1)&amp;hash。<br>在这里可以解释为什么扩容是是2次幂，一般情况下，计算位置是需要%计算，但当length的长度为2的<br>次幂的时候，取余运算可以转化成上面的位与运算，大大节省了计算时间。</p>
-<p><a href="https://www.cnblogs.com/ysocean/p/9054804.html">来源</a></p>
-]]></content>
-      <categories>
-        <category>面试题</category>
-      </categories>
-      <tags>
-        <tag>hashmap</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>区间内查询数字频率</title>
     <url>/2021/11/21/%E5%8C%BA%E9%97%B4%E5%86%85%E6%9F%A5%E8%AF%A2%E6%95%B0%E5%AD%97%E9%A2%91%E7%8E%87/</url>
     <content><![CDATA[<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><pre><code>    请你设计一个数据结构，它能求出给定子数组内一个给定值的频率。
@@ -351,14 +336,15 @@
       </categories>
   </entry>
   <entry>
-    <title>进程与线程</title>
+    <title>并发编程题目</title>
     <url>/2021/11/26/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/</url>
-    <content><![CDATA[<p>1.进程要分配一大部分的内存，而线程只需要分配一部分栈就可以了.<br>2.一个程序至少有一个进程,一个进程至少有一个线程.<br>3.进程是资源分配的最小单位，线程是程序执行的最小单位。<br>4.一个线程可以创建和撤销另一个线程，同一个进程中的多个线程之间可以并发执行</p>
+    <content><![CDATA[<h1 id="进程与线程"><a href="#进程与线程" class="headerlink" title="进程与线程"></a>进程与线程</h1><p>1.进程要分配一大部分的内存，而线程只需要分配一部分栈就可以了.<br>2.一个程序至少有一个进程,一个进程至少有一个线程.<br>3.进程是资源分配的最小单位，线程是程序执行的最小单位。<br>4.一个线程可以创建和撤销另一个线程，同一个进程中的多个线程之间可以并发执行</p>
 <span id="more"></span>
 <p>线程栈：<br>1.方便函数调用，当调用子函数时，可以把当前函数的信息压入栈中，<br>再在栈的顶端压入返回地址，当子函数调用结束后再弹栈即可。<br>2.多任务支持，当有必要进行任务切换时，对当前信息存储，再读入<br>另一个任务的信息即可。</p>
 ]]></content>
       <categories>
         <category>面试题</category>
+        <category>并发编程题目</category>
       </categories>
       <tags>
         <tag>进程，线程</tag>
@@ -653,7 +639,7 @@
     <title>javaweb</title>
     <url>/2021/11/28/javaweb/</url>
     <content><![CDATA[<h1 id="html和css"><a href="#html和css" class="headerlink" title="html和css"></a>html和css</h1><span id="more"></span>
-<h2 id="html常用标签"><a href="#html常用标签" class="headerlink" title="html常用标签"></a>html常用标签</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;br/&gt;换行</span><br><span class="line">&lt;hr/&gt;水平线</span><br><span class="line">&lt;front&gt;&lt;/front&gt;修改文本大小，颜色，样式(color,face,size)</span><br><span class="line">&lt;h1-6&gt;1-6标题(align=对齐方式)</span><br><span class="line">&lt;a&gt;&lt;/a&gt;超链接(herf=域名,target=选择发生跳转的页面)</span><br><span class="line">&lt;ul&gt;&lt;/ul&gt;无序列表</span><br><span class="line">&lt;li&gt;&lt;/li&gt;列表项</span><br><span class="line">&lt;img/&gt;图片(src=路径,width=宽,height=高,border=边框宽度,alt=图片消失时提示)</span><br><span class="line">&lt;ifanme&gt;&lt;/ifanme&gt;子页面(src=子页面文件路径,width,height,name用于超链接选择target)</span><br><span class="line">文本</span><br><span class="line">&lt;div&gt;&lt;/div&gt;默认独占一行</span><br><span class="line">&lt;span&gt;&lt;/span&gt;长度为封装数据的长度</span><br><span class="line">&lt;p&gt;&lt;/p&gt;上下各占一行</span><br><span class="line">表格</span><br><span class="line">&lt;table&gt;&lt;/table&gt;表格(align,border,width,height,cellspacing=单元格间距)</span><br><span class="line">&lt;tr&gt;&lt;/tr&gt;表格行</span><br><span class="line">&lt;th&gt;&lt;/th&gt;居中加粗的单元格</span><br><span class="line">&lt;td&gt;&lt;/td&gt;单元格(align,colspan=行占用单元格数量,rowspan=列占用单元格数量)</span><br><span class="line">&lt;b&gt;&lt;/b&gt;加粗</span><br><span class="line">表单</span><br><span class="line">&lt;from&gt;&lt;/form&gt;表单(action=提交的服务器地址,method=get/post提交方式)</span><br><span class="line">&lt;input/&gt;输入栏(type=输入类型,value=默认值)</span><br><span class="line">&lt;input/&gt;单选框(type=&quot;radio&quot;,name=分组)</span><br><span class="line">&lt;select&gt;&lt;/select&gt;下拉列框</span><br><span class="line">&lt;option&gt;&lt;/option&gt;选项</span><br><span class="line">&lt;textarea&gt;&lt;/textarea&gt;多行文本输入框(row,cols= 每行字数)</span><br><span class="line">&lt;input type=&quot;reset&quot; value=&quot;重置&quot;/&gt;</span><br><span class="line">&lt;input type=&quot;sbmit&quot; value=&quot;提交&quot;/&gt;</span><br><span class="line">表单提交时，数据没发给服务器的三种情况：</span><br><span class="line">1.没有使用name命名</span><br><span class="line">2.单选、复选、下拉列表的选项都需要添加value属性</span><br><span class="line">3.表单项不在form中</span><br></pre></td></tr></table></figure>
+<h2 id="html常用标签"><a href="#html常用标签" class="headerlink" title="html常用标签"></a>html常用标签</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;br/&gt;换行</span><br><span class="line">&lt;hr/&gt;水平线</span><br><span class="line">&lt;front&gt;&lt;/front&gt;修改文本大小，颜色，样式(color,face,size)</span><br><span class="line">&lt;h1-6&gt;1-6标题(align=对齐方式)</span><br><span class="line">&lt;a&gt;&lt;/a&gt;超链接(href=域名,target=选择发生跳转的页面)</span><br><span class="line">&lt;ul&gt;&lt;/ul&gt;无序列表</span><br><span class="line">&lt;li&gt;&lt;/li&gt;列表项</span><br><span class="line">&lt;img/&gt;图片(src=路径,width=宽,height=高,border=边框宽度,alt=图片消失时提示)</span><br><span class="line">&lt;ifanme&gt;&lt;/ifanme&gt;子页面(src=子页面文件路径,width,height,name用于超链接选择target)</span><br><span class="line">文本</span><br><span class="line">&lt;div&gt;&lt;/div&gt;默认独占一行</span><br><span class="line">&lt;span&gt;&lt;/span&gt;长度为封装数据的长度</span><br><span class="line">&lt;p&gt;&lt;/p&gt;上下各占一行</span><br><span class="line">表格</span><br><span class="line">&lt;table&gt;&lt;/table&gt;表格(align,border,width,height,cellspacing=单元格间距)</span><br><span class="line">&lt;tr&gt;&lt;/tr&gt;表格行</span><br><span class="line">&lt;th&gt;&lt;/th&gt;居中加粗的单元格</span><br><span class="line">&lt;td&gt;&lt;/td&gt;单元格(align,colspan=行占用单元格数量,rowspan=列占用单元格数量)</span><br><span class="line">&lt;b&gt;&lt;/b&gt;加粗</span><br><span class="line">表单</span><br><span class="line">&lt;from&gt;&lt;/form&gt;表单(action=提交的服务器地址,method=get/post提交方式)</span><br><span class="line">&lt;input/&gt;输入栏(type=输入类型,value=默认值)</span><br><span class="line">&lt;input/&gt;单选框(type=&quot;radio&quot;,name=分组)</span><br><span class="line">&lt;select&gt;&lt;/select&gt;下拉列框</span><br><span class="line">&lt;option&gt;&lt;/option&gt;选项</span><br><span class="line">&lt;textarea&gt;&lt;/textarea&gt;多行文本输入框(row,cols= 每行字数)</span><br><span class="line">&lt;input type=&quot;reset&quot; value=&quot;重置&quot;/&gt;</span><br><span class="line">&lt;input type=&quot;sbmit&quot; value=&quot;提交&quot;/&gt;</span><br><span class="line">表单提交时，数据没发给服务器的三种情况：</span><br><span class="line">1.没有使用name命名</span><br><span class="line">2.单选、复选、下拉列表的选项都需要添加value属性</span><br><span class="line">3.表单项不在form中</span><br></pre></td></tr></table></figure>
 <h2 id="常用字符实体"><a href="#常用字符实体" class="headerlink" title="常用字符实体"></a>常用字符实体</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">空格：&amp;nbsp;</span><br><span class="line">小于号：&amp;lt;</span><br><span class="line">大于号：&amp;gt;</span><br><span class="line">双引号：&amp;quot;</span><br><span class="line">单引号：&amp;apos;</span><br></pre></td></tr></table></figure>
 <h2 id="css和html的结合"><a href="#css和html的结合" class="headerlink" title="css和html的结合"></a>css和html的结合</h2><p>1.在标签的style属性上设置”key:value value”,修改标签样式<br>2.在head标签中使用style标签定义，style标签中使用css语法。<br>3.把css样式写为一个文件，通过link标签引入。</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;link rel = &quot;stylesheet&quot;type=&quot;text/css&quot;href&quot;文件路径&quot;/&gt;</span><br></pre></td></tr></table></figure>
@@ -916,6 +902,7 @@
 <td>用于绑定事件，特点是即使这个元素是后面发生修改或才动态创建出来的也能绑定</td>
 </tr>
 </tbody></table>
+<p>事件的冒泡<br>当子元素与父元素同时绑定一个事件时，当子元素触发事件时，会导致父元素也触发事件。<br>在子元素事件函数体内添加return false就可以防止事件的传递。<br>事件对象<br>每次事件触发时会生成一个保存信息的对象，通过在function()括号中写入变量名获取。</p>
 <h3 id="选择器-1"><a href="#选择器-1" class="headerlink" title="选择器"></a>选择器</h3><table>
 <thead>
 <tr>
@@ -1136,6 +1123,137 @@
 <td>向当前”jQuery”加入满足选择器的元素</td>
 </tr>
 </tbody></table>
+<h1 id="xml"><a href="#xml" class="headerlink" title="xml"></a>xml</h1><h2 id="dom4j解析技术"><a href="#dom4j解析技术" class="headerlink" title="dom4j解析技术"></a>dom4j解析技术</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">new SAXReader();</span><br><span class="line">Document document = saxReader.read(<span class="string">&quot;path&quot;</span>);</span><br><span class="line"><span class="regexp">//</span>取得根元素</span><br><span class="line">Element rootelement = document.getRootElement();</span><br><span class="line"><span class="regexp">//</span>取得标签对象</span><br><span class="line">List&lt;Element&gt;books = rootElement.elements(<span class="string">&quot;标签名&quot;</span>);</span><br><span class="line"><span class="keyword">for</span>(Element book:books)&#123;</span><br><span class="line">    <span class="regexp">//</span>asXML()方法可以把标签对象转化为标签字符串</span><br><span class="line">    <span class="regexp">//</span>依然可以通过element和elements方法取得子元素</span><br><span class="line">    <span class="regexp">//g</span>etText()用于获取标签中的文本内容</span><br><span class="line">    <span class="regexp">//</span>elementText(标签名)用于获取指定子标签的文本内容</span><br><span class="line">    <span class="regexp">//</span>attributeValue(属性名)用于获取指定属性的值</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="servlet"><a href="#servlet" class="headerlink" title="servlet"></a>servlet</h1><h2 id="servlet程序的创建"><a href="#servlet程序的创建" class="headerlink" title="servlet程序的创建"></a>servlet程序的创建</h2><p>一般是直接继承其子类HttpSerlet，对doGet与doPost方法进行重写。也可以直接实现servlet接口，实现其中的方法。<br>servlet程序创建完成后，要在web.xml中配置对应的servlet标签以及在servlet-mapping标签配置资源路径。<br>还可以使用idea直接创建servlet程序。这种创建方式会自动在web.xml中配置servlet标签，但仍需要手动配置servlet-mapping标签。<br>除此之外，还可以在servlet标签中自行使用init-param标签，设置初始化参数。</p>
+<h2 id="servlet程序的访问过程"><a href="#servlet程序的访问过程" class="headerlink" title="servlet程序的访问过程"></a>servlet程序的访问过程</h2><p>ip-&gt;端口-&gt;具体工程-&gt;通过web.xml文件查询资源路径<br>查询servlet-mapping标签找到资源路径对应的程序名称，再通过servlet标签定位对应类的具体位置。</p>
+<h2 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h2><p>构造器与初始化在第一次访问时会调用，服务方法会在每次访问时调用，销毁方法在工程停止时调用。</p>
+<h2 id="form-get与form-post"><a href="#form-get与form-post" class="headerlink" title="form:get与form:post"></a>form:get与form:post</h2><p>这两种请求分发处理，需要通过HttpServletRequest的get.method方法获取。<br>区别：<br>get请求会把数据追加到url中发送，适合小数据量，不需要安全性的数据提交。<br>post与get相反。且post请求会发送两个包，当第一个请求发送包被回复了才发送第二个数据包。</p>
+<h2 id="ServletCofig"><a href="#ServletCofig" class="headerlink" title="ServletCofig"></a>ServletCofig</h2><p>servlet与servletconfig都是由tomcat创建。servlet是第一次访问时创建，servletconfig是每个servlet创建时创建。<br>调用：可以在初始化函数中直接调用，也可以通过getServletConfig()方法获取。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>getServletName()</td>
+<td>获取当前Servlet程序别名</td>
+</tr>
+<tr>
+<td>getInitParameter(“参数名”)</td>
+<td>取得需要的初始化参数</td>
+</tr>
+<tr>
+<td>getgetServletContext()</td>
+<td>取得ServletContext对象</td>
+</tr>
+</tbody></table>
+<p>注意：当在HttpSerlet中重写init方法时要使用super.init(config)调用父类的init方法，因为getServletConfig()方法需要从HttpSerlet的父类GenericServlet中取得config对象，而这个config对象是由init方法保存的，如果只重写子类而不执行父类的这个方法，这个config对象就无法被保存。</p>
+<h2 id="ServletContext"><a href="#ServletContext" class="headerlink" title="ServletContext"></a>ServletContext</h2><p>一个工程只有一个ServletContext。<br>上下文参数由web.xml中的context-param标签设置。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>getInitParameter(“参数名”)</td>
+<td>取得需要的上下文参数</td>
+</tr>
+<tr>
+<td>getContextPath()</td>
+<td>取得当前工程路径</td>
+</tr>
+<tr>
+<td>getRealPath(“/“)</td>
+<td>取得真实路径</td>
+</tr>
+<tr>
+<td>setAttribute(key,value)</td>
+<td>这三个方法用于域内的传递数据</td>
+</tr>
+<tr>
+<td>getAttribute(key)</td>
+<td></td>
+</tr>
+<tr>
+<td>removeAttribute(key)</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="HttpServletRequest"><a href="#HttpServletRequest" class="headerlink" title="HttpServletRequest"></a>HttpServletRequest</h2><p>每次只要有请求进入tomcat，tomcat就会把请求封装到Request对象中，交给service(doGet或doPost)方法。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>getRequestURI()</td>
+<td>获取统一资源标志符(资源路径)</td>
+</tr>
+<tr>
+<td>getRequestURL()</td>
+<td>获取统一资源定位符(绝对路径)，URL是URI的子集</td>
+</tr>
+<tr>
+<td>getRemoteHost()</td>
+<td>获取客户端ip</td>
+</tr>
+<tr>
+<td>getHeader()</td>
+<td>获取请求头</td>
+</tr>
+<tr>
+<td>getParameter()</td>
+<td>获取请求参数</td>
+</tr>
+<tr>
+<td>getParameterValue()</td>
+<td>获取请求参数(用于多选数据，多个值时使用)</td>
+</tr>
+<tr>
+<td>getMethod()</td>
+<td>获取请求方式</td>
+</tr>
+<tr>
+<td>setAttribute()</td>
+<td>设置域数据</td>
+</tr>
+<tr>
+<td>getAttribute(key)</td>
+<td></td>
+</tr>
+<tr>
+<td>setCharacterEncoding()</td>
+<td>设置编码方式(一般用于post接收汉语)</td>
+</tr>
+<tr>
+<td>getRequestDispatcher(“相对资源路径”)</td>
+<td>获取请求转发对象</td>
+</tr>
+</tbody></table>
+<p>上面获取转发对象后，通过requestDispatcher.forward(request,response)方法传递。<br>通过转发可以把request交给web-inf内的文件(正常情况不允许访问)处理。<br>注意：当使用请求转发跳转到指定页面时，它的网址并不是资源路径。所以使用相对路径跳转时会发生错误，一般会在head标签中添加base标签，规定作为相对路径所参照的地址。</p>
+<h2 id="HttpServletResponse"><a href="#HttpServletResponse" class="headerlink" title="HttpServletResponse"></a>HttpServletResponse</h2><p>每次只要有请求进入tomcat，tomcat就会把请求封装到Response对象中，交给service(doGet或doPost)方法。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>getOutputStream()</td>
+<td>取得字节流(常用于下载)</td>
+</tr>
+<tr>
+<td>getWrite()</td>
+<td>取得字符流(常用于回传字符串)</td>
+</tr>
+</tbody></table>
 ]]></content>
       <categories>
         <category>java web</category>
@@ -1145,6 +1263,7 @@
     <title>第n位数字</title>
     <url>/2021/11/30/%E7%AC%ACn%E4%BD%8D%E6%95%B0%E5%AD%97/</url>
     <content><![CDATA[<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给你一个整数n，请你在无限的整数序列[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, …]中找出并返回第n位上的数字。</p>
+<span id="more"></span>
 <h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>本题有时间限制，所以要找到一些规律：n位数字中有n<em>9</em>10^(n-1)位数字，根据这个规律判断数字的位数。</p>
 <h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public int findNthDigit(int n) &#123;</span><br><span class="line">        if (n&lt;10)&#123;</span><br><span class="line">            return n;</span><br><span class="line">        &#125;</span><br><span class="line">        //答案的长度</span><br><span class="line">        int numLength = 0;</span><br><span class="line">        //可能范围,使用long防止溢出</span><br><span class="line">        long count = 0;</span><br><span class="line">        while (count&lt;n)&#123;</span><br><span class="line">            numLength++;</span><br><span class="line">            count+=numLength*9*Math.pow(10,numLength-1);</span><br><span class="line">        &#125;</span><br><span class="line">        count-=numLength*9*Math.pow(10,numLength-1);</span><br><span class="line">        //判断第几位数字</span><br><span class="line">        int k = (int) (n-count)%numLength;</span><br><span class="line">        if (k==0)&#123;</span><br><span class="line">            k=numLength;</span><br><span class="line">        &#125;</span><br><span class="line">        //判断第几个数字</span><br><span class="line">        int index = (int) (n-count+1)/numLength;</span><br><span class="line">        //找到这个数字</span><br><span class="line">        int answerNum = (int) Math.pow(10,numLength-1)+index-1;</span><br><span class="line">        return Integer.valueOf(String.valueOf(answerNum).substring(k-1,k));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
@@ -1153,6 +1272,314 @@
       </categories>
       <tags>
         <tag>数学分析</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>不同路径(m个a和n个b的组合问题)</title>
+    <url>/2021/12/01/%E4%B8%8D%E5%90%8C%E8%B7%AF%E5%BE%84/</url>
+    <content><![CDATA[<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>一个机器人位于一个 m x n网格的左上角（起始点在下图中标记为“Start”）。<br>机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish” ）。<br>问总共有多少条不同的路径？</p>
+<span id="more"></span>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>通过分析可知，每个点位的路径是由上方点位和左方点位的路径和。所以可以制表求解。<br>有趣的是这道题也相当于求m-1个a和n-1个b的组合问题，这为这个问题的求解提供了一种方法，比递归求解要效率很多。</p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public int uniquePaths(int m, int n) &#123;</span><br><span class="line">        int[][] ints = new int[m][n];</span><br><span class="line">        for (int i = 0;i&lt;m;i++)&#123;</span><br><span class="line">            ints[i][0]=1;</span><br><span class="line">        &#125;</span><br><span class="line">        for (int i = 0;i&lt;n;i++)&#123;</span><br><span class="line">            ints[0][i]=1;</span><br><span class="line">        &#125;</span><br><span class="line">        for (int i=1;i&lt;m;i++)&#123;</span><br><span class="line">            for (int j=1;j&lt;n;j++)&#123;</span><br><span class="line">                ints[i][j] = ints[i-1][j]+ints[i][j-1];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return ints[m-1][n-1];</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>leetcode解析</category>
+        <category>中等</category>
+      </categories>
+      <tags>
+        <tag>动态规划</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>git操作手册</title>
+    <url>/2021/11/19/git%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C/</url>
+    <content><![CDATA[<p>此为git常用命令备忘</p>
+<span id="more"></span>
+
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>本地库操作</td>
+<td></td>
+</tr>
+<tr>
+<td>git init</td>
+<td>初始化本地库</td>
+</tr>
+<tr>
+<td>git status</td>
+<td>显示本地库状态</td>
+</tr>
+<tr>
+<td>git add 文件名</td>
+<td>提交文件至暂存区</td>
+</tr>
+<tr>
+<td>git rm –cached 文件名</td>
+<td>删除暂存区文件</td>
+</tr>
+<tr>
+<td>git commit -m “日志” 文件名</td>
+<td>将暂存区文件提交到本地库(当合并冲突导致进入合并中状态时，提交文件不允许添加文件名)</td>
+</tr>
+<tr>
+<td>git reflog</td>
+<td>查看引用日志信息</td>
+</tr>
+<tr>
+<td>git log</td>
+<td>查看详细日志</td>
+</tr>
+<tr>
+<td>git reset –hard 版本号</td>
+<td>版本穿梭</td>
+</tr>
+<tr>
+<td>git branch -v</td>
+<td>查看分支</td>
+</tr>
+<tr>
+<td>git branch 分支名</td>
+<td>创建分支</td>
+</tr>
+<tr>
+<td>git checkout 分支名</td>
+<td>切换分支</td>
+</tr>
+<tr>
+<td>git merge 分支名</td>
+<td>合并分支</td>
+</tr>
+<tr>
+<td>远程库操作</td>
+<td></td>
+</tr>
+<tr>
+<td>git remote -v</td>
+<td>查看远程地址别名</td>
+</tr>
+<tr>
+<td>git remote add 别名 地址</td>
+<td>为远程地址命名</td>
+</tr>
+<tr>
+<td>git push 别名 分支</td>
+<td>推到远程库</td>
+</tr>
+<tr>
+<td>git pull 别名 分支</td>
+<td>拉到本地库</td>
+</tr>
+<tr>
+<td>git clone 链接</td>
+<td>克隆到本地</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>git操作手册</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>javase题目</title>
+    <url>/2021/12/03/javase%E9%A2%98%E7%9B%AE/</url>
+    <content><![CDATA[<h1 id="hashmap的扩容与-amp-运算问题"><a href="#hashmap的扩容与-amp-运算问题" class="headerlink" title="hashmap的扩容与&amp;运算问题"></a>hashmap的扩容与&amp;运算问题</h1><p>基本知识<br>1、初始容量为1&lt;&lt;4<br>2、负载因子为0.75，到达负载因子时2次幂扩展<br>3、通过hashcode计算存放位置</p>
+<span id="more"></span>
+<p>hashcode的计算<br>1、获取hash值h，将h&gt;&gt;&gt;16后再与自身异或。<br>这是因为在计算hashmap存放位置时只取低位，正常运算会丢失高位的信息。这样处理后也可以将高位<br>的信息保留，减少冲突的可能性。<br>2、取模运算:(length-1)&amp;hash。<br>在这里可以解释为什么扩容是是2次幂，一般情况下，计算位置是需要%计算，但当length的长度为2的<br>次幂的时候，取余运算可以转化成上面的位与运算，大大节省了计算时间。</p>
+<p><a href="https://www.cnblogs.com/ysocean/p/9054804.html">来源</a></p>
+<h1 id="为什么重写-equals-还要重写-hashcode？"><a href="#为什么重写-equals-还要重写-hashcode？" class="headerlink" title="为什么重写 equals 还要重写 hashcode？"></a>为什么重写 equals 还要重写 hashcode？</h1><p>因为不重写hashcode在插入到哈希表时不能保证插入到同一位置，不插入到同一位置就无法触发equals判断。</p>
+<h1 id="和-equals-比较的区别"><a href="#和-equals-比较的区别" class="headerlink" title="== 和 equals 比较的区别"></a>== 和 equals 比较的区别</h1><p>对于对象而言，==是在判断地址是否相同，equals是判断内容。</p>
+<h1 id="为什么浮点数运算会不精准"><a href="#为什么浮点数运算会不精准" class="headerlink" title="为什么浮点数运算会不精准"></a>为什么浮点数运算会不精准</h1><p>因为计算机的浮点数是用二进制的科学计数保存的，它可以保存1/2，1/4等，但却因为进制问题不能表示0.1这种数字，只能近似，所以在保存这些数字的时候会丢失精度。</p>
+<h1 id="final的作用"><a href="#final的作用" class="headerlink" title="final的作用"></a>final的作用</h1><p>1.防止类被继承<br>2.防止方法被重写<br>3.防止属性或变量被更改<br>4.与static搭配使用可以提高效率，被final static修饰的属性(方法不可以)被调用时不会导致类加载，也就是说这么修饰的属性不需要类加载也能获得。</p>
+<h1 id="java的集合类"><a href="#java的集合类" class="headerlink" title="java的集合类"></a>java的集合类</h1><p><img src="/images/2.png" alt="2.png"></p>
+<h1 id="java8新特性"><a href="#java8新特性" class="headerlink" title="java8新特性"></a>java8新特性</h1><p>1.lambda表达式<br>2.函数式接口<br>3.Stream API</p>
+<h1 id="JDK1-7与1-8中hashmap的差异"><a href="#JDK1-7与1-8中hashmap的差异" class="headerlink" title="JDK1.7与1.8中hashmap的差异"></a>JDK1.7与1.8中hashmap的差异</h1><p>1、1.7计算hashcode经过了4此移位和异或运算，1.8只有一次移位和异或运算。<br>2、1.8的hashmap当哈希表大小到64时会树化。<br>3、1.8的hashmap的链表插入方法为尾插，1.7是头插。<br>4、扩容方式不同。<br>5、1.7是先判断扩容再插入，1.8是先插入再判断扩容。<br>好处：降低事件复杂度，改用尾插法就去除了并发条件下成环的问题。</p>
+]]></content>
+      <categories>
+        <category>面试题</category>
+        <category>javase题目</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>sqrt</title>
+    <url>/2021/12/02/sqrt/</url>
+    <content><![CDATA[<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给你一个非负整数x，计算并返回x的算术平方根 。<br>由于返回类型是整数，结果只保留整数部分，小数部分将被舍去。</p>
+<span id="more"></span>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>因为答案一定在0-x之间，所以可以使用二分查找。再对right上限设定为46340，针对溢出。<br>关于mid的设置应该是(right+left)/2还是(right+left+1)/2，因为两个数字的情况下要保留前面的数字，所以要让指针指向后面的数字以便舍弃。</p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public int mySqrt(int x) &#123;</span><br><span class="line">        int left = 0;</span><br><span class="line">        int right = x;</span><br><span class="line">        if (right&gt;46340)&#123;</span><br><span class="line">            right = 46340;</span><br><span class="line">        &#125;</span><br><span class="line">        while (left!=right)&#123;</span><br><span class="line">            int mid = (left+right+1)/2;</span><br><span class="line">            if (mid*mid==x)&#123;</span><br><span class="line">                return mid;</span><br><span class="line">            &#125;else if (mid*mid&gt;x)&#123;</span><br><span class="line">                right = mid-1;</span><br><span class="line">            &#125;else &#123;</span><br><span class="line">                left = mid;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return left;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>leetcode解析</category>
+        <category>简单</category>
+      </categories>
+      <tags>
+        <tag>二分查找</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>linux常用命令</title>
+    <url>/2021/11/19/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<p>一些常用的命令</p>
+<span id="more"></span>
+]]></content>
+      <categories>
+        <category>linux常用命令</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>数据库题目</title>
+    <url>/2021/12/03/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%A2%98%E7%9B%AE/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>面试题</category>
+        <category>数据库题目</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>mySQL笔记</title>
+    <url>/2021/12/03/mySQL%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h1 id="前提知识"><a href="#前提知识" class="headerlink" title="前提知识"></a>前提知识</h1><p>MySQL 在 Windows 下不区分大小写，但在 Linux 下默认是区分大小写。因此，数据库名、 表名、字段名，都不允许出现任何大写字母，避免节外生枝。</p>
+<span id="more"></span>
+<h1 id="数据库指令"><a href="#数据库指令" class="headerlink" title="数据库指令"></a>数据库指令</h1><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据库操作</td>
+<td></td>
+</tr>
+<tr>
+<td>create database 表名</td>
+<td>创建数据库，默认utf8字符集，utf8_general_ci校对</td>
+</tr>
+<tr>
+<td>character set …</td>
+<td>设定字符集</td>
+</tr>
+<tr>
+<td>collate …</td>
+<td>设定校对规则 utf8_general_ci(不区分大小写)，utf8_bin(区分)</td>
+</tr>
+<tr>
+<td>show databases</td>
+<td>查看当前数据库服务器中所以数据库</td>
+</tr>
+<tr>
+<td>show create database</td>
+<td>查看前面创建的数据库信息</td>
+</tr>
+<tr>
+<td>drop database</td>
+<td>删库跑路</td>
+</tr>
+<tr>
+<td>mysqldump -u 用户名 -p -B 数据库 &gt; 文件名.sql</td>
+<td>(dos)备份数据库</td>
+</tr>
+<tr>
+<td>source 文件名.sql</td>
+<td>(mysql命令行)恢复数据库</td>
+</tr>
+<tr>
+<td>表操作、列操作</td>
+<td></td>
+</tr>
+<tr>
+<td>create table 表名(列名，数据格式)</td>
+<td>创建表，可以设置字符集，校对规则和引擎</td>
+</tr>
+<tr>
+<td>alter table 表名 add(列名，数据格式)</td>
+<td>为表添加列</td>
+</tr>
+<tr>
+<td>alter table 表名 modify(列名，数据格式)</td>
+<td>修改列</td>
+</tr>
+<tr>
+<td>alter table 表名 drop(列名)</td>
+<td>删列</td>
+</tr>
+<tr>
+<td>not null default ‘内容’</td>
+<td>不允许为空，替换为’’内的内容</td>
+</tr>
+<tr>
+<td>行操作</td>
+<td></td>
+</tr>
+<tr>
+<td>insert into 表名 (列名) values (值)</td>
+<td>插入数据，values后面用多个括号可以添加多条数据，不写列名视为给所有字段添加信息</td>
+</tr>
+<tr>
+<td>update 表名 set 列名=值</td>
+<td>修改数据</td>
+</tr>
+<tr>
+<td>delete from 表名</td>
+<td>删除数据</td>
+</tr>
+<tr>
+<td>where</td>
+<td>限定操作执行的范围</td>
+</tr>
+<tr>
+<td>select</td>
+<td></td>
+</tr>
+<tr>
+<td>select distinct *或列名 from 表</td>
+<td>查表，distinct用于去重</td>
+</tr>
+<tr>
+<td>select 运算 as 别名 from</td>
+<td>进行规定的运算并以别名显示</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>MySQL笔记</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>简化路径</title>
+    <url>/2021/12/03/%E7%AE%80%E5%8C%96%E8%B7%AF%E5%BE%84/</url>
+    <content><![CDATA[<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给你一个路径，这个路径可以被解析，请你简化路径。</p>
+<span id="more"></span>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>这道题要处理三种情况，多余的”/“，”.”和”..”的处理。首先使用split方法将字符串拆分，可以消除全部的”/“，且多余的会转化为空字符串。”.”可以直接去除，”..”要返回上一级。在这里可以利用一个双端队列，先把它作为一个栈使用，遇到”.”和””不入栈，遇到”..”弹栈，遇到其他字符串入栈，这样全部处理结束后就是简化后的路径，再从头部依次取出。</p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public String simplifyPath(String path) &#123;</span><br><span class="line">        String[] split = path.split(&quot;/&quot;);</span><br><span class="line">        ArrayDeque&lt;String&gt; stack = new ArrayDeque&lt;&gt;();</span><br><span class="line">        for (String s:split)&#123;</span><br><span class="line">            if (s.equals(&quot;..&quot;))&#123;</span><br><span class="line">                stack.pollLast();</span><br><span class="line">            &#125;else if (s.equals(&quot;.&quot;)||s.equals(&quot;&quot;))&#123;</span><br><span class="line"></span><br><span class="line">            &#125;else&#123;</span><br><span class="line">                stack.offerLast(s);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        String answer = new String();</span><br><span class="line">        while (!stack.isEmpty())&#123;</span><br><span class="line">            answer+=&quot;/&quot;;</span><br><span class="line">            answer+=stack.pollFirst();</span><br><span class="line">        &#125;</span><br><span class="line">        if (answer.length()==0)&#123;</span><br><span class="line">            return &quot;/&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">        return answer;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>leetcode解析</category>
+        <category>中等</category>
+      </categories>
+      <tags>
+        <tag>双端队列</tag>
+        <tag>栈</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>编辑距离</title>
+    <url>/2021/12/03/%E7%BC%96%E8%BE%91%E8%B7%9D%E7%A6%BB/</url>
+    <content><![CDATA[<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>给你两个单词word1和word2，请你计算出将word1转换成word2所使用的最少操作数。<br>你可以对一个单词进行如下三种操作：<br>插入一个字符<br>删除一个字符<br>替换一个字符</p>
+<span id="more"></span>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>使用动态规划，首先假设a，b两个字符串已经匹配结束。那么当a长度增加时，使用删除，操作+1。当b长度增加时，使用插入，操作+1。当a，b都增加时如果这两个字符相同，不需要操作，如果这两个字符不同时只需要替换其中一个，操作+1。<br>就有dp[i][j] = min(dp[i-1][j]+1,dp[i][j-1]+1,dp[i-1][j-1]+(1))。<br>在a，b字符串加空字符，方便对第一行与第一列进行初始化。</p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public int minDistance(String word1, String word2) &#123;</span><br><span class="line">        int[][] dp = new int[word1.length() + 1][word2.length() + 1];</span><br><span class="line">        char[] chars1 = word1.toCharArray();</span><br><span class="line">        char[] chars2 = word2.toCharArray();</span><br><span class="line">        for (int i = 0;i&lt;word1.length()+1;i++)&#123;</span><br><span class="line">            dp[i][0]=i;</span><br><span class="line">        &#125;</span><br><span class="line">        for (int i = 1;i&lt;word2.length()+1;i++)&#123;</span><br><span class="line">            dp[0][i]=i;</span><br><span class="line">        &#125;</span><br><span class="line">        for (int i = 1;i&lt;word1.length()+1;i++)&#123;</span><br><span class="line">            for (int j = 1;j&lt;word2.length()+1;j++)&#123;</span><br><span class="line">                dp[i][j] = Math.min(dp[i-1][j]+1,dp[i][j-1]+1);</span><br><span class="line">                if (chars1[i-1]==chars2[j-1])&#123;</span><br><span class="line">                    dp[i][j] = Math.min(dp[i][j],dp[i-1][j-1]);</span><br><span class="line">                &#125;else &#123;</span><br><span class="line">                    dp[i][j] = Math.min(dp[i][j],dp[i-1][j-1]+1);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return dp[word1.length()][word2.length()];</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>leetcode解析</category>
+        <category>困难</category>
+      </categories>
+      <tags>
+        <tag>动态规划</tag>
       </tags>
   </entry>
 </search>
