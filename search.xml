@@ -28,10 +28,10 @@
 <h2 id="Druid-负责建立连接"><a href="#Druid-负责建立连接" class="headerlink" title="Druid(负责建立连接)"></a>Druid(负责建立连接)</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Properties properties = new Properties();</span><br><span class="line">properties.load(new FileInputStream(&quot;德鲁伊需要的配置文件&quot;));</span><br><span class="line">DataSource dataSource = DruidDataSourceFactory.createDataSource(properties);</span><br><span class="line">Connection connection = dataSource.getConnection();</span><br><span class="line">connection.close();</span><br></pre></td></tr></table></figure>
 <p>这之后就可以基于druid重写JDBCUtils。</p>
 <figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line"><span class="built_in">public</span> <span class="keyword">class</span> JDBCUtilsByDruid&#123;</span><br><span class="line">    private static DataSource dataSource;</span><br><span class="line">    static &#123;</span><br><span class="line">        Properties properties = <span class="built_in">new</span> Properties();</span><br><span class="line">        try &#123;</span><br><span class="line">            properties.<span class="keyword">load</span>(<span class="built_in">new</span> FileInputStream(&quot;配置文件&quot;));</span><br><span class="line">            dataSource = DruidDataSourceFactory.createDataSource(properties);</span><br><span class="line">        &#125; catch (<span class="keyword">Exception</span> e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">public</span> static <span class="keyword">Connection</span> getConnection() throws SQLException &#123;</span><br><span class="line">        <span class="keyword">return</span> dataSource.getConnection();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">public</span> static <span class="type">void</span> <span class="keyword">close</span>(ResultSet resultSet, <span class="keyword">Statement</span> <span class="keyword">statement</span>, <span class="keyword">Connection</span> <span class="keyword">connection</span>)&#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            <span class="keyword">if</span> (resultSet != <span class="keyword">null</span>)&#123;</span><br><span class="line">                resultSet.<span class="keyword">close</span>();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">statement</span> != <span class="keyword">null</span>)&#123;</span><br><span class="line">                <span class="keyword">statement</span>.<span class="keyword">close</span>();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">connection</span> != <span class="keyword">null</span>)&#123;</span><br><span class="line">                <span class="keyword">connection</span>.<span class="keyword">close</span>();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; catch (SQLException e) &#123;</span><br><span class="line">            throw <span class="built_in">new</span> RuntimeException(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="ApDBUtils-负责存储收到的信息"><a href="#ApDBUtils-负责存储收到的信息" class="headerlink" title="ApDBUtils(负责存储收到的信息)"></a>ApDBUtils(负责存储收到的信息)</h1><p>问题1：目前，当需要对resultset进行操作时，connection不能关闭，但连接池给的连接是有限的。<br>问题2：结果集只能使用一次。<br>问题3：结果集取得信息的方法并不方便。<br>解决办法：创建一个类，每行的数据创建为一个对象，使用List连接起来。<br>向项目中加入DBUtils的包</p>
+<h1 id="ApDBUtils-负责存储收到的信息"><a href="#ApDBUtils-负责存储收到的信息" class="headerlink" title="ApDBUtils(负责存储收到的信息)"></a>ApDBUtils(负责存储收到的信息)</h1><p>问题1：目前，当需要对resultset进行操作时，connection不能关闭，但连接池给的连接是有限的。<br>问题2：结果集只能使用一次。<br>问题3：结果集取得信息的方法并不方便。<br>解决办法：创建一个类，每行的数据创建为一个对象，使用List连接起来。<br>这个类就是下面的Actor.class,也是俗称的javabean。<br>向项目中加入DBUtils的包</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Connection connection = JDBCUtilsByDruid.getConnection();</span><br><span class="line">QueryRunner queryRunner = new QueryRunner();</span><br><span class="line">//select</span><br><span class="line">&#123;</span><br><span class="line">    //query方法就是执行一个sql语句并返回一个包含结果集的list</span><br><span class="line">    //最后的1是指sql语句中？要赋予的值</span><br><span class="line">    //使用这个办法不需要关闭结果集，在这句话的源码中，最后会自动关闭resultset和preparedStatement。</span><br><span class="line">    List&lt;Actor&gt; list =</span><br><span class="line">            queryRunner.query(connection,sql,new BeanListHandler&lt;&gt;(Actor.class),？赋值);</span><br><span class="line">    //单行查询</span><br><span class="line">    Actor actor = queryRunner.query(connection,sql,new BeanHandler&lt;&gt;(Actor.class),？赋值);</span><br><span class="line">    //单行单列</span><br><span class="line">    Object o = queryRunner.query(connection,sql,new ScalarHandler(),？赋值);</span><br><span class="line">&#125;</span><br><span class="line">//dml语句</span><br><span class="line">&#123;</span><br><span class="line">    int affectedRow = queryRunner.update(connection,sql,？赋值);</span><br><span class="line">&#125;</span><br><span class="line">DBUtilsByDruid.close(null,null,connection);</span><br></pre></td></tr></table></figure>
 <h1 id="BasicDao"><a href="#BasicDao" class="headerlink" title="BasicDao"></a>BasicDao</h1><p>目前，JDBCUtilsByDruid已经实现了对Druid的封装，但DBUtils的操作依然繁琐，所以需要将<br>这整个操作进行封装，这样整个操作就简洁起来了。为了操作方便，对每个表制作一个对应的Dao。<br>在Dao的方法开发中，并不建议使用静态方法，因为这样你不再能保证connection不被两个以上的<br>线程同时调用，造成线程混乱。<br>另外BasicDao是基于泛型制定的方法，要想静态化只能将其下所有子类做静态化。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//开发BasicDao，作为其它类的父类，子类主要负责一些额外操作和确定类型</span><br><span class="line">public class BasicDao&lt;T&gt;&#123;</span><br><span class="line">    private QueryRunner qr = new QueryRunner();</span><br><span class="line">    //开发通用的dml方法，针对任意的表</span><br><span class="line">    public int update(String sql,Object...parameters)&#123;</span><br><span class="line">        //因为建立连接需要在try—catch-finally操作中，为了在finally关闭</span><br><span class="line">        //在外面先建立connection</span><br><span class="line">        Connection connection = null;</span><br><span class="line">        try &#123;</span><br><span class="line">            connection = JDBCUtilsByDruid.getConnection();</span><br><span class="line">            int affectedRow = qr.update(connection,sql,parameters);</span><br><span class="line">            return affectedRow;</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            throw new Runnable(e);</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            //因为使用了DBUtils工具，所以只需要关闭(交还)connection即可</span><br><span class="line">            connection.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //返回多行数据，针对任意的表</span><br><span class="line">    public List&lt;T&gt; queryMultiply(String sql,Class&lt;T&gt; clazz,Object... parameters)&#123;</span><br><span class="line">        Connection connection = null;</span><br><span class="line">        try &#123;</span><br><span class="line">            connection = JDBCUtilsByDruid.getConnection();</span><br><span class="line">            List&lt;T&gt; list =</span><br><span class="line">                    qr.query(connection,sql,new BeanListHandler&lt;T&gt;(clazz),parameters);</span><br><span class="line">            return list;</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            throw new RuntimeException(e);</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            //因为使用了DBUtils工具，所以只需要关闭(交还)connection即可</span><br><span class="line">            connection.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //返回单行数据</span><br><span class="line">    public T querySingle(String str,Class&lt;T&gt; clazz,Object... parameters)&#123;</span><br><span class="line">        Connection connection = null;</span><br><span class="line">        try &#123;</span><br><span class="line">            connection = JDBCUtilsByDruid.getConnection();</span><br><span class="line">            return qr.query(connection,sql,new BeanHandler&lt;T&gt;(clazz),parameters);</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            throw new RuntimeException(e);</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            //因为使用了DBUtils工具，所以只需要关闭(交还)connection即可</span><br><span class="line">            connection.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //返回单个数据</span><br><span class="line">    public Object queryScalar(String sql,Object... parameters)&#123;</span><br><span class="line">        Connection connection = null;</span><br><span class="line">        try &#123;</span><br><span class="line">            connection = JDBCUtilsByDruid.getConnection();</span><br><span class="line">            return qr.query(connection,sql,new ScalarHandler(),parameters);</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            throw new RuntimeException(e);</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            //因为使用了DBUtils工具，所以只需要关闭(交还)connection即可</span><br><span class="line">            connection.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">//使用具体表对应的类型继承BasicDao</span><br><span class="line">public class ActorDao extend BasicDao&lt;Actor&gt;&#123;</span><br><span class="line">    //这里根据业务需求写特有方法</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//开发BasicDao，作为其它类的父类，子类主要负责一些额外操作和确定类型</span><br><span class="line">public class BasicDao&lt;T&gt;&#123;</span><br><span class="line">    private QueryRunner qr = new QueryRunner();</span><br><span class="line">    //开发通用的dml方法，针对任意的表</span><br><span class="line">    public int update(String sql,Object...parameters)&#123;</span><br><span class="line">        //因为建立连接需要在try—catch-finally操作中，为了在finally关闭</span><br><span class="line">        //在外面先建立connection</span><br><span class="line">        Connection connection = null;</span><br><span class="line">        try &#123;</span><br><span class="line">            connection = JDBCUtilsByDruid.getConnection();</span><br><span class="line">            int affectedRow = qr.update(connection,sql,parameters);</span><br><span class="line">            return affectedRow;</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            throw new RuntimeException(e);</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            //因为使用了DBUtils工具，所以只需要关闭(交还)connection即可</span><br><span class="line">            JDBCUtilsByDruid.close(null,null,connection);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //返回多行数据，针对任意的表</span><br><span class="line">    public List&lt;T&gt; queryMultiply(String sql,Class&lt;T&gt; clazz,Object... parameters)&#123;</span><br><span class="line">        Connection connection = null;</span><br><span class="line">        try &#123;</span><br><span class="line">            connection = JDBCUtilsByDruid.getConnection();</span><br><span class="line">            List&lt;T&gt; list =</span><br><span class="line">                    qr.query(connection,sql,new BeanListHandler&lt;T&gt;(clazz),parameters);</span><br><span class="line">            return list;</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            throw new RuntimeException(e);</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            //因为使用了DBUtils工具，所以只需要关闭(交还)connection即可</span><br><span class="line">            JDBCUtilsByDruid.close(null,null,connection);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //返回单行数据</span><br><span class="line">    public T querySingle(String sql,Class&lt;T&gt; clazz,Object... parameters)&#123;</span><br><span class="line">        Connection connection = null;</span><br><span class="line">        try &#123;</span><br><span class="line">            connection = JDBCUtilsByDruid.getConnection();</span><br><span class="line">            return qr.query(connection,sql,new BeanHandler&lt;T&gt;(clazz),parameters);</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            throw new RuntimeException(e);</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            //因为使用了DBUtils工具，所以只需要关闭(交还)connection即可</span><br><span class="line">            JDBCUtilsByDruid.close(null,null,connection);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //返回单个数据</span><br><span class="line">    public Object queryScalar(String sql,Object... parameters)&#123;</span><br><span class="line">        Connection connection = null;</span><br><span class="line">        try &#123;</span><br><span class="line">            connection = JDBCUtilsByDruid.getConnection();</span><br><span class="line">            return qr.query(connection,sql,new ScalarHandler(),parameters);</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            throw new RuntimeException(e);</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            //因为使用了DBUtils工具，所以只需要关闭(交还)connection即可</span><br><span class="line">            JDBCUtilsByDruid.close(null,null,connection);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">//使用具体表对应的类型继承BasicDao</span><br><span class="line">public class ActorDao extends BasicDao&lt;Actor&gt;&#123;</span><br><span class="line">        //这里根据业务需求写特有方法</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>JDBC学习笔记</category>
       </categories>
@@ -642,11 +642,11 @@
 <h2 id="html常用标签"><a href="#html常用标签" class="headerlink" title="html常用标签"></a>html常用标签</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;br/&gt;换行</span><br><span class="line">&lt;hr/&gt;水平线</span><br><span class="line">&lt;front&gt;&lt;/front&gt;修改文本大小，颜色，样式(color,face,size)</span><br><span class="line">&lt;h1-6&gt;1-6标题(align=对齐方式)</span><br><span class="line">&lt;a&gt;&lt;/a&gt;超链接(href=域名,target=选择发生跳转的页面)</span><br><span class="line">&lt;ul&gt;&lt;/ul&gt;无序列表</span><br><span class="line">&lt;li&gt;&lt;/li&gt;列表项</span><br><span class="line">&lt;img/&gt;图片(src=路径,width=宽,height=高,border=边框宽度,alt=图片消失时提示)</span><br><span class="line">&lt;ifanme&gt;&lt;/ifanme&gt;子页面(src=子页面文件路径,width,height,name用于超链接选择target)</span><br><span class="line">文本</span><br><span class="line">&lt;div&gt;&lt;/div&gt;默认独占一行</span><br><span class="line">&lt;span&gt;&lt;/span&gt;长度为封装数据的长度</span><br><span class="line">&lt;p&gt;&lt;/p&gt;上下各占一行</span><br><span class="line">表格</span><br><span class="line">&lt;table&gt;&lt;/table&gt;表格(align,border,width,height,cellspacing=单元格间距)</span><br><span class="line">&lt;tr&gt;&lt;/tr&gt;表格行</span><br><span class="line">&lt;th&gt;&lt;/th&gt;居中加粗的单元格</span><br><span class="line">&lt;td&gt;&lt;/td&gt;单元格(align,colspan=行占用单元格数量,rowspan=列占用单元格数量)</span><br><span class="line">&lt;b&gt;&lt;/b&gt;加粗</span><br><span class="line">表单</span><br><span class="line">&lt;from&gt;&lt;/form&gt;表单(action=提交的服务器地址,method=get/post提交方式)</span><br><span class="line">&lt;input/&gt;输入栏(type=输入类型,value=默认值)</span><br><span class="line">&lt;input/&gt;单选框(type=&quot;radio&quot;,name=分组)</span><br><span class="line">&lt;select&gt;&lt;/select&gt;下拉列框</span><br><span class="line">&lt;option&gt;&lt;/option&gt;选项</span><br><span class="line">&lt;textarea&gt;&lt;/textarea&gt;多行文本输入框(row,cols= 每行字数)</span><br><span class="line">&lt;input type=&quot;reset&quot; value=&quot;重置&quot;/&gt;</span><br><span class="line">&lt;input type=&quot;sbmit&quot; value=&quot;提交&quot;/&gt;</span><br><span class="line">表单提交时，数据没发给服务器的三种情况：</span><br><span class="line">1.没有使用name命名</span><br><span class="line">2.单选、复选、下拉列表的选项都需要添加value属性</span><br><span class="line">3.表单项不在form中</span><br></pre></td></tr></table></figure>
 <h2 id="常用字符实体"><a href="#常用字符实体" class="headerlink" title="常用字符实体"></a>常用字符实体</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">空格：&amp;nbsp;</span><br><span class="line">小于号：&amp;lt;</span><br><span class="line">大于号：&amp;gt;</span><br><span class="line">双引号：&amp;quot;</span><br><span class="line">单引号：&amp;apos;</span><br></pre></td></tr></table></figure>
 <h2 id="css和html的结合"><a href="#css和html的结合" class="headerlink" title="css和html的结合"></a>css和html的结合</h2><p>1.在标签的style属性上设置”key:value value”,修改标签样式<br>2.在head标签中使用style标签定义，style标签中使用css语法。<br>3.把css样式写为一个文件，通过link标签引入。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;link rel = &quot;stylesheet&quot;type=&quot;text/css&quot;href&quot;文件路径&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;文件路径&quot;/&gt;</span><br></pre></td></tr></table></figure>
 <h2 id="选择器"><a href="#选择器" class="headerlink" title="选择器"></a>选择器</h2><p>1.标签选择器: 标签名{}<br>2.id选择器： #id{}<br>3.class选择器： .class{}<br>4.组合选择器<br>class选择器与id选择器的区别：id选择器的值是唯一的，class选择器可以多标签公用。</p>
 <h1 id="js"><a href="#js" class="headerlink" title="js"></a>js</h1><h2 id="js和html代码的结合"><a href="#js和html代码的结合" class="headerlink" title="js和html代码的结合"></a>js和html代码的结合</h2><p>1.在head或者body标签中使用script标签写js代码<br>2.使用script标签引入js文件</p>
 <figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span> <span class="attr">src</span>=<span class="string">&quot;path&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="与java语法不同部分"><a href="#与java语法不同部分" class="headerlink" title="与java语法不同部分"></a>与java语法不同部分</h2><p>赋值使用var对任意类型赋值。<br>==与===，前者只比较字面值，后者比较数值与类型。<br>逻辑运算与c相同，所有数值可做布尔类型变量。0，null，undefined，””为false。<br>&amp;&amp;运算，当表达式全为真时返回最后一个表达式的值，有假式返回第一个为假的表达式值。<br>||运算，当表达式全为假时返回最后一个表达式的值，有真时返回第一个为真的表达式值。<br>数组中可以放类型不同的数据，且长度可变。 var arr = [];<br>函数定义：</p>
+<h2 id="与java语法不同部分"><a href="#与java语法不同部分" class="headerlink" title="与java语法不同部分"></a>与java语法不同部分</h2><p>赋值使用var对任意类型赋值。<br>==与===，前者只比较字面值，后者比较数值与类型。<br>逻辑运算与c相同，所有数值可做布尔类型变量。0，null，undefined，””为false。<br>&amp;&amp;运算，当表达式全为真时返回最后一个表达式的值，有假时返回第一个为假的表达式值。<br>||运算，当表达式全为假时返回最后一个表达式的值，有真时返回第一个为真的表达式值。<br>数组中可以放类型不同的数据，且长度可变。 var arr = [];<br>函数定义：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">function 函数名(形参)&#123;&#125;</span><br><span class="line">var 函数名 = function(形参)&#123;&#125;</span><br></pre></td></tr></table></figure>
 <p>函数不允许重载，只会覆盖。<br>所有js函数都有隐藏参数arguments，等于java的Object…，所有参数都在他的数组中。<br>对象的定义方法与c语言结构体类似，不同的是可以在其中定义函数。</p>
 <h2 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h2><p>事件分为静态注册与动态注册。<br>onload 加载完成事件(body)<br>onclick 单机事件(button)<br>onblur 失去焦点事件(input)<br>onchange 内容改变事件(select,input)<br>onsubmit 提交事件(form)(通过返回false阻止提交事件)</p>
@@ -707,7 +707,8 @@
 <td>获取或设置起始标签到结束标签的文本</td>
 </tr>
 </tbody></table>
-<h1 id="“jQuery”"><a href="#“jQuery”" class="headerlink" title="“jQuery”"></a>“jQuery”</h1><h2 id="核心函数"><a href="#核心函数" class="headerlink" title="核心函数"></a>核心函数</h2><p>1.传入参数为函数时：表示页面加载完成之后。相当于window.onload = function(){}<br>2.传入参数为HTML字符串时：会帮我们创建这些HTML标签插入到指定位置。$().appendto(标签);<br>3.传入参数为选择器字符串时：根据选择器样式用对应方法查询dom对象。(也可以填入组合选择器”,”表示或”.”表示且。结果顺序为页面中的顺序)<br>4.传入参数为dom时：会把这个对象转化为”jQuery”对象</p>
+<h1 id="“jQuery”"><a href="#“jQuery”" class="headerlink" title="“jQuery”"></a>“jQuery”</h1><p>jQuery是一个框架，对js进行了封装，方便使用。</p>
+<h2 id="核心函数"><a href="#核心函数" class="headerlink" title="核心函数"></a>核心函数</h2><p>1.传入参数为函数时：表示页面加载完成之后。相当于window.onload = function(){}<br>2.传入参数为HTML字符串时：会帮我们创建这些HTML标签插入到指定位置。$().appendto(标签);<br>3.传入参数为选择器字符串时：根据选择器样式用对应方法查询dom对象。(也可以填入组合选择器”,”表示或”.”表示且。结果顺序为页面中的顺序)<br>4.传入参数为dom时：会把这个对象转化为”jQuery”对象</p>
 <h2 id="“jQuery”对象及方法"><a href="#“jQuery”对象及方法" class="headerlink" title="“jQuery”对象及方法"></a>“jQuery”对象及方法</h2><p>“jQuery”对象本质是dom对象的数组，同时封装了一系列函数。所有dom对象经由”jQuery”获得时都会被封装为”jQuery”对象，取得时使用index取得。<br>使用”jQuery”对象注册事件时不再需要使用动态或静态注册，而是通过调用”jQuery”所带的事件方法实现对象注册。</p>
 <h3 id="属性获取"><a href="#属性获取" class="headerlink" title="属性获取"></a>属性获取</h3><table>
 <thead>
@@ -1183,7 +1184,7 @@
 <td></td>
 </tr>
 </tbody></table>
-<h2 id="HttpServletRequest"><a href="#HttpServletRequest" class="headerlink" title="HttpServletRequest"></a>HttpServletRequest</h2><p>每次只要有请求进入tomcat，tomcat就会把请求封装到Request对象中，交给service(doGet或doPost)方法。</p>
+<h2 id="HttpServletRequest"><a href="#HttpServletRequest" class="headerlink" title="HttpServletRequest"></a>HttpServletRequest</h2><p>表示请求信息，每次只要有请求进入tomcat，tomcat就会把请求封装到Request对象中，交给service(doGet或doPost)方法。</p>
 <table>
 <thead>
 <tr>
@@ -1237,7 +1238,7 @@
 </tr>
 </tbody></table>
 <p>上面获取转发对象后，通过requestDispatcher.forward(request,response)方法传递。<br>通过转发可以把request交给web-inf内的文件(正常情况不允许访问)处理。<br>注意：当使用请求转发跳转到指定页面时，它的网址并不是资源路径。所以使用相对路径跳转时会发生错误，一般会在head标签中添加base标签，规定作为相对路径所参照的地址。</p>
-<h2 id="HttpServletResponse"><a href="#HttpServletResponse" class="headerlink" title="HttpServletResponse"></a>HttpServletResponse</h2><p>每次只要有请求进入tomcat，tomcat就会把请求封装到Response对象中，交给service(doGet或doPost)方法。</p>
+<h2 id="HttpServletResponse"><a href="#HttpServletResponse" class="headerlink" title="HttpServletResponse"></a>HttpServletResponse</h2><p>表示响应信息，每次只要有请求进入tomcat，tomcat就会把请求封装到Response对象中，交给service(doGet或doPost)方法。</p>
 <table>
 <thead>
 <tr>
@@ -1253,8 +1254,19 @@
 <td>getWrite()</td>
 <td>取得字符流(常用于回传字符串)</td>
 </tr>
+<tr>
+<td>wirter.write(“str”)</td>
+<td>回传字符串数据</td>
+</tr>
+<tr>
+<td>setContentType(“text/html; charset=UTF-8”)</td>
+<td>设置服务器和客户端都使用UTF-8字符集，还设置的响应头</td>
+</tr>
 </tbody></table>
-]]></content>
+<p>这两个流不能同时取得。<br>请求重定向：是指客户端给服务器发送请求，然后服务器返回客户端一个新地址让客户端访问。(无法跳入web-inf内，可以跳到当前工程外的网站)</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//设置响应状态码302</span><br><span class="line">resp.setStatus(302);</span><br><span class="line">//设置响应头说明新地址</span><br><span class="line">resp.seyHeader(&quot;Location&quot;,&quot;新地址&quot;);</span><br><span class="line">//第二种方法(推荐)</span><br><span class="line">resp.sendRedirect(&quot;新地址&quot;);</span><br></pre></td></tr></table></figure>
+<h1 id="书城项目"><a href="#书城项目" class="headerlink" title="书城项目"></a>书城项目</h1><h2 id="阶段一"><a href="#阶段一" class="headerlink" title="阶段一"></a>阶段一</h2><p>表单验证的实现</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;script type=&quot;text/javascript&quot;&gt;</span><br><span class="line">    $(function () &#123;</span><br><span class="line">        //给注册绑定事件</span><br><span class="line">        $(&quot;#sub_btn&quot;).click(function () &#123;</span><br><span class="line">            var username = $(&quot;#username&quot;).val()</span><br><span class="line">            var usernamePatt = /^\w&#123;5,12&#125;$/</span><br><span class="line">            //确认用户名</span><br><span class="line">            if (!usernamePatt.test(username))&#123;</span><br><span class="line">                //定位错误信息输出文本，并输出对应的文字</span><br><span class="line">                $(&quot;span.errorMsg&quot;).text(&quot;用户名不合法&quot;)</span><br><span class="line">                //防止页面跳转</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            //合法后要去处显示的信息</span><br><span class="line">            var password = $(&quot;#password&quot;).val();</span><br><span class="line">            var passwordPatt = /^\w&#123;5,12&#125;$/</span><br><span class="line">            $(&quot;span.errorMsg&quot;).text(&quot;&quot;);</span><br><span class="line">            //确认密码</span><br><span class="line">            if (!passwordPatt.test(password))&#123;</span><br><span class="line">                $(&quot;span.errorMsg&quot;).text(&quot;密码不合法&quot;)</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            $(&quot;span.errorMsg&quot;).text(&quot;&quot;);</span><br><span class="line">            var repwd = $(&quot;#repwd&quot;).val()</span><br><span class="line">            //确认确认的密码</span><br><span class="line">            if (repwd!=password)&#123;</span><br><span class="line">                $(&quot;span.errorMsg&quot;).text(&quot;两次密码不一致&quot;)</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            $(&quot;span.errorMsg&quot;).text(&quot;&quot;);</span><br><span class="line">            var email = $(&quot;#email&quot;).val()</span><br><span class="line">            var emailPatt = /\w*@\w*.com/</span><br><span class="line">            //确认邮箱</span><br><span class="line">            if (!emailPatt.test(email))&#123;</span><br><span class="line">                $(&quot;span.errorMsg&quot;).text(&quot;邮箱不合法&quot;)</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            $(&quot;span.errorMsg&quot;).text(&quot;&quot;);</span><br><span class="line">            var code = $(&quot;#code&quot;).val();</span><br><span class="line">            //确认验证码</span><br><span class="line">            if (code==null||code==&quot;&quot;)&#123;</span><br><span class="line">                $(&quot;span.errorMsg&quot;).text(&quot;输入正确的验证码&quot;)</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            $(&quot;span.errorMsg&quot;).text(&quot;&quot;);</span><br><span class="line"></span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>java web</category>
       </categories>
@@ -1397,7 +1409,16 @@
 <h1 id="为什么重写-equals-还要重写-hashcode？"><a href="#为什么重写-equals-还要重写-hashcode？" class="headerlink" title="为什么重写 equals 还要重写 hashcode？"></a>为什么重写 equals 还要重写 hashcode？</h1><p>因为不重写hashcode在插入到哈希表时不能保证插入到同一位置，不插入到同一位置就无法触发equals判断。</p>
 <h1 id="和-equals-比较的区别"><a href="#和-equals-比较的区别" class="headerlink" title="== 和 equals 比较的区别"></a>== 和 equals 比较的区别</h1><p>对于对象而言，==是在判断地址是否相同，equals是判断内容。</p>
 <h1 id="为什么浮点数运算会不精准"><a href="#为什么浮点数运算会不精准" class="headerlink" title="为什么浮点数运算会不精准"></a>为什么浮点数运算会不精准</h1><p>因为计算机的浮点数是用二进制的科学计数保存的，它可以保存1/2，1/4等，但却因为进制问题不能表示0.1这种数字，只能近似，所以在保存这些数字的时候会丢失精度。</p>
+<h1 id="为什么定义long类型与float类型时要加l和f"><a href="#为什么定义long类型与float类型时要加l和f" class="headerlink" title="为什么定义long类型与float类型时要加l和f"></a>为什么定义long类型与float类型时要加l和f</h1><p>这是因为定义变量的过程本质是使用指针将两个内存块连接的过程。long类型常量不加l修饰会这个常量只会被当作int型，分配的空间也只有int型的大小。而浮点型默认是double，如果不加f，相当于把double直接赋予float，编译器会不通过。</p>
+<h1 id="创建子类对象"><a href="#创建子类对象" class="headerlink" title="创建子类对象"></a>创建子类对象</h1><p>创建子类对象时会默认调用父类的无参构造器方法来初始化属性，如果没有无参构造器，则需要使用super方法声明构造器的使用。<br>调用父类构造器是考虑到父类的一些私有属性可能要使用自己的构造器进行初始化。</p>
+<h1 id="什么是多态"><a href="#什么是多态" class="headerlink" title="什么是多态"></a>什么是多态</h1><p>多态是指不同的子类在继承父类后分别重写父类的方法，使得可以统一编译父类，通过不同子类的运行，实现不同的方法。</p>
+<h1 id="为什么子类重写父类的方法不能低于其在父类中的访问权限"><a href="#为什么子类重写父类的方法不能低于其在父类中的访问权限" class="headerlink" title="为什么子类重写父类的方法不能低于其在父类中的访问权限"></a>为什么子类重写父类的方法不能低于其在父类中的访问权限</h1><p>因为这样操作会影响多态，当父类方法是公开，而子类重写方法是私有时，父类在实现多态时会无法调用子类的方法。</p>
+<h1 id="动态绑定"><a href="#动态绑定" class="headerlink" title="动态绑定"></a>动态绑定</h1><p>当调用对象方法时，该方法会和该对象的运行类型相绑定。而调用对象属性时不会有动态绑定，而是从该对象开始向上搜寻。</p>
+<h1 id="哪些情况会导致类被加载"><a href="#哪些情况会导致类被加载" class="headerlink" title="哪些情况会导致类被加载"></a>哪些情况会导致类被加载</h1><p>1.创建对象时<br>2.子类创建对象时<br>3.使用静态成员时</p>
 <h1 id="final的作用"><a href="#final的作用" class="headerlink" title="final的作用"></a>final的作用</h1><p>1.防止类被继承<br>2.防止方法被重写<br>3.防止属性或变量被更改<br>4.与static搭配使用可以提高效率，被final static修饰的属性(方法不可以)被调用时不会导致类加载，也就是说这么修饰的属性不需要类加载也能获得。</p>
+<h1 id="哪些情况Integer不会创建新对象"><a href="#哪些情况Integer不会创建新对象" class="headerlink" title="哪些情况Integer不会创建新对象"></a>哪些情况Integer不会创建新对象</h1><p>在Integr值在-128到127之间时。这是因为Integer有一个公用的闪存数组，数字在这个区间时会直接返回闪存数组中的对象。</p>
+<h1 id="String的两种创建方式的区别"><a href="#String的两种创建方式的区别" class="headerlink" title="String的两种创建方式的区别"></a>String的两种创建方式的区别</h1><p>不调用构造器直接赋值：<br>先从常量池查看是否有这个字符串，如果有就直接指向，没有则创建再指向，一级指针指向常量池。<br>调用构造器赋值：<br>先在堆中创建空间，里面维护value属性，指向常量池，如果常量池没有，则重新创建再指向，有就直接指向，一级指针指向堆。<br>使用intern方法后会进行规范化，指向常量池。使用字符串加和创建的字符串一级指针也是指向堆。</p>
+<h1 id="StringBuffer的优点"><a href="#StringBuffer的优点" class="headerlink" title="StringBuffer的优点"></a>StringBuffer的优点</h1><p>StringBuffer创建的字符串不进入常量池，而是在堆中存放，使用append方法添加字符串时也不会像String一样在常量池中重新创建新的字符串，而是在原有的字符串基础上进行扩容，当循环使用时比String要快很多。</p>
 <h1 id="java的集合类"><a href="#java的集合类" class="headerlink" title="java的集合类"></a>java的集合类</h1><p><img src="/images/2.png" alt="2.png"></p>
 <h1 id="java8新特性"><a href="#java8新特性" class="headerlink" title="java8新特性"></a>java8新特性</h1><p>1.lambda表达式<br>2.函数式接口<br>3.Stream API</p>
 <h1 id="JDK1-7与1-8中hashmap的差异"><a href="#JDK1-7与1-8中hashmap的差异" class="headerlink" title="JDK1.7与1.8中hashmap的差异"></a>JDK1.7与1.8中hashmap的差异</h1><p>1、1.7计算hashcode经过了4此移位和异或运算，1.8只有一次移位和异或运算。<br>2、1.8的hashmap当哈希表大小到64时会树化。<br>3、1.8的hashmap的链表插入方法为尾插，1.7是头插。<br>4、扩容方式不同。<br>5、1.7是先判断扩容再插入，1.8是先插入再判断扩容。<br>好处：降低事件复杂度，改用尾插法就去除了并发条件下成环的问题。</p>
@@ -1446,7 +1467,7 @@
     <url>/2021/12/03/mySQL%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h1 id="前提知识"><a href="#前提知识" class="headerlink" title="前提知识"></a>前提知识</h1><p>MySQL 在 Windows 下不区分大小写，但在 Linux 下默认是区分大小写。因此，数据库名、 表名、字段名，都不允许出现任何大写字母，避免节外生枝。</p>
 <span id="more"></span>
-<h1 id="数据库指令"><a href="#数据库指令" class="headerlink" title="数据库指令"></a>数据库指令</h1><table>
+<h1 id="数据库指令"><a href="#数据库指令" class="headerlink" title="数据库指令"></a>数据库指令</h1><h2 id="数据库操作"><a href="#数据库操作" class="headerlink" title="数据库操作"></a>数据库操作</h2><table>
 <thead>
 <tr>
 <th>指令</th>
@@ -1454,12 +1475,12 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>数据库操作</td>
-<td></td>
+<td>create database 库名</td>
+<td>创建数据库，默认utf8字符集，utf8_general_ci校对</td>
 </tr>
 <tr>
-<td>create database 表名</td>
-<td>创建数据库，默认utf8字符集，utf8_general_ci校对</td>
+<td>use database 库名</td>
+<td>切换数据库</td>
 </tr>
 <tr>
 <td>character set …</td>
@@ -1471,7 +1492,7 @@
 </tr>
 <tr>
 <td>show databases</td>
-<td>查看当前数据库服务器中所以数据库</td>
+<td>查看当前数据库服务器中所有数据库</td>
 </tr>
 <tr>
 <td>show create database</td>
@@ -1489,9 +1510,17 @@
 <td>source 文件名.sql</td>
 <td>(mysql命令行)恢复数据库</td>
 </tr>
+</tbody></table>
+<h2 id="表操作、列操作"><a href="#表操作、列操作" class="headerlink" title="表操作、列操作"></a>表操作、列操作</h2><table>
+<thead>
 <tr>
-<td>表操作、列操作</td>
-<td></td>
+<th>指令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>desc</td>
+<td>查看表结构</td>
 </tr>
 <tr>
 <td>create table 表名(列名，数据格式)</td>
@@ -1514,20 +1543,25 @@
 <td>不允许为空，替换为’’内的内容</td>
 </tr>
 <tr>
-<td>行操作</td>
-<td></td>
+<td>delete from 表名</td>
+<td>删除数据</td>
 </tr>
+</tbody></table>
+<h2 id="行操作"><a href="#行操作" class="headerlink" title="行操作"></a>行操作</h2><p>select整体语句结构：<br>select…from…group by…having…order by…limit…</p>
+<table>
+<thead>
 <tr>
+<th>指令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
 <td>insert into 表名 (列名) values (值)</td>
 <td>插入数据，values后面用多个括号可以添加多条数据，不写列名视为给所有字段添加信息</td>
 </tr>
 <tr>
 <td>update 表名 set 列名=值</td>
 <td>修改数据</td>
-</tr>
-<tr>
-<td>delete from 表名</td>
-<td>删除数据</td>
 </tr>
 <tr>
 <td>where</td>
@@ -1545,7 +1579,375 @@
 <td>select 运算 as 别名 from</td>
 <td>进行规定的运算并以别名显示</td>
 </tr>
+<tr>
+<td>order by …(desc)</td>
+<td>升序(降序)排序</td>
+</tr>
 </tbody></table>
+<h2 id="where子句常用运算符"><a href="#where子句常用运算符" class="headerlink" title="where子句常用运算符"></a>where子句常用运算符</h2><table>
+<thead>
+<tr>
+<th>符号</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>between…and…</td>
+<td>-</td>
+</tr>
+<tr>
+<td>in(set)</td>
+<td>显示在in列表中的值</td>
+</tr>
+<tr>
+<td>like ‘’</td>
+<td>模糊查询</td>
+</tr>
+<tr>
+<td>not like ‘’</td>
+<td>模糊查询</td>
+</tr>
+<tr>
+<td>is null</td>
+<td>为空</td>
+</tr>
+</tbody></table>
+<h2 id="统计函数"><a href="#统计函数" class="headerlink" title="统计函数"></a>统计函数</h2><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>select count(*)或count(列名)</td>
+<td>查询数据的数量</td>
+</tr>
+<tr>
+<td>select sum(列名,列名…) from tablename</td>
+<td>对数据求和</td>
+</tr>
+<tr>
+<td>select avg(列名,列名…) from tablename</td>
+<td></td>
+</tr>
+<tr>
+<td>select max(列名,列名…) from tablename</td>
+<td></td>
+</tr>
+<tr>
+<td>select min(列名,列名…) from tablename</td>
+<td></td>
+</tr>
+<tr>
+<td>select …. group by column (having…)</td>
+<td>以某列数据为分组进行统计查询，使用having对查询结果进一步过滤</td>
+</tr>
+</tbody></table>
+<h2 id="字符串相关函数"><a href="#字符串相关函数" class="headerlink" title="字符串相关函数"></a>字符串相关函数</h2><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>charset(column)</td>
+<td>返回字符串使用的字符集</td>
+</tr>
+<tr>
+<td>concat(column,s2…)</td>
+<td>连接字符串，将同行数据拼接后显示</td>
+</tr>
+<tr>
+<td>ucase(column)</td>
+<td>转大写显示行</td>
+</tr>
+<tr>
+<td>lcase(column)</td>
+<td>转小写</td>
+</tr>
+<tr>
+<td>length(column)</td>
+<td>按字符串长度显示(按字节返回)</td>
+</tr>
+<tr>
+<td>replace(column,search_str,replace_str)</td>
+<td>查询某列，如果有search_str就替换为replace_str</td>
+</tr>
+<tr>
+<td>substring(column,n1,n2)</td>
+<td>截取某列部分字符串(这里字符串计数从1开始)</td>
+</tr>
+</tbody></table>
+<h2 id="数学函数"><a href="#数学函数" class="headerlink" title="数学函数"></a>数学函数</h2><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>abc(c)</td>
+<td>绝对值</td>
+</tr>
+<tr>
+<td>ceiling(c)</td>
+<td>向上取整</td>
+</tr>
+<tr>
+<td>floor(c)</td>
+<td>向下取整</td>
+</tr>
+<tr>
+<td>format(c,num)</td>
+<td>保留要求的小数位数</td>
+</tr>
+<tr>
+<td>rand(seed)</td>
+<td>随机生成数，有seed可以保证随机数不变</td>
+</tr>
+</tbody></table>
+<h2 id="时间函数"><a href="#时间函数" class="headerlink" title="时间函数"></a>时间函数</h2><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>current_date()</td>
+<td>当前日期</td>
+</tr>
+<tr>
+<td>current_time()</td>
+<td>当前时间</td>
+</tr>
+<tr>
+<td>current_timestamp()</td>
+<td>当前时间戳</td>
+</tr>
+<tr>
+<td>date(datetime)</td>
+<td>返回datetime的日期部分</td>
+</tr>
+<tr>
+<td>date_add(date,interval 时间)</td>
+<td>在date中加上时间或日期</td>
+</tr>
+<tr>
+<td>date_sub(date,interval 时间)</td>
+<td>在date中减去时间或日期</td>
+</tr>
+<tr>
+<td>datediff(date1,date2)</td>
+<td>返回两个日期差</td>
+</tr>
+<tr>
+<td>now()</td>
+<td>当前日期时间</td>
+</tr>
+<tr>
+<td>unix_timestamp</td>
+<td>从1970到现在的秒数</td>
+</tr>
+<tr>
+<td>from_unixtime(秒数,’%y-%m-%d’)</td>
+<td>秒转日期</td>
+</tr>
+</tbody></table>
+<p>在这些时间前使用year,month,date可以只返回这部分时间</p>
+<h2 id="加密和系统函数"><a href="#加密和系统函数" class="headerlink" title="加密和系统函数"></a>加密和系统函数</h2><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>user()</td>
+<td>查询用户</td>
+</tr>
+<tr>
+<td>datebase()</td>
+<td>数据库名称</td>
+</tr>
+<tr>
+<td>MD5(str)</td>
+<td>为字符串算出一个加密字符串</td>
+</tr>
+</tbody></table>
+<h2 id="流程控制函数"><a href="#流程控制函数" class="headerlink" title="流程控制函数"></a>流程控制函数</h2><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>if(expr1,expr2,expr3)</td>
+<td>如果expr1为true则返回expr2，如果2也为true返回3</td>
+</tr>
+<tr>
+<td>ifnull(expr1,exp2)</td>
+<td>如果expr1不为空则返回expr1，否则返回expr2</td>
+</tr>
+<tr>
+<td>select case when expr1 then expr2 else expr3</td>
+<td>如果满足expr1则返回expr2，否则返回expr3</td>
+</tr>
+</tbody></table>
+<h1 id="多表查询"><a href="#多表查询" class="headerlink" title="多表查询"></a>多表查询</h1><p>多表查询可以同时生成多表的笛卡尔集以及复用单表的笛卡尔集。</p>
+<h1 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h1><p>select语句可以放入where语句中进行子查询。也可以放入from语句作为临时表进行子查询。<br>可以使用all和any对子select语句进行约束，进行查询。<br>多列子查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select * from emp</span><br><span class="line">	where(deptno,job) = (</span><br><span class="line">			select deptno,job</span><br><span class="line">			from emp</span><br><span class="line">			where ename = &#x27;SMITH&#x27;</span><br><span class="line">			)</span><br></pre></td></tr></table></figure>
+<h1 id="表复制"><a href="#表复制" class="headerlink" title="表复制"></a>表复制</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//一个表到另一个表</span><br><span class="line">insert into my_tab01</span><br><span class="line">	(id ,name ,sal ,job ,deptno)</span><br><span class="line">	select empno,ename,sal,job,detno from emp;</span><br><span class="line">//自我复制</span><br><span class="line">insert into my_tab01</span><br><span class="line">	select * from my_tab01;</span><br><span class="line">//复制表结构</span><br><span class="line">create table my_tab02 like my_tab01</span><br></pre></td></tr></table></figure>
+<h1 id="去重"><a href="#去重" class="headerlink" title="去重"></a>去重</h1><p>1.创建一张与原表结构相同的临时表<br>2.把原表内容使用select distinct * from把原表复制到另一个表。<br>3.再删除掉原表数据<br>4.把临时表数据复制给原表，删除临时表</p>
+<h1 id="合并查询"><a href="#合并查询" class="headerlink" title="合并查询"></a>合并查询</h1><p>可以使用union all 连接两个select语句进行合并查询(不会去重)，union可以去重。</p>
+<h1 id="外连接"><a href="#外连接" class="headerlink" title="外连接"></a>外连接</h1><p>引入：当使用多表查询对员工与部门表进行查询时，无法显示出没有员工的部门。<br>左外连接：左侧表完全显示。<br>from 表1 left join 表2 on 条件。<br>右外连接：右侧表完全显示。<br>from 表1 right join 表2 on 条件。</p>
+<h1 id="约束"><a href="#约束" class="headerlink" title="约束"></a>约束</h1><p>not null，unique，primary key，foreign key，check。</p>
+<h2 id="主键primary-key"><a href="#主键primary-key" class="headerlink" title="主键primary key"></a>主键primary key</h2><p>用于唯一的标识表行数据，主键约束后该列不能重复且不能为空。</p>
+<h2 id="外键foreign-key"><a href="#外键foreign-key" class="headerlink" title="外键foreign key"></a>外键foreign key</h2><p>当主表与副表有一共有列，且要求副表列中出现的元素属于主表中时，可以使用外键对副表进行约束。<br>foreign key (副表列名) references 主表表名(列名)</p>
+<h1 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h1><p>提高数据库性能。<br>索引类型：<br>1.主键索引：主键自动为索引<br>2.唯一索引：unique修饰自动为索引<br>3.普通索引：手动指定<br>4.全文索引：开发中一般不用，使用全文搜索Solr和ElasticSearch</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//创建索引(会占用空间),只对这列查询提速</span><br><span class="line">create (unique)index 索引名 on 表名(列名)</span><br><span class="line">//添加主键(索引)</span><br><span class="line">alert table 表名 add index 索引名 (列名)</span><br><span class="line">//删除索引</span><br><span class="line">drop index 索引名 on 表名</span><br><span class="line">//删除主键索引</span><br><span class="line">alert table 表名 primary key</span><br><span class="line">//查询索引</span><br><span class="line">show index from 表名</span><br><span class="line">show keys from 表名</span><br><span class="line">desc 表名</span><br></pre></td></tr></table></figure>
+<h2 id="索引优化"><a href="#索引优化" class="headerlink" title="索引优化"></a>索引优化</h2><p>1.最左前缀法则：如果建立的是复合索引，索引的顺序要按照建立的顺序，即从左到右。<br>    这是因为复合索引是多个字段作为索引存放在b+树中，且存放顺序是左边字段的优先级要高于右边的字段，一旦跳过左边字段直接查找右边字段，右边的字段是乱序的。<br>2.不要对索引进行计算，函数以及转型，会导致索引失效。<br>3.不可以在范围查找语句右边使用索引，会导致索引失效。<br>    因为b+树的叶节点是是一个有序链表，当进行范围查找时会会把整段链表直接取出等待下一步查找，这种情况下，除非取出的这整一段的范围查找的字段都相等，否则下一个字段一定是乱序的。<br>4.减少select* 的使用，尽量进行覆盖索引，即select查询字段与where中索引字段一致。<br>    而且在使用order by时要进量使用覆盖索引，因为不使用覆盖索引进行排序会发生文件内排序。或者在java中进行排序。<br>5.不要在使用like查找索引字段时在字段前面加%。<br>    这是因为字符串在b+树里存储的时候，是按照ascii码的大小存储的，此时，这个结构与复合索引结构是一样的，当为字符串增加前缀时，违反了最左前缀法则。</p>
+<h1 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h1><h2 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h2><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>set autocommit = 0</td>
+<td>设为手动提交事务</td>
+</tr>
+<tr>
+<td>start transaction</td>
+<td>开始事务</td>
+</tr>
+<tr>
+<td>savepoint 点名</td>
+<td>设置保存点</td>
+</tr>
+<tr>
+<td>rollback to 点名</td>
+<td>回滚</td>
+</tr>
+<tr>
+<td>rollback</td>
+<td>回滚至开始</td>
+</tr>
+<tr>
+<td>commit</td>
+<td>提交事务</td>
+</tr>
+</tbody></table>
+<h2 id="四种隔离级别"><a href="#四种隔离级别" class="headerlink" title="四种隔离级别"></a>四种隔离级别</h2><p>脏读:一个事务读到了另一个事务未提交的的修改。<br>不可重复读:一个事务多次查询，由于其他事务的修改和删除导致每次读取内容不同。<br>幻读:一个事务多次查询，由于其他事务的插入操作导致每次读取内容不同。<br>不可重复读可以通过对数据的加锁解决，但幻读需要在数据间加间隙锁才能解决。</p>
+<table>
+<thead>
+<tr>
+<th>隔离级别</th>
+<th>脏读</th>
+<th>不可重复读</th>
+<th>幻读</th>
+<th>加锁</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>read uncommitted：可以读到未提交的其他事务</td>
+<td>V</td>
+<td>V</td>
+<td>V</td>
+<td>X</td>
+</tr>
+<tr>
+<td>read committed：可以读到已经提交的其他事务</td>
+<td>X</td>
+<td>V</td>
+<td>V</td>
+<td>X</td>
+</tr>
+<tr>
+<td>repeatable read：只能读到开启事务前的数据</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td>serializable:可串行化</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>V</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>set session transaction isolation level 隔离级别</td>
+<td>设置隔离级别</td>
+</tr>
+<tr>
+<td>set global transaction isolation level 隔离级别</td>
+<td>设置系统隔离级别</td>
+</tr>
+<tr>
+<td>select @@tx_isolation</td>
+<td>查看当前会话隔离级别</td>
+</tr>
+<tr>
+<td>select @@global.tx_isolation</td>
+<td></td>
+</tr>
+</tbody></table>
+<h1 id="引擎"><a href="#引擎" class="headerlink" title="引擎"></a>引擎</h1><table>
+<thead>
+<tr>
+<th>特点</th>
+<th>myisam</th>
+<th>innodb</th>
+<th>memory</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>批量插入速度</td>
+<td>高</td>
+<td>低</td>
+<td>高(内存存储)</td>
+</tr>
+<tr>
+<td>事务安全</td>
+<td></td>
+<td>支持</td>
+<td></td>
+</tr>
+<tr>
+<td>全文索引</td>
+<td>支持</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>锁机制</td>
+<td>表锁</td>
+<td>行锁</td>
+<td>表锁</td>
+</tr>
+<tr>
+<td>存储限制</td>
+<td>无</td>
+<td>64TB</td>
+<td>有</td>
+</tr>
+</tbody></table>
+<p>1.myisam不支持事务，也不支持外键，但其访问速度快，对事务完整性没要求。<br>2.innodb为事务安全型引擎。但是比起myisam，innodb写的效率会差，且要占用空间保留索引。<br>3.memory引擎基于hash存储在内存中，访问速度快，但一旦服务关闭，数据就会丢失，表的结构还在。</p>
+<p>当innodb的索引失效时，这时没有索引导致无法再使用行锁，会自动升级为表锁，大大降低并发度。<br>行锁：锁力度小，开销大，上锁速度慢，会出现死锁，并发高。<br>表锁：锁力度大，开销小，上锁速度快，不会出现死锁，并发低。</p>
 ]]></content>
       <categories>
         <category>MySQL笔记</category>
@@ -1581,5 +1983,99 @@
       <tags>
         <tag>动态规划</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>从二叉树一个节点到另一个节点每一步的方向</title>
+    <url>/2021/12/05/%E4%BB%8E%E4%BA%8C%E5%8F%89%E6%A0%91%E4%B8%80%E4%B8%AA%E8%8A%82%E7%82%B9%E5%88%B0%E5%8F%A6%E4%B8%80%E4%B8%AA/</url>
+    <content><![CDATA[<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给你一棵 二叉树的根节点root，这棵二叉树总共有n个节点。每个节点的值为1到n中的一个整数，且互不相同。给你一个整数startValue，表示起点节点 s的值，和另一个不同的整数destValue，表示终点节点t的值。<br>请找到从节点s到节点 t的 最短路径，并以字符串的形式返回每一步的方向。每一步用 大写字母’L’，’R’和’U’分别表示一种方向：<br>‘L’表示从一个节点前往它的 左孩子节点。<br>‘R’表示从一个节点前往它的 右孩子节点。<br>‘U’表示从一个节点前往它的 父节点。<br>请你返回从 s到 t最短路径每一步的方向。</p>
+<span id="more"></span>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>这道题可以使用dfs对两个目标节点检索，检索的同时记录好路径。检索完毕后处理两个路径，首先把他们相同的首部分去除，这样就找到了他们相同的根节点，接着对第一条路径处理，把所有字符替换为U，两个字符串加和就是答案。但对java而言，因为这道题会给超大型树且有时间要求，必须对算法进行优化，因为String是final类型数据，每次加和字符串时就会在常量池重新创建新的字符串，所以要使用StringBuffer来对整个算法进行优化，使得不再超时。</p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line">StringBuffer path;</span><br><span class="line">   StringBuffer path1;</span><br><span class="line">   public String get<span class="constructor">Directions(TreeNode <span class="params">root</span>, <span class="params">int</span> <span class="params">startValue</span>, <span class="params">int</span> <span class="params">destValue</span>)</span> &#123;</span><br><span class="line">       String anwer1;</span><br><span class="line">       String anwer2;</span><br><span class="line">       path = <span class="keyword">new</span> <span class="constructor">StringBuffer()</span>;</span><br><span class="line">       tree<span class="constructor">Search(<span class="params">root</span>,<span class="params">startValue</span>)</span>;</span><br><span class="line">       anwer1 = path1.<span class="keyword">to</span><span class="constructor">String()</span>;</span><br><span class="line">       tree<span class="constructor">Search(<span class="params">root</span>,<span class="params">destValue</span>)</span>;</span><br><span class="line">       anwer2 = path1.<span class="keyword">to</span><span class="constructor">String()</span>;</span><br><span class="line">       <span class="built_in">char</span><span class="literal">[]</span> chars1 = anwer1.<span class="keyword">to</span><span class="constructor">CharArray()</span>;</span><br><span class="line">       <span class="built_in">char</span><span class="literal">[]</span> chars2 = anwer2.<span class="keyword">to</span><span class="constructor">CharArray()</span>;</span><br><span class="line">       <span class="built_in">int</span> i =<span class="number">0</span>;</span><br><span class="line">       <span class="keyword">while</span> (i&lt;chars1.length&amp;&amp;i&lt;chars2.length&amp;&amp;chars1<span class="literal">[<span class="identifier">i</span>]</span>==chars2<span class="literal">[<span class="identifier">i</span>]</span>)&#123;</span><br><span class="line">           i++;</span><br><span class="line">       &#125;</span><br><span class="line">       StringBuffer str1 = <span class="keyword">new</span> <span class="constructor">StringBuffer()</span>;</span><br><span class="line">       <span class="keyword">for</span> (<span class="built_in">int</span> j = chars1.length-i;j&gt;<span class="number">0</span>;j--)&#123;</span><br><span class="line">           str1.append(<span class="character">&#x27;U&#x27;</span>);</span><br><span class="line">       &#125;</span><br><span class="line">       String str2 = anwer2.substring(i,anwer2.length<span class="literal">()</span>);</span><br><span class="line">       return str1+str2;</span><br><span class="line">   &#125;</span><br><span class="line">   public void tree<span class="constructor">Search(TreeNode <span class="params">root</span>,<span class="params">int</span> <span class="params">value</span>)</span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (root!=null)&#123;</span><br><span class="line">           <span class="keyword">if</span> (root.<span class="keyword">val</span>!=value)&#123;</span><br><span class="line">               path.append(<span class="character">&#x27;L&#x27;</span>);</span><br><span class="line">             tree<span class="constructor">Search(<span class="params">root</span>.<span class="params">left</span>,<span class="params">value</span>)</span>;</span><br><span class="line">             path.delete<span class="constructor">CharAt(<span class="params">path</span>.<span class="params">length</span>()</span>-<span class="number">1</span>);</span><br><span class="line">             path.append(<span class="character">&#x27;R&#x27;</span>);</span><br><span class="line">             tree<span class="constructor">Search(<span class="params">root</span>.<span class="params">right</span>,<span class="params">value</span>)</span>;</span><br><span class="line">             path.delete<span class="constructor">CharAt(<span class="params">path</span>.<span class="params">length</span>()</span>-<span class="number">1</span>);</span><br><span class="line">           &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">               path1 = <span class="keyword">new</span> <span class="constructor">StringBuffer(<span class="params">path</span>)</span>;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>leetcode解析</category>
+        <category>中等</category>
+      </categories>
+      <tags>
+        <tag>二叉树</tag>
+        <tag>dfs</tag>
+        <tag>StringBuffer</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>子集</title>
+    <url>/2021/12/04/%E5%AD%90%E9%9B%86/</url>
+    <content><![CDATA[<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给你一个整数数组nums，数组中的元素互不相同。返回该数组所有可能的子集（幂集）。<br>解集不能包含重复的子集。你可以按任意顺序返回解集。</p>
+<span id="more"></span>
+<h1 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h1><p>这道题如果长度固定就是最普通的回溯问题，所以只要把从0-数组长度的所有数字交给回溯即可。</p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line">List&lt;List&lt;<span class="type">Integer</span>&gt;&gt; lists;</span><br><span class="line">ArrayList&lt;<span class="type">Integer</span>&gt; list;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">public</span> List&lt;List&lt;<span class="type">Integer</span>&gt;&gt; subsets(<span class="type">int</span>[] nums) &#123;</span><br><span class="line">        <span class="type">int</span> length = nums.length;</span><br><span class="line">        lists = <span class="built_in">new</span> ArrayList&lt;List&lt;<span class="type">Integer</span>&gt;&gt;();</span><br><span class="line">        list = <span class="built_in">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>;i&lt;=length;i++)&#123;</span><br><span class="line">            trackBack(nums,<span class="number">0</span>,i);</span><br><span class="line">            list.clear();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> lists;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">public</span> <span class="type">void</span> trackBack(<span class="type">int</span>[] nums,<span class="type">int</span> <span class="keyword">start</span>,<span class="type">int</span> length)&#123;</span><br><span class="line">        <span class="keyword">if</span> (list.size()&lt;length)&#123;</span><br><span class="line">            <span class="keyword">for</span> (;<span class="keyword">start</span>&lt;nums.length;<span class="keyword">start</span>++)&#123;</span><br><span class="line">                list.<span class="keyword">add</span>(nums[<span class="keyword">start</span>]);</span><br><span class="line">                trackBack(nums,<span class="keyword">start</span>+<span class="number">1</span>,length);</span><br><span class="line">                list.remove(list.size()<span class="number">-1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            List&lt;<span class="type">Integer</span>&gt; answer = <span class="built_in">new</span> ArrayList&lt;<span class="type">Integer</span>&gt;(this.list);</span><br><span class="line">            lists.<span class="keyword">add</span>(answer);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>leetcode解析</category>
+        <category>中等</category>
+      </categories>
+      <tags>
+        <tag>回溯</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>超级次方</title>
+    <url>/2021/12/05/%E8%B6%85%E7%BA%A7%E6%AC%A1%E6%96%B9/</url>
+    <content><![CDATA[<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>你的任务是计算a^b对1337取模，a是一个正整数，b是一个非常大的正整数且会以数组形式给出。</p>
+<span id="more"></span>
+<h1 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h1><p>首先要知道在计算过程中取模再计算并不影响最后的取模结果。<br>接着需要设计一种快速计算次幂的方法，我们可以让a一直与自身相乘减少计算次数，且每次这样处理会使需要的次幂折半，而因为奇数折半会损失一次，所以要在处理前将这个数字先乘入答案。<br>然后要处理超长的b数组，转换为数字必然不可能，但可以设计一个指针指向这个数组的第一个数，将这个过程拆分。比如a的32次幂可以变成(a^3)^10*a^2。</p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int val = 1337;</span><br><span class="line">    public int superPow(int a, int[] b) &#123;</span><br><span class="line">        int anwer = 1;</span><br><span class="line">        a %= val;</span><br><span class="line">        for (int i = 0;i&lt; b.length;i++)&#123;</span><br><span class="line">            anwer = pow(anwer,10)%val;</span><br><span class="line">            anwer = anwer*pow(a,b[i])%val;</span><br><span class="line">        &#125;</span><br><span class="line">        return anwer;</span><br><span class="line">    &#125;</span><br><span class="line">    public int pow(int a,int n)&#123;</span><br><span class="line">        int answer = 1;</span><br><span class="line">        //a每乘自己一次，所要的次幂就除以2，如果是奇数，因为5/2=2，所以要先把这个数乘进answer</span><br><span class="line">        for (int i = n;i&gt;0;i /=2)&#123;</span><br><span class="line">          if (i &gt;&gt; 1 &lt;&lt; 1 != i)&#123;</span><br><span class="line">              answer = a*answer%val;</span><br><span class="line">          &#125;</span><br><span class="line">          a = a*a%val;</span><br><span class="line">        &#125;</span><br><span class="line">        return answer;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>leetcode解析</category>
+        <category>中等</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>删除有序数组中的重复项</title>
+    <url>/2021/12/06/%E5%88%A0%E9%99%A4%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E9%A1%B9/</url>
+    <content><![CDATA[<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给你一个有序数组nums ，请你原地删除重复出现的元素，使每个元素最多出现两次，返回删除后数组的新长度。<br>不要使用额外的数组空间，你必须在原地修改输入数组并在使用O(1)额外空间的条件下完成。</p>
+<span id="more"></span>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>可以设计两个指针，慢指针指向填入的位置，快指针一直遍历，如果快指针的数字不是第三个数字，则放入，接着移动慢指针。<br>nums[slow-2]！=nums[fast]则说明这个数可以填入。</p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public int removeDuplicates(int[] nums) &#123;</span><br><span class="line">        int slow = 2;</span><br><span class="line">        int fast = 2;</span><br><span class="line">        for (;fast&lt;nums.length&amp;&amp;slow&lt;nums.length;fast++)&#123;</span><br><span class="line">        	if(nums[slow-2]!= nums[fast])&#123;</span><br><span class="line">        		nums[slow] = nums [fast];</span><br><span class="line">        		slow++;</span><br><span class="line">        	&#125;</span><br><span class="line">        &#125;    </span><br><span class="line">        return slow;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>leetcode解析</category>
+        <category>中等</category>
+      </categories>
+      <tags>
+        <tag>双指针</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>单词搜索</title>
+    <url>/2021/12/06/%E5%8D%95%E8%AF%8D%E6%90%9C%E7%B4%A2/</url>
+    <content><![CDATA[<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给定一个mxn二维字符网格board和一个字符串单词word。如果word存在于网格中，返回true；否则，返回 false 。<br>单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。</p>
+<span id="more"></span>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>这道题看后就知道应该是一个回溯和dfs，但重点在于如何剪枝以及不再走重复的格子。这里在dfs的开始进行剪枝，使用回溯对棋盘染色，确保不走重复路径。</p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int m;</span><br><span class="line">   int n;</span><br><span class="line">   char[][] board;</span><br><span class="line">   String word;</span><br><span class="line">   int length;</span><br><span class="line">   public boolean exist(char[][] board, String word) &#123;</span><br><span class="line">       this.m = board.length;</span><br><span class="line">       this.n = board[0].length;</span><br><span class="line">       this.board = board;</span><br><span class="line">       this.word = word;</span><br><span class="line">       length = word.length();</span><br><span class="line">       //找到字符串的开始</span><br><span class="line">       for (int i = 0;i&lt;m;i++)&#123;</span><br><span class="line">           for (int j = 0; j&lt; n;j++)&#123;</span><br><span class="line">               if (board[i][j]==word.charAt(0))&#123;</span><br><span class="line">                   if (dfs(i,j,0))&#123;</span><br><span class="line">                       return true;</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       return false;</span><br><span class="line">   &#125;</span><br><span class="line">   public boolean dfs(int i,int j,int length)&#123;</span><br><span class="line">       //判断是否检索完毕</span><br><span class="line">       if (length == this.length)&#123;</span><br><span class="line">           return true;</span><br><span class="line">       //判断数组是否越界</span><br><span class="line">       &#125;else if (i&lt;0||i&gt;=m||j&lt;0||j&gt;=n)&#123;</span><br><span class="line">           return false;</span><br><span class="line">       //判断字符是否合格</span><br><span class="line">       &#125;else if (board[i][j]==word.charAt(length))&#123;</span><br><span class="line">           //这里采用回溯思想，对走过的路进行染色，如果失败，则还原</span><br><span class="line">           char count = board[i][j];</span><br><span class="line">           board[i][j] = &#x27;*&#x27;;</span><br><span class="line">           length++;</span><br><span class="line">           boolean res = dfs(i-1,j,length)||dfs(i+1,j,length)||dfs(i,j-1,length)||dfs(i,j+1,length);</span><br><span class="line">           board[i][j] = count;</span><br><span class="line">           return res;</span><br><span class="line">       &#125;else &#123;</span><br><span class="line">           return false;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>leetcode解析</category>
+        <category>中等</category>
+      </categories>
+      <tags>
+        <tag>回溯</tag>
+        <tag>dfs</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mySQL题目</title>
+    <url>/2021/12/07/mySQL%E9%A2%98%E7%9B%AE/</url>
+    <content><![CDATA[<h1 id="InnoDB-和-MyIsam-引擎的区别？"><a href="#InnoDB-和-MyIsam-引擎的区别？" class="headerlink" title="InnoDB 和 MyIsam 引擎的区别？"></a>InnoDB 和 MyIsam 引擎的区别？</h1><span id="more"></span>
+<p>1.InnoDB支持事务，MyIsam不支持事务。<br>2.InnoDB支持外键，MyIsam不支持。<br>3.InnoDB是聚簇索引，MyIsam是非聚簇索引。<br>4.InnoDB不支持全文索引但能拿插件实现且效果更好，MyIsam支持全文索引。<br>5.InnoDB最小锁粒度是行锁，MyIsam最小锁粒度是表锁。</p>
+<h1 id="聚簇索引和非聚簇索引"><a href="#聚簇索引和非聚簇索引" class="headerlink" title="聚簇索引和非聚簇索引"></a>聚簇索引和非聚簇索引</h1><p>聚簇索引：数据与索引一体，表数据的顺序与索引顺序一致。<br>    聚簇索引默认是主键，如果表中没有主键，InnoDB会选择一个唯一非空索引代替。<br>    如果没有这样的索引InnoDB会在内部生成一个隐式索引。<br>非聚簇索引：数据与索引分开存放，表数据顺序与索引顺序无关。</p>
+<h1 id="行锁与表锁的比较"><a href="#行锁与表锁的比较" class="headerlink" title="行锁与表锁的比较"></a>行锁与表锁的比较</h1><p>行锁：锁力度小，开销大，上锁速度慢，会出现死锁，并发高。<br>表锁：锁力度大，开销小，上锁速度快，不会出现死锁，并发低。</p>
+<h1 id="mySQL索引的最左原则"><a href="#mySQL索引的最左原则" class="headerlink" title="mySQL索引的最左原则"></a>mySQL索引的最左原则</h1><p>当使用复合索引时，进行检索时，要使用索引建立的顺序且不可中断，一旦违反这个原则，索引就会失效。<br>这事因为在b+树中存储时，优先级是字段左到右的顺序，一旦不使用前面的字段，后面的字段就会无序。</p>
+<h1 id="索引的优化"><a href="#索引的优化" class="headerlink" title="索引的优化"></a>索引的优化</h1><p>1.最左前缀法则<br>2.不要对索引进行计算，函数以及转型，会导致索引失效。<br>3.不可以在范围查找语句右边使用索引，会导致索引失效。<br>4.减少select* 的使用，尽量进行覆盖索引，即select查询字段与where中索引字段一致。<br>5.不要在使用like查找索引字段时在字段前面加%。</p>
+<h1 id="为什么范围查找会导致索引失效"><a href="#为什么范围查找会导致索引失效" class="headerlink" title="为什么范围查找会导致索引失效"></a>为什么范围查找会导致索引失效</h1><p>因为b+树的叶节点是是一个有序链表，当进行范围查找时会会把整段链表直接取出等待下一步查找，这种情况下，除非取出的这整一段的范围查找的字段都相等，否则下一个字段一定是乱序的。</p>
+<h1 id="为什么在like中添加前缀会导致索引失效"><a href="#为什么在like中添加前缀会导致索引失效" class="headerlink" title="为什么在like中添加前缀会导致索引失效"></a>为什么在like中添加前缀会导致索引失效</h1><p>这是因为字符串在b+树里存储的时候，是按照ascii码的大小存储的，此时，这个结构与复合索引结构是一样的，当为字符串增加前缀时，违反了最左前缀法则。</p>
+<h1 id="使用order-by查询时如何优化速度"><a href="#使用order-by查询时如何优化速度" class="headerlink" title="使用order by查询时如何优化速度"></a>使用order by查询时如何优化速度</h1><p>使用order by时要进量使用覆盖索引，因为不使用覆盖索引进行排序会发生文件内排序。或者在java中进行排序。</p>
+<h1 id="什么是慢查询，如何定位"><a href="#什么是慢查询，如何定位" class="headerlink" title="什么是慢查询，如何定位"></a>什么是慢查询，如何定位</h1><p>记录所有执行时间超过一个限度的查询和不适用索引的查询到慢查询日志，以待分析处理。<br>根据SHOW VARIABLES LIKE ‘%query%’语句查询文件路径。</p>
+]]></content>
+      <categories>
+        <category>面试题</category>
+        <category>javase题目</category>
+      </categories>
   </entry>
 </search>
