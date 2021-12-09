@@ -28,7 +28,7 @@
 <meta property="og:description" content="html和css">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-11-28T07:19:13.000Z">
-<meta property="article:modified_time" content="2021-12-07T09:31:59.967Z">
+<meta property="article:modified_time" content="2021-12-09T13:14:27.518Z">
 <meta property="article:author" content="征途">
 <meta name="twitter:card" content="summary">
 
@@ -218,7 +218,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-07 17:31:59" itemprop="dateModified" datetime="2021-12-07T17:31:59+08:00">2021-12-07</time>
+                <time title="修改时间：2021-12-09 21:14:27" itemprop="dateModified" datetime="2021-12-09T21:14:27+08:00">2021-12-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -246,7 +246,7 @@
 <h2 id="常用字符实体"><a href="#常用字符实体" class="headerlink" title="常用字符实体"></a>常用字符实体</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">空格：&amp;nbsp;</span><br><span class="line">小于号：&amp;lt;</span><br><span class="line">大于号：&amp;gt;</span><br><span class="line">双引号：&amp;quot;</span><br><span class="line">单引号：&amp;apos;</span><br></pre></td></tr></table></figure>
 <h2 id="css和html的结合"><a href="#css和html的结合" class="headerlink" title="css和html的结合"></a>css和html的结合</h2><p>1.在标签的style属性上设置”key:value value”,修改标签样式<br>2.在head标签中使用style标签定义，style标签中使用css语法。<br>3.把css样式写为一个文件，通过link标签引入。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;文件路径&quot;/&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="选择器"><a href="#选择器" class="headerlink" title="选择器"></a>选择器</h2><p>1.标签选择器: 标签名{}<br>2.id选择器： #id{}<br>3.class选择器： .class{}<br>4.组合选择器<br>class选择器与id选择器的区别：id选择器的值是唯一的，class选择器可以多标签公用。</p>
+<h2 id="选择器"><a href="#选择器" class="headerlink" title="选择器"></a>选择器</h2><p>1.标签选择器: 标签名{}<br>2.id选择器： #id{}<br>3.class选择器： 标签名.class{}<br>4.组合选择器<br>class选择器与id选择器的区别：id选择器的值是唯一的，class选择器可以多标签公用。</p>
 <h1 id="js"><a href="#js" class="headerlink" title="js"></a>js</h1><h2 id="js和html代码的结合"><a href="#js和html代码的结合" class="headerlink" title="js和html代码的结合"></a>js和html代码的结合</h2><p>1.在head或者body标签中使用script标签写js代码<br>2.使用script标签引入js文件</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span> <span class="attr">src</span>=<span class="string">&quot;path&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <h2 id="与java语法不同部分"><a href="#与java语法不同部分" class="headerlink" title="与java语法不同部分"></a>与java语法不同部分</h2><p>赋值使用var对任意类型赋值。<br>==与===，前者只比较字面值，后者比较数值与类型。<br>逻辑运算与c相同，所有数值可做布尔类型变量。0，null，undefined，””为false。<br>&amp;&amp;运算，当表达式全为真时返回最后一个表达式的值，有假时返回第一个为假的表达式值。<br>||运算，当表达式全为假时返回最后一个表达式的值，有真时返回第一个为真的表达式值。<br>数组中可以放类型不同的数据，且长度可变。 var arr = [];<br>函数定义：</p>
@@ -749,8 +749,8 @@
 <td>取得需要的初始化参数</td>
 </tr>
 <tr>
-<td>getgetServletContext()</td>
-<td>取得ServletContext对象</td>
+<td>getServletContext()</td>
+<td>取得ServletContext对象(整个工程的域对象)</td>
 </tr>
 </tbody></table>
 <p>注意：当在HttpSerlet中重写init方法时要使用super.init(config)调用父类的init方法，因为getServletConfig()方法需要从HttpSerlet的父类GenericServlet中取得config对象，而这个config对象是由init方法保存的，如果只重写子类而不执行父类的这个方法，这个config对象就无法被保存。</p>
@@ -813,7 +813,7 @@
 </tr>
 <tr>
 <td>getParameter()</td>
-<td>获取请求参数</td>
+<td>获取请求参数(括号中写参数的name)</td>
 </tr>
 <tr>
 <td>getParameterValue()</td>
@@ -836,7 +836,7 @@
 <td>设置编码方式(一般用于post接收汉语)</td>
 </tr>
 <tr>
-<td>getRequestDispatcher(“相对资源路径”)</td>
+<td>getRequestDispatcher(“资源路径”).forward</td>
 <td>获取请求转发对象</td>
 </tr>
 </tbody></table>
@@ -868,8 +868,292 @@
 </tbody></table>
 <p>这两个流不能同时取得。<br>请求重定向：是指客户端给服务器发送请求，然后服务器返回客户端一个新地址让客户端访问。(无法跳入web-inf内，可以跳到当前工程外的网站)</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//设置响应状态码302</span><br><span class="line">resp.setStatus(302);</span><br><span class="line">//设置响应头说明新地址</span><br><span class="line">resp.seyHeader(&quot;Location&quot;,&quot;新地址&quot;);</span><br><span class="line">//第二种方法(推荐)</span><br><span class="line">resp.sendRedirect(&quot;新地址&quot;);</span><br></pre></td></tr></table></figure>
-<h1 id="书城项目"><a href="#书城项目" class="headerlink" title="书城项目"></a>书城项目</h1><h2 id="阶段一"><a href="#阶段一" class="headerlink" title="阶段一"></a>阶段一</h2><p>表单验证的实现</p>
+<h1 id="jsp"><a href="#jsp" class="headerlink" title="jsp"></a>jsp</h1><p>主要作用是代替Servlet传回html页面的数据，jsp页面本质是servlet程序。</p>
+<h2 id="page指令的属性"><a href="#page指令的属性" class="headerlink" title="page指令的属性"></a>page指令的属性</h2><table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>language</td>
+<td>表示翻译后是什么语言文件</td>
+</tr>
+<tr>
+<td>contentType</td>
+<td>表示jsp返回数据的编码类型</td>
+</tr>
+<tr>
+<td>pageEncoding</td>
+<td>表示页面字符集编码类型</td>
+</tr>
+<tr>
+<td>import</td>
+<td>导包</td>
+</tr>
+<tr>
+<td>autoFlush</td>
+<td>设置当out输出流缓冲区满了后是否自动刷新，默认是true</td>
+</tr>
+<tr>
+<td>buffer</td>
+<td>设置out缓冲区大小，默认8kb</td>
+</tr>
+<tr>
+<td>errorPage</td>
+<td>设置当jsp页面运行出错时，自动跳转的页面</td>
+</tr>
+<tr>
+<td>isError</td>
+<td>设置当前jsp页面是否是错误信息页面,默认是false,如果是true可以获取异常信息</td>
+</tr>
+<tr>
+<td>extends</td>
+<td>设置jsp翻译出的java程序继承哪些类</td>
+</tr>
+</tbody></table>
+<h2 id="jsp脚本"><a href="#jsp脚本" class="headerlink" title="jsp脚本"></a>jsp脚本</h2><h3 id="声明脚本-极少使用"><a href="#声明脚本-极少使用" class="headerlink" title="声明脚本(极少使用):"></a>声明脚本(极少使用):</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%! 声明java代码 %&gt;</span><br></pre></td></tr></table></figure>
+<p>可以给jsp翻译出来的java类定义属性和方法,甚至是代码块或内部类.</p>
+<h3 id="表达式脚本-常用"><a href="#表达式脚本-常用" class="headerlink" title="表达式脚本(常用):"></a>表达式脚本(常用):</h3><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="meta">%</span> =表达式 <span class="meta">%</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>jsp页面输出的数据,可以调用jspService中的对象.注意:不能使用分号</p>
+<h3 id="代码脚本"><a href="#代码脚本" class="headerlink" title="代码脚本"></a>代码脚本</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;% java语句 %&gt;</span><br></pre></td></tr></table></figure>
+<p>代码脚本会被翻译到jspService()方法中.<br>可以调用jspService中的方法以对象,if方法以及for循环语句.<br>且因为是直接复制放入,甚至可以将一段代码拆分为几部分分别放入代码脚本中,翻译后就自然拼接起来了.也可以与表达式脚本和html语句进行拼接.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;table border=&quot;1&quot; cellspacing=&quot;0&quot;&gt;</span><br><span class="line">&lt;% </span><br><span class="line">    for(int j = 0; j&lt; 10;j++)&#123;</span><br><span class="line">%&gt;</span><br><span class="line">    &lt;tr&gt;</span><br><span class="line">        &lt;td&gt;第&lt;%=j+1%&gt;行&lt;/td&gt;</span><br><span class="line">    &lt;/tr&gt;</span><br><span class="line">&lt;%</span><br><span class="line">    &#125;</span><br><span class="line">%&gt;</span><br><span class="line">&lt;/table&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="内置对象"><a href="#内置对象" class="headerlink" title="内置对象"></a>内置对象</h2><table>
+<thead>
+<tr>
+<th>-</th>
+<th>-</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>request</td>
+<td>请求对象</td>
+</tr>
+<tr>
+<td>response</td>
+<td>响应对象</td>
+</tr>
+<tr>
+<td>pageContext</td>
+<td>jsp上下文对象</td>
+</tr>
+<tr>
+<td>session</td>
+<td>会话对象</td>
+</tr>
+<tr>
+<td>application</td>
+<td>ServletContext对象</td>
+</tr>
+<tr>
+<td>config</td>
+<td>ServletConfig对象</td>
+</tr>
+<tr>
+<td>out</td>
+<td>jsp输出流对象</td>
+</tr>
+<tr>
+<td>page</td>
+<td>指向当前jsp的对象</td>
+</tr>
+<tr>
+<td>exception</td>
+<td>异常对象</td>
+</tr>
+</tbody></table>
+<p>其中有四个是域对象,它们的作用范围各不相同<br>域对象|作用范围<br>-|-<br>pageContext(PageContextImpl类)|当前jsp页面范围内有效<br>request(HttpServletRequest类)|一次请求内有效<br>session(HttpSession类)|一个会话范围内有效(打开浏览器,直到关闭浏览器)<br>application(ServletContext类)|整个web工程内</p>
+<h2 id="out与response的区别"><a href="#out与response的区别" class="headerlink" title="out与response的区别"></a>out与response的区别</h2><p>out与response分别有自己的缓冲区,当out刷新时会把内容送入到response中,当response刷新时会把全部数据给客户端.<br>out.print:不管输入任何内容,在输出时都会转化成字符串.<br>out.write:不会专门进行字符串的转化,像int传入后会使用ascii码转成字符.</p>
+<h2 id="常用标签"><a href="#常用标签" class="headerlink" title="常用标签"></a>常用标签</h2><h3 id="jsp静态包含-常用"><a href="#jsp静态包含-常用" class="headerlink" title="jsp静态包含(常用)"></a>jsp静态包含(常用)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ include file=&quot;路径&quot;%&gt;</span><br></pre></td></tr></table></figure>
+<p>静态包含是把被包含的内容在解析时直接复制过来,两部分内容本质在一个文件中,公用所有参数.</p>
+<h3 id="动态包含"><a href="#动态包含" class="headerlink" title="动态包含"></a>动态包含</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;jsp:include page=&quot;路径&quot;&gt;</span><br><span class="line">    &lt;jsp:param name=&quot;username&quot; value=&quot;jj&quot;/&gt;</span><br><span class="line">&lt;/jsp:include&gt;</span><br></pre></td></tr></table></figure>
+<p>动态包含会把被包含的内容再独立创建一个文件,这个文件的内置对象是主文件对象的指针,本质还是共用内置对象.</p>
+<h3 id="请求转发"><a href="#请求转发" class="headerlink" title="请求转发"></a>请求转发</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;jsp:forward page=&quot;路径&quot;&gt;&lt;/jsp:forward&gt;</span><br></pre></td></tr></table></figure>
+<p>这里就是jsp的主要作用,当客户端要检索内容时,客户端的请求会发送给servlet由servlet执行对数据库的操作,当servlet获取到检索的内容时会把它放到request中转发给jsp,最终由jsp实现数据的回传.</p>
+<h2 id="JSTL核心标签库"><a href="#JSTL核心标签库" class="headerlink" title="JSTL核心标签库"></a>JSTL核心标签库</h2><p>1.导入jstl标签库的jar包<br>2.引入标签库(使用时会自动导入)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ taglib prefix=&quot;c&quot; uri=&quot;http://java.sun.com/jsp/jstl/core&quot;%&gt;</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>标签</th>
+<th>使用方法</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&lt;c:set /&gt;</td>
+<td>scop=”域”  var=”key”  value=”value”</td>
+<td>可以往域中保存数据</td>
+</tr>
+<tr>
+<td>&lt;c:if&gt;</c:if></td>
+<td>test=”EL判断表达式”,成立执行中间的内容</td>
+<td>做if判断</td>
+</tr>
+<tr>
+<td>&lt;c:choose&gt;&lt;c:when&gt;&lt;c:otherwise&gt;</td>
+<td>在when中填写test属性,且when一定要在choose标签中</td>
+<td>跟switch…case…default类似,不需要break</td>
+</tr>
+<tr>
+<td>&lt;c:forEach/&gt;</td>
+<td>begin=”起始索引” end=”结束” var=”i” step=”步长”</td>
+<td>数字遍历循环,i表示当前数字</td>
+</tr>
+<tr>
+<td>&lt;c:forEach/&gt;</td>
+<td>items=”数组” var=”i” varStatus=””</td>
+<td>数组,集合遍历循环,i表示当前数据,可以添加起始,结束索引以及步长</td>
+</tr>
+</tbody></table>
+<h1 id="EL表达式"><a href="#EL表达式" class="headerlink" title="EL表达式"></a>EL表达式</h1><p>主要是代替jsp页面中的表达式脚本,主要用于输出域对象数据,填入key输出value.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$&#123;表达式&#125;</span><br><span class="line">//也可以写对象以及其中的属性,会直接调用其对应的get方法进而会调用其toString方法,</span><br><span class="line">//如果没有get方法则会报错</span><br><span class="line">//调用map的具体key-value时在map后加.key即可</span><br></pre></td></tr></table></figure>
+<p>比jsp表达式脚本更简洁,且null会直接输出为空串.<br>当四个域都有相同key时,会优先使用更小范围的key.</p>
+<h2 id="运算"><a href="#运算" class="headerlink" title="运算"></a>运算</h2><p>此外EL表达式也支持java的各种运算.比java还多了以下这些运算:</p>
+<table>
+<thead>
+<tr>
+<th>表达式</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>${empty 表达式}</td>
+<td>判断是否为空</td>
+</tr>
+<tr>
+<td>.运算</td>
+<td>输出Bean对象的某个属性的值</td>
+</tr>
+<tr>
+<td>[]运算</td>
+<td>输出有序集合中某个元素的值</td>
+</tr>
+<tr>
+<td>map[a.a.a]</td>
+<td>输出map的一些有特殊符号的key</td>
+</tr>
+</tbody></table>
+<h2 id="隐含对象"><a href="#隐含对象" class="headerlink" title="隐含对象"></a>隐含对象</h2><table>
+<thead>
+<tr>
+<th>变量</th>
+<th>类型</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pageContext</td>
+<td>PageContextImpl</td>
+<td>它可以获取jsp中的九大内置对象</td>
+</tr>
+<tr>
+<td>pageScope</td>
+<td>Map&lt;String,Object&gt;</td>
+<td>它可以获取pageContext域中的数据</td>
+</tr>
+<tr>
+<td>requestScope</td>
+<td>Map&lt;String,Object&gt;</td>
+<td>它可以获取Request域中的数据</td>
+</tr>
+<tr>
+<td>sessionScope</td>
+<td>Map&lt;String,Object&gt;</td>
+<td>它可以获取Session域中的数据</td>
+</tr>
+<tr>
+<td>applicationScope</td>
+<td>Map&lt;String,Object&gt;</td>
+<td>它可以获取Application域中的数据</td>
+</tr>
+<tr>
+<td>param</td>
+<td>Map&lt;String,String&gt;</td>
+<td>它可以获取请求参数的值</td>
+</tr>
+<tr>
+<td>paramValues</td>
+<td>Map&lt;String,String[]&gt;</td>
+<td>它可以获取请求参数的值(多个值时)</td>
+</tr>
+<tr>
+<td>header</td>
+<td>Map&lt;String,String&gt;</td>
+<td>可以获取请求头的信息</td>
+</tr>
+<tr>
+<td>headerValues</td>
+<td>Map&lt;String,String[]&gt;</td>
+<td>它可以获取请求头的值(多个值时)</td>
+</tr>
+<tr>
+<td>cookie</td>
+<td>Map&lt;String,Cookie&gt;</td>
+<td>它可以获取当前请求的Cookie信息</td>
+</tr>
+<tr>
+<td>initParam</td>
+<td>Map&lt;String,String&gt;</td>
+<td>它可以获取在web.xml中配置的<context-param>上下文参数</td>
+</tr>
+</tbody></table>
+<h1 id="文件的上传"><a href="#文件的上传" class="headerlink" title="文件的上传"></a>文件的上传</h1><p>1.有from标签,method=post,encType=multipart/from-data(表示数据以多段(每个表单项为一段)的形式进行拼接,然后以二进制流的形式发送给服务器)<br>2.有input标签,type=file.<br>3.编写服务器代码接收(servlet那边以二进制流的形式接收,解析.解析要使用commons jar包)</p>
+<h2 id="fileupload常用方法-类"><a href="#fileupload常用方法-类" class="headerlink" title="fileupload常用方法,类"></a>fileupload常用方法,类</h2><table>
+<thead>
+<tr>
+<th>方法或类</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ServletFileUpload类</td>
+<td>用于解析上传数据</td>
+</tr>
+<tr>
+<td>boolean ServletFileload.isMultipartContent(req)</td>
+<td>判断接收到的数据是否为多段格式</td>
+</tr>
+<tr>
+<td>public List<FileItem> parseRequest(req)</td>
+<td>分段解析上传的数据</td>
+</tr>
+<tr>
+<td>boolean FileItem.isFormField()</td>
+<td>判断是否是普通表单项</td>
+</tr>
+<tr>
+<td>String FileItem.getFileName()</td>
+<td>获取表单项的名</td>
+</tr>
+<tr>
+<td>String FileItem.getString(“UTF-8”)</td>
+<td>获取当前表单项的值</td>
+</tr>
+<tr>
+<td>String FileItem.getName()</td>
+<td>获取上传的文件名</td>
+</tr>
+<tr>
+<td>void FileItem.write(new File(path))</td>
+<td>输出到指定磁盘位置</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//判断格式</span><br><span class="line">if(ServletFileload.isMultipartContent(req))&#123;</span><br><span class="line">    //创建FileItemFactory工厂实现类</span><br><span class="line">    FileItemFactory fileItemFactory = new DiskFileItemFactory();</span><br><span class="line">    //创建用于解析上传数据的工具类ServletFileUpload类</span><br><span class="line">    ServletFileUpload servletFileUpload = new ServletFileUpload(fileItemFactory);</span><br><span class="line">    //解析上传的数据,得到每个的表单项FileItem</span><br><span class="line">    List&lt;FileItem&gt; list = servletFileUpload.parseRequest(req);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="文件的下载"><a href="#文件的下载" class="headerlink" title="文件的下载"></a>文件的下载</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">doGet()&#123;</span><br><span class="line">    //取得文件名</span><br><span class="line">    String downloadName =</span><br><span class="line">    //设置取得文件的文件夹路径</span><br><span class="line">    String filePath = &quot;/file/&quot;;</span><br><span class="line">    //获取要下载的文件类型</span><br><span class="line">    ServletContext servletContext = getServletContext;</span><br><span class="line">    String mimeType = servletContext.getMimeType(filePath+downloadFileName);</span><br><span class="line">    //设置响应头告诉客户端返回的数据类型</span><br><span class="line">    resp.setContextType(mimeType);</span><br><span class="line">    //设置响应头告诉客户端这是用于下载的(不设置会直接显示),这里的编码方式是对应谷歌,ie浏览器</span><br><span class="line">    resp.setHeader(&quot;Content-Disposition&quot;,&quot;attachment;filename=&quot;+URLEncoder.encode(&quot;有汉字的字符串&quot;,&quot;UTF-8&quot;));</span><br><span class="line">    //取得要下载的文件内容</span><br><span class="line">    InputStream resourceAsStream = servletContext.getResourceAsStream(filePath+downloadFileName);</span><br><span class="line">    //获取输出流</span><br><span class="line">    OutputStream outputStream = resp.getOutputStream();</span><br><span class="line">    //使用commons包工具类导出</span><br><span class="line">    IOUtils.copy(resourceAsStream,outputStream);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="项目"><a href="#项目" class="headerlink" title="项目"></a>项目</h1><h2 id="阶段一"><a href="#阶段一" class="headerlink" title="阶段一"></a>阶段一</h2><p>表单验证的实现</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=&quot;text/javascript&quot;&gt;</span><br><span class="line">    $(function () &#123;</span><br><span class="line">        //给注册绑定事件</span><br><span class="line">        $(&quot;#sub_btn&quot;).click(function () &#123;</span><br><span class="line">            var username = $(&quot;#username&quot;).val()</span><br><span class="line">            var usernamePatt = /^\w&#123;5,12&#125;$/</span><br><span class="line">            //确认用户名</span><br><span class="line">            if (!usernamePatt.test(username))&#123;</span><br><span class="line">                //定位错误信息输出文本，并输出对应的文字</span><br><span class="line">                $(&quot;span.errorMsg&quot;).text(&quot;用户名不合法&quot;)</span><br><span class="line">                //防止页面跳转</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            //合法后要去处显示的信息</span><br><span class="line">            var password = $(&quot;#password&quot;).val();</span><br><span class="line">            var passwordPatt = /^\w&#123;5,12&#125;$/</span><br><span class="line">            $(&quot;span.errorMsg&quot;).text(&quot;&quot;);</span><br><span class="line">            //确认密码</span><br><span class="line">            if (!passwordPatt.test(password))&#123;</span><br><span class="line">                $(&quot;span.errorMsg&quot;).text(&quot;密码不合法&quot;)</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            $(&quot;span.errorMsg&quot;).text(&quot;&quot;);</span><br><span class="line">            var repwd = $(&quot;#repwd&quot;).val()</span><br><span class="line">            //确认确认的密码</span><br><span class="line">            if (repwd!=password)&#123;</span><br><span class="line">                $(&quot;span.errorMsg&quot;).text(&quot;两次密码不一致&quot;)</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            $(&quot;span.errorMsg&quot;).text(&quot;&quot;);</span><br><span class="line">            var email = $(&quot;#email&quot;).val()</span><br><span class="line">            var emailPatt = /\w*@\w*.com/</span><br><span class="line">            //确认邮箱</span><br><span class="line">            if (!emailPatt.test(email))&#123;</span><br><span class="line">                $(&quot;span.errorMsg&quot;).text(&quot;邮箱不合法&quot;)</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            $(&quot;span.errorMsg&quot;).text(&quot;&quot;);</span><br><span class="line">            var code = $(&quot;#code&quot;).val();</span><br><span class="line">            //确认验证码</span><br><span class="line">            if (code==null||code==&quot;&quot;)&#123;</span><br><span class="line">                $(&quot;span.errorMsg&quot;).text(&quot;输入正确的验证码&quot;)</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            $(&quot;span.errorMsg&quot;).text(&quot;&quot;);</span><br><span class="line"></span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="阶段二"><a href="#阶段二" class="headerlink" title="阶段二"></a>阶段二</h2><p>1.创建数据库与用户表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">CREATE DATABASE book</span><br><span class="line">USE book</span><br><span class="line">CREATE TABLE `user`(</span><br><span class="line">    `id` INT PRIMARY KEY AUTO_INCREMENT,</span><br><span class="line">    `usernam` VARCHAR(20) NOT NULL UNIQUE,</span><br><span class="line">    `password` VARCHAR(32) NOT NULL,</span><br><span class="line">    `email` VARCHAR(200)</span><br><span class="line">)</span><br><span class="line">ALTER TABLE `user` CHANGE `usernam`  `username` VARCHAR(20) NOT NULL UNIQUE</span><br><span class="line">INSERT INTO `user`(`username`,`password`,`email`)VALUES(&#x27;admin&#x27;,&#x27;admin&#x27;,NULL)</span><br></pre></td></tr></table></figure>
+<p>2.编写对应的javabean类<br>3.编写Dao持久层(实现对数据库的各种操作)<br>    搭建常用工具类：导入DBUtils包，MySQL包，durid包。编写durid工具包，编写BasicDao，UserDao，UserDaoImpl。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public class UserDaoImpl extends BasicDao&lt;User&gt; implements UserDao &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public User queryUserByUsername(String username) &#123;</span><br><span class="line">        String sql = &quot;select * from `user` where `username` = ?&quot;;</span><br><span class="line">        return querySingle(sql,User.class,username);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public User queryUserByUsernameAndPassword(String username, String password) &#123;</span><br><span class="line">        String sql = &quot;select * from `user` where `username` = ? and `password` = ?&quot;;</span><br><span class="line">        return querySingle(sql,User.class,username,password);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public int saveUser(User user) &#123;</span><br><span class="line">        String sql = &quot;insert into `user`(username,password,email) values(?,?,?)&quot;;</span><br><span class="line"></span><br><span class="line">        return update(sql,user.getName(),user.getPassword(),user.getEmail());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>4.编写Service业务层(实现各种方法)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">public class UserServiceImpl implements UserService &#123;</span><br><span class="line">    private UserDao userDao = new UserDaoImpl();</span><br><span class="line">    @Override</span><br><span class="line">    public void registUser(User user) &#123;</span><br><span class="line">        userDao.saveUser(user);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public User login(String username, String password) &#123;</span><br><span class="line">        return userDao.queryUserByUsernameAndPassword(username,password);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public boolean canUseName(String username) &#123;</span><br><span class="line">        User user = userDao.queryUserByUsername(username);</span><br><span class="line">        if (user==null)&#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;else &#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>5.编写web层(将请求路径与工程进行绑定,将得到的请求进行解析,交给业务层实现,接收业务层的结果,处理后,输出给客户端)<br>    导入servlet包。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public class RegistServlet extends HttpServlet &#123;</span><br><span class="line">    UserService userService = new UserServiceImpl();</span><br><span class="line">    @Override</span><br><span class="line">    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException &#123;</span><br><span class="line">        String username = req.getParameter(&quot;username&quot;);</span><br><span class="line">        String password = req.getParameter(&quot;password&quot;);</span><br><span class="line">        String email = req.getParameter(&quot;email&quot;);</span><br><span class="line">        String code = req.getParameter(&quot;code&quot;);</span><br><span class="line">        //验证验证码</span><br><span class="line">        if (userService.canUseName(username))&#123;</span><br><span class="line">            User user = new User(0,username, password, email);</span><br><span class="line">            userService.registUser(user);</span><br><span class="line">            req.getRequestDispatcher(&quot;pages/user/regist_success.html&quot;).forward(req,resp);</span><br><span class="line">        &#125;else &#123;</span><br><span class="line">            req.getRequestDispatcher(&quot;pages/user/regist.html&quot;).forward(req,resp);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -949,7 +1233,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#html%E5%92%8Ccss"><span class="nav-number">1.</span> <span class="nav-text">html和css</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#html%E5%B8%B8%E7%94%A8%E6%A0%87%E7%AD%BE"><span class="nav-number">1.1.</span> <span class="nav-text">html常用标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%AD%97%E7%AC%A6%E5%AE%9E%E4%BD%93"><span class="nav-number">1.2.</span> <span class="nav-text">常用字符实体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#css%E5%92%8Chtml%E7%9A%84%E7%BB%93%E5%90%88"><span class="nav-number">1.3.</span> <span class="nav-text">css和html的结合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E5%99%A8"><span class="nav-number">1.4.</span> <span class="nav-text">选择器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#js"><span class="nav-number">2.</span> <span class="nav-text">js</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#js%E5%92%8Chtml%E4%BB%A3%E7%A0%81%E7%9A%84%E7%BB%93%E5%90%88"><span class="nav-number">2.1.</span> <span class="nav-text">js和html代码的结合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8Ejava%E8%AF%AD%E6%B3%95%E4%B8%8D%E5%90%8C%E9%83%A8%E5%88%86"><span class="nav-number">2.2.</span> <span class="nav-text">与java语法不同部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6"><span class="nav-number">2.3.</span> <span class="nav-text">事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DOM"><span class="nav-number">2.4.</span> <span class="nav-text">DOM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%AF%B9%E6%96%87%E6%9C%AC%E7%9A%84%E9%AA%8C%E8%AF%81"><span class="nav-number">2.5.</span> <span class="nav-text">正则表达式对文本的验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8A%82%E7%82%B9%E7%9A%84%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%E6%88%96%E5%B1%9E%E6%80%A7"><span class="nav-number">2.6.</span> <span class="nav-text">节点的常用方法或属性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E2%80%9CjQuery%E2%80%9D"><span class="nav-number">3.</span> <span class="nav-text">“jQuery”</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E5%87%BD%E6%95%B0"><span class="nav-number">3.1.</span> <span class="nav-text">核心函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%80%9CjQuery%E2%80%9D%E5%AF%B9%E8%B1%A1%E5%8F%8A%E6%96%B9%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text">“jQuery”对象及方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7%E8%8E%B7%E5%8F%96"><span class="nav-number">3.2.1.</span> <span class="nav-text">属性获取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A2%9E%E5%88%A0%E6%94%B9"><span class="nav-number">3.2.2.</span> <span class="nav-text">增删改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#css%E6%A0%B7%E5%BC%8F"><span class="nav-number">3.2.3.</span> <span class="nav-text">css样式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E7%94%BB"><span class="nav-number">3.2.4.</span> <span class="nav-text">动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6-1"><span class="nav-number">3.2.5.</span> <span class="nav-text">事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E5%99%A8-1"><span class="nav-number">3.2.6.</span> <span class="nav-text">选择器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#xml"><span class="nav-number">4.</span> <span class="nav-text">xml</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#dom4j%E8%A7%A3%E6%9E%90%E6%8A%80%E6%9C%AF"><span class="nav-number">4.1.</span> <span class="nav-text">dom4j解析技术</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#servlet"><span class="nav-number">5.</span> <span class="nav-text">servlet</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#servlet%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%88%9B%E5%BB%BA"><span class="nav-number">5.1.</span> <span class="nav-text">servlet程序的创建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#servlet%E7%A8%8B%E5%BA%8F%E7%9A%84%E8%AE%BF%E9%97%AE%E8%BF%87%E7%A8%8B"><span class="nav-number">5.2.</span> <span class="nav-text">servlet程序的访问过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">5.3.</span> <span class="nav-text">生命周期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#form-get%E4%B8%8Eform-post"><span class="nav-number">5.4.</span> <span class="nav-text">form:get与form:post</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ServletCofig"><span class="nav-number">5.5.</span> <span class="nav-text">ServletCofig</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ServletContext"><span class="nav-number">5.6.</span> <span class="nav-text">ServletContext</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HttpServletRequest"><span class="nav-number">5.7.</span> <span class="nav-text">HttpServletRequest</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HttpServletResponse"><span class="nav-number">5.8.</span> <span class="nav-text">HttpServletResponse</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B9%A6%E5%9F%8E%E9%A1%B9%E7%9B%AE"><span class="nav-number">6.</span> <span class="nav-text">书城项目</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5%E4%B8%80"><span class="nav-number">6.1.</span> <span class="nav-text">阶段一</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#html%E5%92%8Ccss"><span class="nav-number">1.</span> <span class="nav-text">html和css</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#html%E5%B8%B8%E7%94%A8%E6%A0%87%E7%AD%BE"><span class="nav-number">1.1.</span> <span class="nav-text">html常用标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%AD%97%E7%AC%A6%E5%AE%9E%E4%BD%93"><span class="nav-number">1.2.</span> <span class="nav-text">常用字符实体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#css%E5%92%8Chtml%E7%9A%84%E7%BB%93%E5%90%88"><span class="nav-number">1.3.</span> <span class="nav-text">css和html的结合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E5%99%A8"><span class="nav-number">1.4.</span> <span class="nav-text">选择器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#js"><span class="nav-number">2.</span> <span class="nav-text">js</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#js%E5%92%8Chtml%E4%BB%A3%E7%A0%81%E7%9A%84%E7%BB%93%E5%90%88"><span class="nav-number">2.1.</span> <span class="nav-text">js和html代码的结合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8Ejava%E8%AF%AD%E6%B3%95%E4%B8%8D%E5%90%8C%E9%83%A8%E5%88%86"><span class="nav-number">2.2.</span> <span class="nav-text">与java语法不同部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6"><span class="nav-number">2.3.</span> <span class="nav-text">事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DOM"><span class="nav-number">2.4.</span> <span class="nav-text">DOM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%AF%B9%E6%96%87%E6%9C%AC%E7%9A%84%E9%AA%8C%E8%AF%81"><span class="nav-number">2.5.</span> <span class="nav-text">正则表达式对文本的验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8A%82%E7%82%B9%E7%9A%84%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%E6%88%96%E5%B1%9E%E6%80%A7"><span class="nav-number">2.6.</span> <span class="nav-text">节点的常用方法或属性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E2%80%9CjQuery%E2%80%9D"><span class="nav-number">3.</span> <span class="nav-text">“jQuery”</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E5%87%BD%E6%95%B0"><span class="nav-number">3.1.</span> <span class="nav-text">核心函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%80%9CjQuery%E2%80%9D%E5%AF%B9%E8%B1%A1%E5%8F%8A%E6%96%B9%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text">“jQuery”对象及方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7%E8%8E%B7%E5%8F%96"><span class="nav-number">3.2.1.</span> <span class="nav-text">属性获取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A2%9E%E5%88%A0%E6%94%B9"><span class="nav-number">3.2.2.</span> <span class="nav-text">增删改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#css%E6%A0%B7%E5%BC%8F"><span class="nav-number">3.2.3.</span> <span class="nav-text">css样式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E7%94%BB"><span class="nav-number">3.2.4.</span> <span class="nav-text">动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6-1"><span class="nav-number">3.2.5.</span> <span class="nav-text">事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E5%99%A8-1"><span class="nav-number">3.2.6.</span> <span class="nav-text">选择器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#xml"><span class="nav-number">4.</span> <span class="nav-text">xml</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#dom4j%E8%A7%A3%E6%9E%90%E6%8A%80%E6%9C%AF"><span class="nav-number">4.1.</span> <span class="nav-text">dom4j解析技术</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#servlet"><span class="nav-number">5.</span> <span class="nav-text">servlet</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#servlet%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%88%9B%E5%BB%BA"><span class="nav-number">5.1.</span> <span class="nav-text">servlet程序的创建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#servlet%E7%A8%8B%E5%BA%8F%E7%9A%84%E8%AE%BF%E9%97%AE%E8%BF%87%E7%A8%8B"><span class="nav-number">5.2.</span> <span class="nav-text">servlet程序的访问过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">5.3.</span> <span class="nav-text">生命周期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#form-get%E4%B8%8Eform-post"><span class="nav-number">5.4.</span> <span class="nav-text">form:get与form:post</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ServletCofig"><span class="nav-number">5.5.</span> <span class="nav-text">ServletCofig</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ServletContext"><span class="nav-number">5.6.</span> <span class="nav-text">ServletContext</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HttpServletRequest"><span class="nav-number">5.7.</span> <span class="nav-text">HttpServletRequest</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HttpServletResponse"><span class="nav-number">5.8.</span> <span class="nav-text">HttpServletResponse</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#jsp"><span class="nav-number">6.</span> <span class="nav-text">jsp</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#page%E6%8C%87%E4%BB%A4%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="nav-number">6.1.</span> <span class="nav-text">page指令的属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jsp%E8%84%9A%E6%9C%AC"><span class="nav-number">6.2.</span> <span class="nav-text">jsp脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A3%B0%E6%98%8E%E8%84%9A%E6%9C%AC-%E6%9E%81%E5%B0%91%E4%BD%BF%E7%94%A8"><span class="nav-number">6.2.1.</span> <span class="nav-text">声明脚本(极少使用):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%84%9A%E6%9C%AC-%E5%B8%B8%E7%94%A8"><span class="nav-number">6.2.2.</span> <span class="nav-text">表达式脚本(常用):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E8%84%9A%E6%9C%AC"><span class="nav-number">6.2.3.</span> <span class="nav-text">代码脚本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E7%BD%AE%E5%AF%B9%E8%B1%A1"><span class="nav-number">6.3.</span> <span class="nav-text">内置对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#out%E4%B8%8Eresponse%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">6.4.</span> <span class="nav-text">out与response的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E6%A0%87%E7%AD%BE"><span class="nav-number">6.5.</span> <span class="nav-text">常用标签</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#jsp%E9%9D%99%E6%80%81%E5%8C%85%E5%90%AB-%E5%B8%B8%E7%94%A8"><span class="nav-number">6.5.1.</span> <span class="nav-text">jsp静态包含(常用)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%8C%85%E5%90%AB"><span class="nav-number">6.5.2.</span> <span class="nav-text">动态包含</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82%E8%BD%AC%E5%8F%91"><span class="nav-number">6.5.3.</span> <span class="nav-text">请求转发</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSTL%E6%A0%B8%E5%BF%83%E6%A0%87%E7%AD%BE%E5%BA%93"><span class="nav-number">6.6.</span> <span class="nav-text">JSTL核心标签库</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#EL%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">7.</span> <span class="nav-text">EL表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E7%AE%97"><span class="nav-number">7.1.</span> <span class="nav-text">运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9A%90%E5%90%AB%E5%AF%B9%E8%B1%A1"><span class="nav-number">7.2.</span> <span class="nav-text">隐含对象</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%9A%84%E4%B8%8A%E4%BC%A0"><span class="nav-number">8.</span> <span class="nav-text">文件的上传</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#fileupload%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95-%E7%B1%BB"><span class="nav-number">8.1.</span> <span class="nav-text">fileupload常用方法,类</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%9A%84%E4%B8%8B%E8%BD%BD"><span class="nav-number">9.</span> <span class="nav-text">文件的下载</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE"><span class="nav-number">10.</span> <span class="nav-text">项目</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5%E4%B8%80"><span class="nav-number">10.1.</span> <span class="nav-text">阶段一</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5%E4%BA%8C"><span class="nav-number">10.2.</span> <span class="nav-text">阶段二</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -965,7 +1249,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">39</span>
+          <span class="site-state-item-count">41</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -978,7 +1262,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
