@@ -2898,7 +2898,169 @@
   <entry>
     <title>SpringMVC</title>
     <url>/2021/12/20/SpringMVC/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>MVC是一种软件架构思想, 将软件按模型(Bean和Service以及Dao), 视图(jsp,html), 控制器(servlet)分开.<br>SpringMVC基于原生servlet进行了封装, 功能更强大.</p>
+<span id="more"></span>
+<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><h2 id="配置web-xml"><a href="#配置web-xml" class="headerlink" title="配置web.xml"></a>配置web.xml</h2><h3 id="默认配置"><a href="#默认配置" class="headerlink" title="默认配置"></a>默认配置</h3><p>此配置作用下, SpringMVC的配置文件默认位于WEB-INF下,默认名称为name-servlet.xml.<br>这样配置其实并不好, 因为使用maven后要求配置文件统一存在resources文件夹下.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">  &lt;servlet&gt;</span><br><span class="line">    &lt;servlet-name&gt;SpringMVC&lt;/servlet-name&gt;</span><br><span class="line">    &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;</span><br><span class="line">  &lt;/servlet&gt;</span><br><span class="line">  &lt;servlet-mapping&gt;</span><br><span class="line">    &lt;servlet-name&gt;SpringMVC&lt;/servlet-name&gt;</span><br><span class="line">&lt;!--    /表示浏览器除了jsp的所有请求(因为jsp本身就是servlet)--&gt;</span><br><span class="line">    &lt;url-pattern&gt;/&lt;/url-pattern&gt; </span><br><span class="line">  &lt;/servlet-mapping&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="扩展配置-推荐"><a href="#扩展配置-推荐" class="headerlink" title="扩展配置(推荐)"></a>扩展配置(推荐)</h3><p>在servlet中使用init-param规定配置文件路径,同时使用load-on-satratup标签使前端控制器在服务器启动时初始化.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">  &lt;servlet&gt;</span><br><span class="line">    &lt;servlet-name&gt;SpringMVC&lt;/servlet-name&gt;</span><br><span class="line">    &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;</span><br><span class="line">    &lt;init-param&gt;</span><br><span class="line">      &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;</span><br><span class="line">      &lt;!-- 因为项目被编译时所有resources下所有配置文件都会放在classpath下 --&gt;</span><br><span class="line">      &lt;param-value&gt;classpath:spring-mvc.xml&lt;/param-value&gt;</span><br><span class="line">    &lt;/init-param&gt;</span><br><span class="line">    &lt;!-- 使前端控制器在服务器启动时初始化. --&gt;</span><br><span class="line">    &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;</span><br><span class="line">  &lt;/servlet&gt;</span><br><span class="line">  &lt;servlet-mapping&gt;</span><br><span class="line">    &lt;servlet-name&gt;SpringMVC&lt;/servlet-name&gt;</span><br><span class="line">&lt;!--    /表示浏览器除了jsp的所有请求(因为jsp本身就是servlet)--&gt;</span><br><span class="line">    &lt;url-pattern&gt;/&lt;/url-pattern&gt; </span><br><span class="line">  &lt;/servlet-mapping&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="创建控制器"><a href="#创建控制器" class="headerlink" title="创建控制器"></a>创建控制器</h2><p>spring配置文件中打开扫描器, 配置thymeleaf视图解析器.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!--扫描控制层组件--&gt;</span><br><span class="line">&lt;context:component-scan base-package=&quot;controller&quot;&gt;&lt;/context:component-scan&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 配置Thymeleaf视图解析器 --&gt;</span><br><span class="line">&lt;bean id=&quot;viewResolver&quot; class=&quot;org.thymeleaf.spring5.view.ThymeleafViewResolver&quot;&gt;</span><br><span class="line">    &lt;property name=&quot;order&quot; value=&quot;1&quot;/&gt;</span><br><span class="line">    &lt;property name=&quot;characterEncoding&quot; value=&quot;UTF-8&quot;/&gt;</span><br><span class="line">    &lt;property name=&quot;templateEngine&quot;&gt;</span><br><span class="line">        &lt;bean class=&quot;org.thymeleaf.spring5.SpringTemplateEngine&quot;&gt;</span><br><span class="line">            &lt;property name=&quot;templateResolver&quot;&gt;</span><br><span class="line">                &lt;bean class=&quot;org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver&quot;&gt;</span><br><span class="line">                    &lt;!-- 视图前缀 --&gt;</span><br><span class="line">                    &lt;property name=&quot;prefix&quot; value=&quot;/WEB-INF/templates/&quot;/&gt;</span><br><span class="line">                    &lt;!-- 视图后缀 --&gt;</span><br><span class="line">                    &lt;property name=&quot;suffix&quot; value=&quot;.html&quot;/&gt;</span><br><span class="line">                    &lt;property name=&quot;templateMode&quot; value=&quot;HTML5&quot;/&gt;</span><br><span class="line">                    &lt;property name=&quot;characterEncoding&quot; value=&quot;UTF-8&quot; /&gt;</span><br><span class="line">                &lt;/bean&gt;</span><br><span class="line">            &lt;/property&gt;</span><br><span class="line">        &lt;/bean&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<p>使用@Controller对象注解对要使用前端控制器的方法进行注解.<br>使用@RequestMapping注解将请求与方法进行绑定,value设定绑定的请求.当发送指定的请求时, 会在controller中检索绑定的方法, 再由Thymeleaf视图解析器解析返回的字符串,转发对应路径资源.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@Controller</span><br><span class="line">public class HelloController &#123;</span><br><span class="line">    @RequestMapping(value = &quot;/&quot;)</span><br><span class="line">    public String index()&#123;</span><br><span class="line">        return &quot;index&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    @RequestMapping(&quot;/target&quot;)</span><br><span class="line">    public String target()&#123;</span><br><span class="line">        return &quot;target&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="RequestMapping"><a href="#RequestMapping" class="headerlink" title="RequestMapping"></a>RequestMapping</h1><h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><p>将请求与方法进行绑定,value设定绑定的请求.当发送指定的请求时, 会在controller中检索绑定的方法, 再由Thymeleaf视图解析器解析返回的字符串,转发对应路径资源.<br>value是可以使用正则表达式的.</p>
+<h2 id="位置"><a href="#位置" class="headerlink" title="位置"></a>位置</h2><p>标识类:设置映射请求的请求路径的初始信息.<br>标识方法:设置映射请求的具体路径信息.<br>当标识位置在类上时, 发送请求需要附加类的请求路径, 否则无法访问对应类中的方法.<br>这样处理后, 就可以在方法上为RequestMapping设置相同的value了.</p>
+<h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><table>
+<thead>
+<tr>
+<th>属性</th>
+<th>作用</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>value</td>
+<td>通过请求地址匹配请求</td>
+<td>请求地址</td>
+</tr>
+<tr>
+<td>method</td>
+<td>通过请求方法匹配请求</td>
+<td>使用RequestMethod调用</td>
+</tr>
+<tr>
+<td>params</td>
+<td>通过请求参数匹配请求</td>
+<td>可以填入param,!param,param=value,param!=value</td>
+</tr>
+<tr>
+<td>headers</td>
+<td>通过请求头匹配请求</td>
+<td>与params相同</td>
+</tr>
+</tbody></table>
+<p>对于指定请求方式的控制器方法, 可以使用派生注解@请求方式+Mapping<br>value,method是或判断, params,headers是与判断</p>
+<h2 id="支持ant风格路径"><a href="#支持ant风格路径" class="headerlink" title="支持ant风格路径"></a>支持ant风格路径</h2><p>?:表示任意单个字符<br>*:表示任意的0或多个字符<br>**:表示任意一层或多层目录</p>
+<h2 id="支持占位符-RESTFul实现"><a href="#支持占位符-RESTFul实现" class="headerlink" title="支持占位符(RESTFul实现)"></a>支持占位符(RESTFul实现)</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@RequestMapping(&quot;/target/&#123;id&#125;&quot;)</span><br><span class="line">public String target(@PathVariable(&quot;id&quot;)Integer id)&#123;</span><br><span class="line">    return &quot;success&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="SpringMVC获取请求参数"><a href="#SpringMVC获取请求参数" class="headerlink" title="SpringMVC获取请求参数"></a>SpringMVC获取请求参数</h1><h2 id="通过servletAPI获取-一般不用"><a href="#通过servletAPI获取-一般不用" class="headerlink" title="通过servletAPI获取(一般不用)"></a>通过servletAPI获取(一般不用)</h2><p>将HttpServletRequest作为控制器形参, 前端控制器在调用时会自动为其注入属性, 在方法中直接进行调用.</p>
+<h2 id="通过控制器形参获取请求参数"><a href="#通过控制器形参获取请求参数" class="headerlink" title="通过控制器形参获取请求参数"></a>通过控制器形参获取请求参数</h2><p>在控制器的形参中写入与请求参数的参数名, 会在调用时直接注入, 在方法中可以直接调用.<br>多个同名参数可以使用String(自动使用,分割),也可以使用String[]接收.<br>没有的参数也接受自动注入,注入null.</p>
+<h2 id="通过-RequestParam获取请求参数"><a href="#通过-RequestParam获取请求参数" class="headerlink" title="通过@RequestParam获取请求参数"></a>通过@RequestParam获取请求参数</h2><p>在控制器形参前使用@RequestParam为形参绑定请求参数, 在调用时注入.<br>因为RequestParam源码中required方法为默认true, 所以不接受空注入(可改).<br>value: 形参名称.<br>required: 是否接受空注入.<br>defaultValue: 空参时默认参数(required无效).</p>
+<h2 id="通过-RequestHeader获取请求参数"><a href="#通过-RequestHeader获取请求参数" class="headerlink" title="通过@RequestHeader获取请求参数"></a>通过@RequestHeader获取请求参数</h2><p>与@RequestParam类似, 但为形参绑定的是header中的参数.</p>
+<h2 id="通过-CookieValue获取请求参数"><a href="#通过-CookieValue获取请求参数" class="headerlink" title="通过@CookieValue获取请求参数"></a>通过@CookieValue获取请求参数</h2><p>与@RequestParam类似, 但为形参绑定的是cookie中的参数.</p>
+<h2 id="通过实体类获取请求参数"><a href="#通过实体类获取请求参数" class="headerlink" title="通过实体类获取请求参数"></a>通过实体类获取请求参数</h2><p>当发送的请求参数名与已有的实体类的属性名一致(一一对应)时, 控制器可以直接写入该实体类的形参, 直接调用.<br>get请求乱码由tomcat配置文件解决, post请求乱码由编码过滤器CharacterEncodingFilter类解决.<br>因为设置编码方式只允许在第一次获取请求参数的行为中, 所以这个过滤器要配置在最上方.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!--配置编码过滤器--&gt;</span><br><span class="line">&lt;filter&gt;</span><br><span class="line">    &lt;filter-name&gt;CharacterEncodingFilter&lt;/filter-name&gt;</span><br><span class="line">    &lt;filter-class&gt;org.springframework.web.filter.CharacterEncodingFilter&lt;/filter-class&gt;</span><br><span class="line">    &lt;init-param&gt;</span><br><span class="line">        &lt;param-name&gt;encoding&lt;/param-name&gt;</span><br><span class="line">        &lt;param-value&gt;UTF-8&lt;/param-value&gt;</span><br><span class="line">    &lt;/init-param&gt;</span><br><span class="line">    &lt;init-param&gt;</span><br><span class="line">        &lt;param-name&gt;forceResponseEncoding&lt;/param-name&gt;</span><br><span class="line">        &lt;param-value&gt;true&lt;/param-value&gt;</span><br><span class="line">    &lt;/init-param&gt;</span><br><span class="line">&lt;/filter&gt;</span><br></pre></td></tr></table></figure>
+<p>#域对象共享数据<br>校对***</p>
+<h2 id="使用ServletAPI向request域对象共享数据-一般不用"><a href="#使用ServletAPI向request域对象共享数据-一般不用" class="headerlink" title="使用ServletAPI向request域对象共享数据(一般不用)"></a>使用ServletAPI向request域对象共享数据(一般不用)</h2><p>因为控制器可以直接注入request, 所以可以使用ServletAPI对域对象进行操作.</p>
+<h2 id="使用ModelAndView向request域对象共享数据-域对象共享数据的根源方法"><a href="#使用ModelAndView向request域对象共享数据-域对象共享数据的根源方法" class="headerlink" title="使用ModelAndView向request域对象共享数据(域对象共享数据的根源方法)"></a>使用ModelAndView向request域对象共享数据(域对象共享数据的根源方法)</h2><p>model主要用于向请求域共享数据, view主要用于设置视图, 实现页面跳转.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@RequestMapping(&quot;/target&quot;)</span><br><span class="line">public ModelAndView target()&#123;</span><br><span class="line">    //创建</span><br><span class="line">    ModelAndView modelAndView = new ModelAndView();</span><br><span class="line">    //设置域对象</span><br><span class="line">    modelAndView.addObject(&quot;key&quot;,&quot;value&quot;);</span><br><span class="line">    //设置视图名称</span><br><span class="line">    modelAndView.setViewName(&quot;target&quot;);</span><br><span class="line">    return modelAndView;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="使用Model向request域对象共享数据"><a href="#使用Model向request域对象共享数据" class="headerlink" title="使用Model向request域对象共享数据"></a>使用Model向request域对象共享数据</h2><p>在控制器的形参中加入Model使用, 返回String, 二者交与ModelAndView包装处理.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@RequestMapping(&quot;/target&quot;)</span><br><span class="line">public String target(Model model)&#123;</span><br><span class="line">    //设置域对象</span><br><span class="line">    model.addAttribute(&quot;key&quot;,&quot;value&quot;);</span><br><span class="line">    return &quot;target&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="使用map向request域对象共享数据"><a href="#使用map向request域对象共享数据" class="headerlink" title="使用map向request域对象共享数据"></a>使用map向request域对象共享数据</h2><p>与Model使用相同.</p>
+<h2 id="使用ModelMap向request域对象共享数据"><a href="#使用ModelMap向request域对象共享数据" class="headerlink" title="使用ModelMap向request域对象共享数据"></a>使用ModelMap向request域对象共享数据</h2><p>与Model使用相同.</p>
+<h2 id="使用原生Api向session域对象共享数据-推荐"><a href="#使用原生Api向session域对象共享数据-推荐" class="headerlink" title="使用原生Api向session域对象共享数据(推荐)"></a>使用原生Api向session域对象共享数据(推荐)</h2><p>在控制器形参中加入HttpSession进行调用.</p>
+<h2 id="向application域中共享数据"><a href="#向application域中共享数据" class="headerlink" title="向application域中共享数据"></a>向application域中共享数据</h2><p>通过session.getServletContext()取得application, 在对其进行设置.</p>
+<h1 id="SpringMVC的视图"><a href="#SpringMVC的视图" class="headerlink" title="SpringMVC的视图"></a>SpringMVC的视图</h1><p>默认视图InternalResourceView(转发视图)和RedirectView(重定向视图).<br>当工程引入jstl依赖后, 转发视图会自动转为JstlView.<br>若使用视图技术为thymeleaf, 由此视图解析器得到的就是ThymeleafView.</p>
+<h2 id="ThymeleafView"><a href="#ThymeleafView" class="headerlink" title="ThymeleafView"></a>ThymeleafView</h2><p>当视图名称没有前缀时, 会使用thymeleaf解析.</p>
+<h2 id="转发视图"><a href="#转发视图" class="headerlink" title="转发视图"></a>转发视图</h2><p>以”forward:”为前缀, 加相对路径</p>
+<h2 id="重定向视图"><a href="#重定向视图" class="headerlink" title="重定向视图"></a>重定向视图</h2><p>以”redirect:”为前缀, 加相对路径</p>
+<h2 id="视图控制器"><a href="#视图控制器" class="headerlink" title="视图控制器"></a>视图控制器</h2><p>只需要控制器器进行页面跳转时可以这样设置.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- 使用这个标签后会导致controller的所有请求映射全部失效 --&gt;</span><br><span class="line">&lt;mvc:view-controller path=&quot;&quot; view-name=&quot;&quot;&gt;&lt;/mvc:view-controller&gt;</span><br><span class="line">&lt;!-- 为了不让controller的地址映射失效, 要使用这个标签配置 --&gt;</span><br><span class="line">&lt;!-- 开启MVC的注解驱动 --&gt;</span><br><span class="line">&lt;mvc:annotation-driven /&gt;</span><br></pre></td></tr></table></figure>
+<p>这里的view-name符合上述前缀规则.</p>
+<h2 id="SpringMVC视图解析器"><a href="#SpringMVC视图解析器" class="headerlink" title="SpringMVC视图解析器"></a>SpringMVC视图解析器</h2><p>用于解析jsp.<br>默认为转发视图.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;bean class=&quot;org.springframework.web.servlet.view.InternalResourceViewResolver&quot;&gt;</span><br><span class="line">    &lt;property name=&quot;prefix&quot; value=&quot;/WEB-INF/templates/&quot;&gt;&lt;/property&gt;</span><br><span class="line">    &lt;property name=&quot;suffix&quot; value=&quot;.jsp&quot;&gt;&lt;/property&gt;</span><br><span class="line">&lt;/bean</span><br></pre></td></tr></table></figure>
+<h1 id="RESTFul"><a href="#RESTFul" class="headerlink" title="RESTFul"></a>RESTFul</h1><h2 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h2><p>RESTFul架构风格, 它可以有效减少url的复杂度. 因为同一资源可能会需要多种状态的操作, 不使用RESTFul架构原则就是单纯的在url上对资源与状态进行拼接, 这会增大url的复杂度.<br>如果仅围绕资源进行url进行创建, 而针对状态的操作全部存放于Header中进行表述, 这样相同的请求路径就使用不同的请求方式就能实现不同的操作.</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>传统方式</th>
+<th>RSEST风格</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>查询操作</td>
+<td>getUserById?id = 1</td>
+<td>user/1 GET请求方式</td>
+</tr>
+<tr>
+<td>保存操作</td>
+<td>saveUser</td>
+<td>user POST请求方式</td>
+</tr>
+<tr>
+<td>删除操作</td>
+<td>deletUser?id = 1</td>
+<td>user/1 DELETE请求方式</td>
+</tr>
+<tr>
+<td>更新操作</td>
+<td>updateUser</td>
+<td>user PUT请求</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@GetMapping(&quot;/user/&#123;id&#125;&quot;)</span><br><span class="line">@PostMapping(&quot;/user&quot;)</span><br><span class="line">@DeleteMapping(&quot;/user/&#123;id&#125;&quot;)</span><br><span class="line">@PutMapping(&quot;/user&quot;)</span><br></pre></td></tr></table></figure>
+<h2 id="使用HiddenHttpMethodFilter生成其他请求方式"><a href="#使用HiddenHttpMethodFilter生成其他请求方式" class="headerlink" title="使用HiddenHttpMethodFilter生成其他请求方式"></a>使用HiddenHttpMethodFilter生成其他请求方式</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;filter&gt;</span><br><span class="line">  &lt;filter-name&gt;HiddenHttpMethodFilter&lt;/filter-name&gt;</span><br><span class="line">  &lt;filter-class&gt;org.springframework.web.filter.HiddenHttpMethodFilter&lt;/filter-class&gt;</span><br><span class="line">&lt;/filter&gt;</span><br><span class="line">&lt;filter-mapping&gt;</span><br><span class="line">  &lt;filter-name&gt;HiddenHttpMethodFilter&lt;/filter-name&gt;</span><br><span class="line">  &lt;url-pattern&gt;/*&lt;/url-pattern&gt;</span><br><span class="line">&lt;/filter-mapping&gt;</span><br></pre></td></tr></table></figure>
+<p>它会获取当前的请求方式以及_Method的参数, 如果当前请求方式为post, 则替换为_method中的方法.<br>delete因为一般是超链接, 所以要写一个单击绑定事件绑定一个隐藏的表单, 让表单代替这个超链接发送信息.</p>
+<h2 id="RESTFul案例"><a href="#RESTFul案例" class="headerlink" title="RESTFul案例"></a>RESTFul案例</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@Controller</span><br><span class="line">public class EmployeeController &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    private EmployeeDao employeeDao;</span><br><span class="line"></span><br><span class="line">    @GetMapping(&quot;/employee&quot;)</span><br><span class="line">    public ModelAndView showEmployees()&#123;</span><br><span class="line">        ModelAndView mv = new ModelAndView();</span><br><span class="line">        mv.addObject(&quot;employees&quot;,employeeDao.getAll());</span><br><span class="line">        mv.setViewName(&quot;showEmployees&quot;);</span><br><span class="line">        return mv;</span><br><span class="line">    &#125;</span><br><span class="line">    @DeleteMapping(&quot;/employee/&#123;id&#125;&quot;)</span><br><span class="line">    public ModelAndView deletEmployee(@PathVariable Integer id)&#123;</span><br><span class="line">        ModelAndView mv = new ModelAndView();</span><br><span class="line">        employeeDao.delete(id);</span><br><span class="line">        mv.setViewName(&quot;redirect:/employee&quot;);</span><br><span class="line">        return mv;</span><br><span class="line">    &#125;</span><br><span class="line">    @PostMapping(&quot;/employee&quot;)</span><br><span class="line">    public String addEmployee(Employee employee)&#123;</span><br><span class="line">        employeeDao.save(employee);</span><br><span class="line">        return &quot;redirect:/employee&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    @GetMapping(&quot;/employee/&#123;id&#125;&quot;)</span><br><span class="line">    public ModelAndView showEmployee(@PathVariable Integer id)&#123;</span><br><span class="line">        ModelAndView modelAndView = new ModelAndView();</span><br><span class="line">        modelAndView.addObject(&quot;employee&quot;,employeeDao.get(id));</span><br><span class="line">        modelAndView.setViewName(&quot;update&quot;);</span><br><span class="line">        return modelAndView;</span><br><span class="line">    &#125;</span><br><span class="line">    @PutMapping (&quot;/employee&quot;)</span><br><span class="line">    public String updateEmployee(Employee employee)&#123;</span><br><span class="line">        employeeDao.save(employee);</span><br><span class="line">        return &quot;redirect:/employee&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="HttpMessageConverter"><a href="#HttpMessageConverter" class="headerlink" title="HttpMessageConverter"></a>HttpMessageConverter</h1><h2 id="RequestBody"><a href="#RequestBody" class="headerlink" title="@RequestBody"></a>@RequestBody</h2><p>获取请求体,控制器使用此注释String形参接收即可.</p>
+<h2 id="RequestEntity"><a href="#RequestEntity" class="headerlink" title="RequestEntity"></a>RequestEntity</h2><p>封装整个请求报文, 在控制器使用RequestEntity类形参使用, 有getHeaders和getBody两个方法.</p>
+<h2 id="ResponseBody"><a href="#ResponseBody" class="headerlink" title="@ResponseBody"></a>@ResponseBody</h2><p>将此注释加到控制器上, 返回的String就会作为响应体送回.<br>如果要返回其他数据, 可以使用json(只加入依赖即可, json依靠ResponseBody注解实现自动转换).</p>
+<h2 id="RestController"><a href="#RestController" class="headerlink" title="@RestController"></a>@RestController</h2><p>因为在微服务中服务与服务间需要进行数据交互, 所以会大量依靠json传输数据, 而json又依靠ResponseBody注解进行自动转换, 所以几乎每个控制器都要添加这个注解ResponseBody.<br>所以产生了RestController注解, 将它注解在类上, 相当于使用了Controller注解, 且为此类所有方法添加ResponseBody注解.</p>
+<h2 id="ResponseEntity"><a href="#ResponseEntity" class="headerlink" title="ResponseEntity"></a>ResponseEntity</h2><p>作为控制器的返回值返回整个报文, 常用于文件下载上传.</p>
+<h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@RequestMapping(&quot;/testDown&quot;)</span><br><span class="line">public ResponseEntity&lt;byte[]&gt; testResponseEntity(HttpSession session) throws IOException &#123;</span><br><span class="line">    //获取ServletContext对象</span><br><span class="line">    ServletContext servletContext = session.getServletContext();</span><br><span class="line">    //获取服务器中文件的真实路径</span><br><span class="line">    String realPath = servletContext.getRealPath(&quot;/static/img/1.jpg&quot;);</span><br><span class="line">    System.out.println(realPath);</span><br><span class="line">    //创建输入流</span><br><span class="line">    InputStream is = new FileInputStream(realPath);</span><br><span class="line">    //创建字节数组</span><br><span class="line">    byte[] bytes = new byte[is.available()];</span><br><span class="line">    //将流读到字节数组中</span><br><span class="line">    is.read(bytes);</span><br><span class="line">    //创建HttpHeaders对象设置响应头信息</span><br><span class="line">    MultiValueMap&lt;String, String&gt; headers = new HttpHeaders();</span><br><span class="line">    //设置要下载方式以及下载文件的名字</span><br><span class="line">    headers.add(&quot;Content-Disposition&quot;, &quot;attachment;filename=1.jpg&quot;);</span><br><span class="line">    //设置响应状态码</span><br><span class="line">    HttpStatus statusCode = HttpStatus.OK;</span><br><span class="line">    //创建ResponseEntity对象</span><br><span class="line">    ResponseEntity&lt;byte[]&gt; responseEntity = new ResponseEntity&lt;&gt;(bytes, headers, statusCode);</span><br><span class="line">    //关闭输入流</span><br><span class="line">    is.close();</span><br><span class="line">    return responseEntity;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="上传"><a href="#上传" class="headerlink" title="上传"></a>上传</h3><p>导入上传依赖<br>设置文件上传解析器, 使上传的各种内容可以被封装到MultipartFile类中</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">&lt;bean <span class="attribute">id</span>=<span class="string">&quot;multipartResolver&quot;</span> <span class="attribute">class</span>=<span class="string">&quot;org.springframework.web.multipart.commons.CommonsMultipartResolver&quot;</span>&gt;&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@RequestMapping(&quot;/testUp&quot;)</span><br><span class="line">//MultipartFile就存储了上传的各种信息</span><br><span class="line">public String testUp(MultipartFile photo, HttpSession session) throws IOException &#123;</span><br><span class="line">    //获取上传的文件的文件名</span><br><span class="line">    String fileName = photo.getOriginalFilename();</span><br><span class="line">    //获取上传的文件的后缀名</span><br><span class="line">    String suffixName = fileName.substring(fileName.lastIndexOf(&quot;.&quot;));</span><br><span class="line">    //将UUID作为文件名, 应对重名</span><br><span class="line">    String uuid = UUID.randomUUID().toString();</span><br><span class="line">    //将uuid和后缀名拼接后的结果作为最终的文件名</span><br><span class="line">    fileName = uuid + suffixName;</span><br><span class="line">    //通过ServletContext获取服务器中photo目录的路径</span><br><span class="line">    ServletContext servletContext = session.getServletContext();</span><br><span class="line">    String photoPath = servletContext.getRealPath(&quot;photo&quot;);</span><br><span class="line">    File file = new File(photoPath);</span><br><span class="line">    //判断photoPath所对应路径是否存在</span><br><span class="line">    if(!file.exists())&#123;</span><br><span class="line">        //若不存在，则创建目录</span><br><span class="line">        file.mkdir();</span><br><span class="line">    &#125;</span><br><span class="line">    // File.separator是文件分隔符, 这样就构成了指向路径与文件名的一个finalPath </span><br><span class="line">    String finalPath = photoPath + File.separator + fileName;</span><br><span class="line">    //上传文件</span><br><span class="line">    photo.transferTo(new File(finalPath));</span><br><span class="line">    return &quot;success&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="拦截器"><a href="#拦截器" class="headerlink" title="拦截器"></a>拦截器</h1><p>拦截器包含三个方法<br>preHandle: 控制器方法前执行<br>postHandle: 控制器方法后执行<br>afterCompletion: 视图渲染结束后执行</p>
+<h2 id="使用-1"><a href="#使用-1" class="headerlink" title="使用"></a>使用</h2><p>spring配置文件中配置拦截器</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;mvc:interceptors&gt;</span><br><span class="line">&lt;!-- 全部拦截 --&gt;</span><br><span class="line">    &lt;ref bean=&quot;拦截器类名&quot;&gt;&lt;/ref&gt;</span><br><span class="line">&lt;!-- 部分拦截 --&gt;</span><br><span class="line">    &lt;mvc:interceptor&gt;</span><br><span class="line">    &lt;!-- /*是任意一级目录, /**是全路径 --&gt;</span><br><span class="line">        &lt;mvc:mapping path=&quot;/**&quot;/&gt;</span><br><span class="line">        &lt;mvc:exclude-mapping path=&quot;/&quot;/&gt;</span><br><span class="line">        &lt;ref bean=&quot;firstInterceptor&quot;&gt;&lt;/ref&gt;</span><br><span class="line">    &lt;/mvc:interceptor&gt;</span><br><span class="line">&lt;/mvc:interceptors&gt;</span><br></pre></td></tr></table></figure>
+<p>编写拦截器方法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class FirstInterceptor implements HandlerInterceptor &#123;</span><br><span class="line">    //这里的返回值决定是否放行</span><br><span class="line">    @Override</span><br><span class="line">    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception &#123;</span><br><span class="line">        System.out.println(&quot;FirstInterceptor--&gt;preHandle&quot;);</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception &#123;</span><br><span class="line">        System.out.println(&quot;FirstInterceptor--&gt;postHandle&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception &#123;</span><br><span class="line">        System.out.println(&quot;FirstInterceptor--&gt;afterCompletion&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="执行顺序"><a href="#执行顺序" class="headerlink" title="执行顺序"></a>执行顺序</h2><p>多个拦截器时preHandle与配置顺序相同, 剩下两个方法与配置顺序相反.<br>拦截器的遍历是使用的指针, 这个指针会在preHandle方法调用后进行后移, 剩下的两个方法通过指针前移调用方法.<br>且当preHandle方法链出现false时不会在调用postHandle方法链, 但仍会调用afterCompletion方法链.<br>例: 设置5个过滤器, 在第3个过滤器进行拦截, 那么会执行1,2,3的preHandle方法以及1,2的afterCompletion方法.</p>
+<h1 id="异常处理器"><a href="#异常处理器" class="headerlink" title="异常处理器"></a>异常处理器</h1><h2 id="基于配置"><a href="#基于配置" class="headerlink" title="基于配置"></a>基于配置</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!--配置异常处理--&gt;</span><br><span class="line">&lt;bean class=&quot;org.springframework.web.servlet.handler.SimpleMappingExceptionResolver&quot;&gt;</span><br><span class="line">    &lt;property name=&quot;exceptionMappings&quot;&gt;</span><br><span class="line">        &lt;props&gt;</span><br><span class="line">            &lt;prop key=&quot;异常全类名&quot;&gt;跳转的视图&lt;/prop&gt;</span><br><span class="line">        &lt;/props&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;!-- 设置将异常信息共享在请求域中的键, 会把这里的value作为key, 异常作为value存放在域中 --&gt;</span><br><span class="line">    &lt;property name=&quot;exceptionAttribute&quot; value=&quot;ex&quot;&gt;&lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="基于注解"><a href="#基于注解" class="headerlink" title="基于注解"></a>基于注解</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//Controller注释进行异常捕获只能捕获该Controller中的异常</span><br><span class="line">//而ControllerAdvice注释可以捕获其覆盖的所有Controller(默认所有)的异常</span><br><span class="line">@ControllerAdvice</span><br><span class="line">public class ExceptionController &#123;</span><br><span class="line"></span><br><span class="line">    @ExceptionHandler(value = &#123;异常全类名&#125;)</span><br><span class="line">    public String testException(Exception ex, Model model)&#123;</span><br><span class="line">        model.addAttribute(&quot;ex&quot;, ex);</span><br><span class="line">        return &quot;error&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="注解配置MVC"><a href="#注解配置MVC" class="headerlink" title="注解配置MVC"></a>注解配置MVC</h1><p>替代web.xml</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//web工程的初始化类，用来代替web.xml</span><br><span class="line">public class WebInit extends AbstractAnnotationConfigDispatcherServletInitializer &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 指定spring的配置类</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    @Override</span><br><span class="line">    protected Class&lt;?&gt;[] getRootConfigClasses() &#123;</span><br><span class="line">        return new Class[]&#123;SpringConfig.class&#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 指定springMVC的配置类</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    @Override</span><br><span class="line">    protected Class&lt;?&gt;[] getServletConfigClasses() &#123;</span><br><span class="line">        return new Class[]&#123;WebConfig.class&#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 指定DispatcherServlet的映射规则，即url-pattern</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    @Override</span><br><span class="line">    protected String[] getServletMappings() &#123;</span><br><span class="line">        return new String[]&#123;&quot;/&quot;&#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 注册过滤器</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    @Override</span><br><span class="line">    protected Filter[] getServletFilters() &#123;</span><br><span class="line">        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();</span><br><span class="line">        characterEncodingFilter.setEncoding(&quot;UTF-8&quot;);</span><br><span class="line">        characterEncodingFilter.setForceResponseEncoding(true);</span><br><span class="line">        HiddenHttpMethodFilter hiddenHttpMethodFilter = new HiddenHttpMethodFilter();</span><br><span class="line">        return new Filter[]&#123;characterEncodingFilter, hiddenHttpMethodFilter&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>替代Spring.xml</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//SSM整合后学习</span><br></pre></td></tr></table></figure>
+<p>替代SpringMVC.xml</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//将当前类标识为一个配置类</span><br><span class="line">@Configuration</span><br><span class="line">//1、扫描组件</span><br><span class="line">@ComponentScan(&quot;com.atguigu.mvc.controller&quot;)</span><br><span class="line">//5、mvc注解驱动</span><br><span class="line">@EnableWebMvc</span><br><span class="line">public class WebConfig implements WebMvcConfigurer &#123;</span><br><span class="line"></span><br><span class="line">    //4、default-servlet-handler</span><br><span class="line">    @Override</span><br><span class="line">    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) &#123;</span><br><span class="line">        configurer.enable();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //8、拦截器</span><br><span class="line">    @Override</span><br><span class="line">    public void addInterceptors(InterceptorRegistry registry) &#123;</span><br><span class="line">        TestInterceptor testInterceptor = new TestInterceptor();</span><br><span class="line">        registry.addInterceptor(拦截器类名).addPathPatterns(&quot;/**&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //3、view-controller对请求路径配置资源</span><br><span class="line">    @Override</span><br><span class="line">    public void addViewControllers(ViewControllerRegistry registry) &#123;</span><br><span class="line">        registry.addViewController(&quot;/&quot;).setViewName(&quot;index&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //6、文件上传解析器</span><br><span class="line">    @Bean</span><br><span class="line">    public MultipartResolver multipartResolver()&#123;</span><br><span class="line">        CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();</span><br><span class="line">        return commonsMultipartResolver;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //7、异常处理</span><br><span class="line">    @Override</span><br><span class="line">    public void configureHandlerExceptionResolvers(List&lt;HandlerExceptionResolver&gt; resolvers) &#123;</span><br><span class="line">        SimpleMappingExceptionResolver exceptionResolver = new SimpleMappingExceptionResolver();</span><br><span class="line">        Properties prop = new Properties();</span><br><span class="line">        //为异常与跳转页面进行绑定</span><br><span class="line">        prop.setProperty(&quot;java.lang.ArithmeticException&quot;, &quot;error&quot;);</span><br><span class="line">        exceptionResolver.setExceptionMappings(prop);</span><br><span class="line">        //设置域中共享异常的键   </span><br><span class="line">        exceptionResolver.setExceptionAttribute(&quot;exception&quot;);</span><br><span class="line">        resolvers.add(exceptionResolver);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //配置生成模板解析器</span><br><span class="line">    @Bean</span><br><span class="line">    public ITemplateResolver templateResolver() &#123;</span><br><span class="line">        WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();</span><br><span class="line">        // ServletContextTemplateResolver需要一个ServletContext作为构造参数，可通过WebApplicationContext 的方法获得</span><br><span class="line">        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(</span><br><span class="line">                webApplicationContext.getServletContext());</span><br><span class="line">        templateResolver.setPrefix(&quot;/WEB-INF/templates/&quot;);</span><br><span class="line">        templateResolver.setSuffix(&quot;.html&quot;);</span><br><span class="line">        templateResolver.setCharacterEncoding(&quot;UTF-8&quot;);</span><br><span class="line">        templateResolver.setTemplateMode(TemplateMode.HTML);</span><br><span class="line">        return templateResolver;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //生成模板引擎并为模板引擎注入模板解析器</span><br><span class="line">    @Bean</span><br><span class="line">    public SpringTemplateEngine templateEngine(ITemplateResolver templateResolver) &#123;</span><br><span class="line">        SpringTemplateEngine templateEngine = new SpringTemplateEngine();</span><br><span class="line">        templateEngine.setTemplateResolver(templateResolver);</span><br><span class="line">        return templateEngine;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //生成视图解析器并未解析器注入模板引擎</span><br><span class="line">    @Bean</span><br><span class="line">    public ViewResolver viewResolver(SpringTemplateEngine templateEngine) &#123;</span><br><span class="line">        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();</span><br><span class="line">        viewResolver.setCharacterEncoding(&quot;UTF-8&quot;);</span><br><span class="line">        viewResolver.setTemplateEngine(templateEngine);</span><br><span class="line">        return viewResolver;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="从整体看SpringMVC"><a href="#从整体看SpringMVC" class="headerlink" title="从整体看SpringMVC"></a>从整体看SpringMVC</h1><h2 id="常用组件"><a href="#常用组件" class="headerlink" title="常用组件"></a>常用组件</h2><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DispatcherServlet：前端控制器</td>
+<td>统一处理请求和响应，整个流程控制的中心，由它调用其它组件处理用户的请求</td>
+</tr>
+<tr>
+<td>HandlerMapping：控制器映射器</td>
+<td>根据请求的url、method等信息查找Handler，即控制器方法</td>
+</tr>
+<tr>
+<td>Handler:控制器</td>
+<td>在DispatcherServlet的控制下Handler对具体的用户请求进行处理</td>
+</tr>
+<tr>
+<td>HandlerAdapter：处理器适配器</td>
+<td>通过HandlerAdapter对控制器方法进行执行</td>
+</tr>
+<tr>
+<td>ViewResolver：视图解析器</td>
+<td>进行视图解析，得到相应的视图</td>
+</tr>
+<tr>
+<td>View：视图</td>
+<td>将模型数据通过页面展示给用户</td>
+</tr>
+</tbody></table>
+<h2 id="DispatcherServlet初始化过程"><a href="#DispatcherServlet初始化过程" class="headerlink" title="DispatcherServlet初始化过程"></a>DispatcherServlet初始化过程</h2><p><img src="/images/DEF117C6A91CF649B77F4FB4025678B7.png" alt="初始化过程"></p>
+<h2 id="DispatcherServlet服务过程"><a href="#DispatcherServlet服务过程" class="headerlink" title="DispatcherServlet服务过程"></a>DispatcherServlet服务过程</h2><p><img src="/images/4691F0FD3B43E392EA6959BBD17525D5.png" alt="服务过程"></p>
+<h2 id="SpringMVC执行流程"><a href="#SpringMVC执行流程" class="headerlink" title="SpringMVC执行流程"></a>SpringMVC执行流程</h2><p>1.用户向服务器发送请求, 请求被DispatcherServlet捕获<br>2.交由handlerMapping处理判断是否存在映射, 没有就报404<br>3.有的话把对应的映射交给handlerAdapter, handlerAdapter为即将调用的控制器进行一系列的准备工作(提取req的信息, 注入参数, 数据验证等等)<br>4.然后交给prehandler进行处理<br>5.处理后再交给控制器, 控制器进行一些列操作并且设置mv<br>6.再由posthandler处理<br>7.处理后再交给视图解析器进行解析mv并渲染视图<br>8.接着执行拦截器的afterCompletion<br>9.最后把渲染结果交给客户端</p>
+]]></content>
       <categories>
         <category>框架</category>
       </categories>
@@ -2906,7 +3068,49 @@
   <entry>
     <title>maven</title>
     <url>/2021/12/20/maven/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<h1 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h1><p>1.帮助开发人员做项目的编译,测试,打包,安装部署等工作.<br>2.管理依赖</p>
+<span id="more"></span>
+<h1 id="约定的目录结构"><a href="#约定的目录结构" class="headerlink" title="约定的目录结构"></a>约定的目录结构</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Hello 项目文件夹</span><br><span class="line">	\src</span><br><span class="line">		\main</span><br><span class="line">			\java</span><br><span class="line">			\resources</span><br><span class="line">		\test</span><br><span class="line">			\java</span><br><span class="line">			\resources</span><br><span class="line">	\pom.xml</span><br></pre></td></tr></table></figure>
+<h1 id="pom文件"><a href="#pom文件" class="headerlink" title="pom文件"></a>pom文件</h1><h2 id="gav"><a href="#gav" class="headerlink" title="gav"></a>gav</h2><p>用来确定资源,是资源的唯一标识符.<br>1.每个项目都要有自己的gav.<br>2.管理依赖,也需要使用gav作为标识.在maven仓库中搜索依赖的gav.<br>gropId:组织id,一般使用组织域名的倒写.如果项目较大,还可以加上项目名称.<br>artifactId:项目名称,如果gropId中有项目名称,就用子项目的名称.<br>version:版本号,使用数字,一般三位.</p>
+<h2 id="dependencies和dependency"><a href="#dependencies和dependency" class="headerlink" title="dependencies和dependency"></a>dependencies和dependency</h2><p>与gav组合管理依赖.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">	&lt;dependency&gt;</span><br><span class="line">		gav</span><br><span class="line">	&lt;/dependency&gt;</span><br><span class="line">&lt;/dependencies&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="packaging"><a href="#packaging" class="headerlink" title="packaging"></a>packaging</h2><p>项目的打包类型,可以是jar,war,rar,ear,pom,默认是jar.</p>
+<h1 id="maven的生命周期-插件和命令"><a href="#maven的生命周期-插件和命令" class="headerlink" title="maven的生命周期,插件和命令"></a>maven的生命周期,插件和命令</h1><p>生命周期:项目构建的各个阶段.包括清理,编译,测试,报告,打包,安装,部署.<br>插件:要完成maven的各个阶段要使用maven命令,执行的命令是通过插件完成的,是jar.<br>命令:执行maven功能是由命令发出的.</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>mvn clan</td>
+<td>删除以前生成的数据,删除target目录</td>
+</tr>
+<tr>
+<td>mvn cmpile</td>
+<td>编译代码</td>
+</tr>
+<tr>
+<td>mvn test-compile</td>
+<td>编译test代码</td>
+</tr>
+<tr>
+<td>mvn test</td>
+<td>执行test-classes目录的程序</td>
+</tr>
+<tr>
+<td>mvn package</td>
+<td>把项目资源都放进一个压缩文件中</td>
+</tr>
+<tr>
+<td>mvn install</td>
+<td>把生成的打包文件安装到maven仓库</td>
+</tr>
+</tbody></table>
+<h1 id="配置插件"><a href="#配置插件" class="headerlink" title="配置插件"></a>配置插件</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- 设置构建项目相关内容 --&gt;</span><br><span class="line">&lt;build&gt;</span><br><span class="line">	&lt;plugins&gt;</span><br><span class="line">		&lt;!-- 插件信息 --&gt;</span><br><span class="line">		&lt;plugin&gt;</span><br><span class="line">			&lt;groupId&gt;org.apche.maven.plugins&lt;/groupId&gt;</span><br><span class="line">			&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;</span><br><span class="line">			&lt;version&gt;3.8.1&lt;/version&gt;</span><br><span class="line">			&lt;!-- 修改的配置 --&gt;</span><br><span class="line">			&lt;configuration&gt;</span><br><span class="line">				&lt;source&gt;1.8&lt;/source&gt;&lt;!-- 指定编译代码的jdk版本 --&gt;</span><br><span class="line">				&lt;target&gt;1.8&lt;/target&gt;&lt;!-- 运行java代码使用的jak版本 --&gt;</span><br><span class="line">			&lt;/configuration&gt;</span><br><span class="line">		&lt;/plugin&gt;</span><br><span class="line">	&lt;/plugins&gt;</span><br><span class="line">&lt;/build&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="依赖管理"><a href="#依赖管理" class="headerlink" title="依赖管理"></a>依赖管理</h1><p>scope用来表示依赖范围,规定依赖生效的阶段.<br>compile:默认,所有阶段<br>test:测试阶段<br>provided:项目在部署到服务器时不需要提供这个依赖(servlet和jsp)    </p>
+]]></content>
       <categories>
         <category>工具</category>
       </categories>
@@ -2925,6 +3129,52 @@
       <tags>
         <tag>双指针</tag>
         <tag>贪心算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Thymeleaf</title>
+    <url>/2021/12/22/Thymeleaf/</url>
+    <content><![CDATA[<h1 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h1><p>在Spring中配置thymeleaf</p>
+<span id="more"></span>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- 配置Thymeleaf视图解析器 --&gt;</span><br><span class="line">&lt;bean id=&quot;viewResolver&quot; class=&quot;org.thymeleaf.spring5.view.ThymeleafViewResolver&quot;&gt;</span><br><span class="line">    &lt;property name=&quot;order&quot; value=&quot;1&quot;/&gt;</span><br><span class="line">    &lt;property name=&quot;characterEncoding&quot; value=&quot;UTF-8&quot;/&gt;</span><br><span class="line">    &lt;property name=&quot;templateEngine&quot;&gt;</span><br><span class="line">        &lt;bean class=&quot;org.thymeleaf.spring5.SpringTemplateEngine&quot;&gt;</span><br><span class="line">            &lt;property name=&quot;templateResolver&quot;&gt;</span><br><span class="line">                &lt;bean class=&quot;org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver&quot;&gt;</span><br><span class="line">                    &lt;!-- 视图前缀 --&gt;</span><br><span class="line">                    &lt;property name=&quot;prefix&quot; value=&quot;/WEB-INF/templates/&quot;/&gt;</span><br><span class="line">                    &lt;!-- 视图后缀 --&gt;</span><br><span class="line">                    &lt;property name=&quot;suffix&quot; value=&quot;.html&quot;/&gt;</span><br><span class="line">                    &lt;property name=&quot;templateMode&quot; value=&quot;HTML5&quot;/&gt;</span><br><span class="line">                    &lt;property name=&quot;characterEncoding&quot; value=&quot;UTF-8&quot; /&gt;</span><br><span class="line">                &lt;/bean&gt;</span><br><span class="line">            &lt;/property&gt;</span><br><span class="line">        &lt;/bean&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<p>在页面中引入thymeleaf</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;html lang=&quot;en&quot; xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="常用语法"><a href="#常用语法" class="headerlink" title="常用语法"></a>常用语法</h1><p>解析绝对路径:th修饰属性,通过@{}修饰绝对路径</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;a th:href=&quot;@&#123;/target&#125;&quot;&gt;访问目标页面&lt;/a&gt;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>反转链表2</title>
+    <url>/2021/12/21/%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A82/</url>
+    <content><![CDATA[<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给你单链表的头指针 head 和两个整数left 和 right ，其中left &lt;= right 。请你反转从位置 left 到位置 right 的链表节点，返回 反转后的链表 </p>
+<span id="more"></span>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>这种情况很适合使用栈，因为left和right还不会越界,所以空指针异常也不需要考虑.</p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ListNode node;</span><br><span class="line">public ListNode reverseBetween(ListNode head, int left, int right) &#123;</span><br><span class="line">    //使用栈存放</span><br><span class="line">    node = new ListNode(-1);</span><br><span class="line">    node.next = head;</span><br><span class="line">    head = node;</span><br><span class="line">    Stack&lt;ListNode&gt; stack = new Stack&lt;&gt;();</span><br><span class="line">    while (left!=1)&#123;</span><br><span class="line">        head = head.next;</span><br><span class="line">        left--;</span><br><span class="line">        right--;</span><br><span class="line">    &#125;</span><br><span class="line">    ListNode pre = head;</span><br><span class="line">    head = head.next;</span><br><span class="line">    right--;</span><br><span class="line">    while (right!=0)&#123;</span><br><span class="line">        stack.push(head);</span><br><span class="line">        head = head.next;</span><br><span class="line">        right--;</span><br><span class="line">    &#125;</span><br><span class="line">    stack.push(head);</span><br><span class="line">    head = head.next;</span><br><span class="line">    //开始串联链表</span><br><span class="line">    while (!stack.isEmpty()) &#123;</span><br><span class="line">        pre.next = stack.pop();</span><br><span class="line">        pre = pre.next;</span><br><span class="line">    &#125;</span><br><span class="line">    pre.next = head;</span><br><span class="line">    return node.next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>leetcode解析</category>
+        <category>中等</category>
+      </categories>
+      <tags>
+        <tag>栈</tag>
+        <tag>链表</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>和为s的两个数字</title>
+    <url>/2021/12/22/%E5%92%8C%E4%B8%BAs%E7%9A%84%E4%B8%A4%E4%B8%AA%E6%95%B0%E5%AD%97/</url>
+    <content><![CDATA[<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>输入一个递增排序的数组和一个数字s，在数组中查找两个数，使得它们的和正好是s。如果有多对数字的和等于s，则输出任意一对即可。</p>
+<span id="more"></span>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>如图所示, 查找一个固定数字相当于在一个二维空间上寻找一个点位, 这个二维空间从左到右, 从上到下递减.<br>初始点为(0,5), 我们要找到一条最短路径到目标点. 所以,当当前数字比目标小时, 就向下搜寻, 且搜寻到的数要刚好大于目标. 当当前数字比目标大时, 就向左搜寻, 且搜寻数字要刚好小于目标数.而这两种搜寻方式, 都可以通过二分查找实现.<br><img src="/images/QQ20211222232346.png" alt="图片"></p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public int[] twoSum(int[] nums, int target) &#123;</span><br><span class="line">        int left = 0;</span><br><span class="line">        int right = nums.length-1;</span><br><span class="line">        while (nums[left]+nums[right] != target)&#123;</span><br><span class="line">            //进行二维查找,当前数字比目标小,就进行纵向搜寻</span><br><span class="line">            //当前数字比目标大,就进行横向搜寻</span><br><span class="line">            //纵向搜寻时,right不变,在left到right间搜寻合适答案</span><br><span class="line">            //纵向搜寻要求找到的和大于targt</span><br><span class="line">            //横向搜寻时,left不限,在left到right间搜寻合适答案</span><br><span class="line">            //横向搜寻要求找到的数小于targt</span><br><span class="line">            if(nums[left]+nums[right] &lt; target)&#123;</span><br><span class="line">                int num1 = target-nums[right];</span><br><span class="line">                int index = Arrays.binarySearch(nums,left+1,right,num1);</span><br><span class="line">                if (index&gt;0)&#123;</span><br><span class="line">                    int[] ints = &#123;num1,target-num1&#125;;</span><br><span class="line">                    return ints;</span><br><span class="line">                &#125;else &#123;</span><br><span class="line">                    left = -index-1;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;else &#123;</span><br><span class="line">                int num1 = target-nums[left];</span><br><span class="line">                int index = Arrays.binarySearch(nums,left+1,right,num1);</span><br><span class="line">                if (index&gt;0)&#123;</span><br><span class="line">                    int[] ints = &#123;num1,target-num1&#125;;</span><br><span class="line">                    return ints;</span><br><span class="line">                &#125;else &#123;</span><br><span class="line">                    right = -index-2;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        int[] ints = &#123;nums[left],nums[right]&#125;;</span><br><span class="line">        return ints;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>leetcode解析</category>
+        <category>最优</category>
+      </categories>
+      <tags>
+        <tag>二分查找</tag>
+        <tag>双指针</tag>
       </tags>
   </entry>
 </search>
