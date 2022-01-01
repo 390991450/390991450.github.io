@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"390991450.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="入门">
+<meta property="og:type" content="article">
+<meta property="og:title" content="springboot">
+<meta property="og:url" content="https://390991450.github.io/2021/12/29/%E6%A1%86%E6%9E%B6/springboot/index.html">
+<meta property="og:site_name" content="每天一点儿">
+<meta property="og:description" content="入门">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-12-29T03:02:26.000Z">
+<meta property="article:modified_time" content="2022-01-01T13:24:50.627Z">
+<meta property="article:author" content="征途">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://390991450.github.io/2021/12/29/%E6%A1%86%E6%9E%B6/springboot/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>springboot | 每天一点儿</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">每天一点儿</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://390991450.github.io/2021/12/29/%E6%A1%86%E6%9E%B6/springboot/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="征途">
+      <meta itemprop="description" content="我的学习笔记">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="每天一点儿">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          springboot
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-29 11:02:26" itemprop="dateCreated datePublished" datetime="2021-12-29T11:02:26+08:00">2021-12-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-01 21:24:50" itemprop="dateModified" datetime="2022-01-01T21:24:50+08:00">2022-01-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">框架</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h1><span id="more"></span>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>导入场景依赖</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;parent&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.3.4.RELEASE&lt;/version&gt;</span><br><span class="line">&lt;/parent&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependencies&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line">&lt;/dependencies&gt;</span><br></pre></td></tr></table></figure>
+<p>创建主程序类,这是因为以前主程序是由tomcat操控的,而现在由我们接手.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@SpringBootApplication</span><br><span class="line">public class MainApplication &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        SpringApplication.run(MainApplication.class,args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建控制器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@RestController</span><br><span class="line">public class HelloController &#123;</span><br><span class="line">    @RequestMapping(&quot;/hello&quot;)</span><br><span class="line">    public String index()&#123;</span><br><span class="line">        return &quot;Hello, SpringBoot 2!&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="简化配置"><a href="#简化配置" class="headerlink" title="简化配置"></a>简化配置</h2><p>统一在application.properties中修改配置<br>在官方文档查询</p>
+<h2 id="简化部署"><a href="#简化部署" class="headerlink" title="简化部署"></a>简化部署</h2><p>在maven中使用如下插件,可以直接把项目打包为jar包, 直接在目标服务器执行即可<br>注意:cmd要关闭快速编辑</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;build&gt;</span><br><span class="line">       &lt;plugins&gt;</span><br><span class="line">           &lt;plugin&gt;</span><br><span class="line">               &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">               &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">           &lt;/plugin&gt;</span><br><span class="line">       &lt;/plugins&gt;</span><br><span class="line">   &lt;/build&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="自动配置原理"><a href="#自动配置原理" class="headerlink" title="自动配置原理"></a>自动配置原理</h1><h2 id="依赖管理"><a href="#依赖管理" class="headerlink" title="依赖管理"></a>依赖管理</h2><p>通过在maven中导入父项目的信息从而取得所有可能用上的依赖信息, 这些依赖基本都声明了版本号.<br>所以在使用时只需要导入依赖而不用再关注版本号, 版本号由父项目提供.<br>如果必须要使用特定的版本号, 则在properties标签中声明版本号.<br>场景启动器: spring-boot-starter-web这种格式的依赖是直接配置对应场景下常用的所有依赖.</p>
+<h2 id="自动配置"><a href="#自动配置" class="headerlink" title="自动配置"></a>自动配置</h2><p>当前场景需要配置的内容都会由spring帮助配置.<br>默认扫描主程序所在包及其下面所有包,可以在@SpringBootApplication使用scanBasePackages属性设置.</p>
+<h2 id="自动配置的过程"><a href="#自动配置的过程" class="headerlink" title="自动配置的过程"></a>自动配置的过程</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@SpringBootApplication以此注解为自动配置的开始. 它是一个复合注解, 又包括:</span><br><span class="line">&#123;</span><br><span class="line">	@SpringBootConfiguration:代表当前类是一个配置类</span><br><span class="line">	@ComponentScan(&quot;&quot;):指定扫描的包</span><br><span class="line">	@EnableAutoConfiguration它又可以分为以下两个注解:</span><br><span class="line">	&#123;</span><br><span class="line">		@AutoConfigurationPackage:导入main文件所在包的所有组件</span><br><span class="line">		@Import(AutoConfigurationImportSelector.class):从配置文件导入写死的127个配置文件</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="按需开启配置"><a href="#按需开启配置" class="headerlink" title="按需开启配置"></a>按需开启配置</h2><p>可以在配置文件中使用debug = true查看哪些配置开启, 哪些配置没有开启.<br>虽然我们127个场景的所有自动配置启动的时候默认全部加载。但是只会按照需求进行部分的配置, 原理就是部分的配置是使用@ConditionalOn…配置的, 没有达到条件就不会配置.</p>
+<h2 id="修改默认配置"><a href="#修改默认配置" class="headerlink" title="修改默认配置"></a>修改默认配置</h2><p>通过类型查找, 使用Bean注解返回修改默认配置.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@Bean</span><br><span class="line">@ConditionalOnBean(MultipartResolver.class)  //容器中有这个类型组件</span><br><span class="line">@ConditionalOnMissingBean(name = DispatcherServlet.MULTIPART_RESOLVER_BEAN_NAME) //容器中没有这个名字 multipartResolver 的组件</span><br><span class="line">public MultipartResolver multipartResolver(MultipartResolver resolver) &#123;</span><br><span class="line">    //SpringMVC multipartResolver。防止有些用户配置的文件上传解析器不符合规范</span><br><span class="line">    //给@Bean标注的方法传入了对象参数，这个参数的值就会从容器中找。</span><br><span class="line">    //找到后作为返回值返回时, 又因为有Bean注解, 会自动把返回值的name设为方法名, 并交给容器管理</span><br><span class="line">    //这样就有名称正确的组件了</span><br><span class="line">	return resolver;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="以用户配置优先"><a href="#以用户配置优先" class="headerlink" title="以用户配置优先"></a>以用户配置优先</h2><p>使用@ConditionalOnMissingBean注解, 当用户没配置时才启用对应配置, 用户配置了则不启用.</p>
+<h1 id="底层注解"><a href="#底层注解" class="headerlink" title="底层注解"></a>底层注解</h1><h2 id="Configuration"><a href="#Configuration" class="headerlink" title="@Configuration"></a>@Configuration</h2><p>用于完全注解开发, 替换xml文件配置组件(默认单例).</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">//告诉SpringBoot这是一个配置类,proxyBeanMethods是用来指定bean注解的方法是否使用代理, </span><br><span class="line">//默认是true, 所以不论创建几次都是从ioc容器中获得对象, 而使用false, 则每次获取的都是新对象.</span><br><span class="line">//注意, true的时候取得对象相同是因为返回的是一个代理对象, 而即使是false, 这个代理对象仍在, 可以通过getBean获得.</span><br><span class="line">@Configuration(proxyBeanMethods = false) </span><br><span class="line">public class MyConfig &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * Full:外部无论对配置类中的这个组件注册方法调用多少次获取的都是之前注册容器中的单实例对象</span><br><span class="line">     * Lite:不再检查容器中是否有对象, 直接创建, 更快</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    @Bean //给容器中添加组件。以方法名作为组件的id。返回类型就是组件类型。返回的值，就是组件在容器中的实例</span><br><span class="line">    public User user01()&#123;</span><br><span class="line">        User zhangsan = new User(&quot;zhangsan&quot;, 18);</span><br><span class="line">        //user组件依赖了Pet组件</span><br><span class="line">        zhangsan.setPet(tomcatPet());</span><br><span class="line">        return zhangsan;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean(&quot;tom&quot;)</span><br><span class="line">    public Pet tomcatPet()&#123;</span><br><span class="line">        return new Pet(&quot;tomcat&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>也可以使用注释直接注册组件.</p>
+<h2 id="import"><a href="#import" class="headerlink" title="@import"></a>@import</h2><p>注释于组件上方, 导入指定类型的组件, 默认名为全类名.</p>
+<h2 id="Conditional"><a href="#Conditional" class="headerlink" title="@Conditional"></a>@Conditional</h2><p>满足指定的条件就进行注入.@ConditionalOn…</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//当有teacher组件时才注册student组件</span><br><span class="line">@ConditionalOnBean(name = &quot;teacher&quot;)</span><br><span class="line">@Repository</span><br><span class="line">public class student&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="ImportResource"><a href="#ImportResource" class="headerlink" title="ImportResource"></a>ImportResource</h2><p>springboot并不会自动解析bean.xml, 所以要找一个类上方使用这个注解导入.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@ImportResource(&quot;classpath:bean.xml&quot;)</span><br></pre></td></tr></table></figure>
+<h2 id="ConfigurationProperties"><a href="#ConfigurationProperties" class="headerlink" title="@ConfigurationProperties"></a>@ConfigurationProperties</h2><p>使用这个注解时在容器中生成对象时, 会在properties中自动搜寻对应要注入的值进行注入.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- properties中 --&gt;</span><br><span class="line">mycar.brand = &quot;BYD&quot;</span><br><span class="line">mycar.price = 1000000</span><br><span class="line">&lt;!-- 对象中使用此功能 --&gt;</span><br><span class="line">@Component</span><br><span class="line">@ConfigurationProperties(prefix = &quot;mycar&quot;)</span><br><span class="line">public class Car &#123;</span><br><span class="line"></span><br><span class="line">    private String brand;</span><br><span class="line">    private Integer price;</span><br><span class="line">&#125;</span><br><span class="line">&lt;!-- 也可以直接在配置文件class中设置自动注入 --&gt;</span><br><span class="line">&lt;!-- 时候处理第三方类时的注入, 因为第三方类并不会设置为组件 --&gt;</span><br><span class="line">@Configuration</span><br><span class="line">@EnableConfigurationProperties(Car.class)</span><br><span class="line">//1、开启Car配置绑定功能</span><br><span class="line">//2、把这个Car这个组件自动注册到容器中</span><br><span class="line">public class MyConfig &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="yml"><a href="#yml" class="headerlink" title="yml"></a>yml</h1><p>一种不只是标记语言的标记语言.</p>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>● key: value  kv之间有空格<br>● 大小写敏感<br>● 使用缩进表示层级关系<br>● 缩进不允许使用tab，只允许空格<br>● 缩进的空格数不重要，只要相同层级的元素左对齐即可<br>● ‘#’表示注释<br>● 字符串无需加引号，如果要加，’’与””表示字符串内容会被 转义/不转义(‘’会直接输出/n)</p>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>字面量：单个的、不可再分的值。date、boolean、string、number、null</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">k: v</span><br></pre></td></tr></table></figure>
+<p>对象：键值对的集合。map、hash、set、object </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">行内写法：  k: &#123;k1:v1,k2:v2,k3:v3&#125;</span><br><span class="line">#或</span><br><span class="line">k: </span><br><span class="line">  k1: v1</span><br><span class="line">  k2: v2</span><br><span class="line">  k3: v3</span><br></pre></td></tr></table></figure>
+<p>数组：一组按次序排列的值。array、list、queue</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">行内写法：  k: [v1,v2,v3]</span><br><span class="line">#或者</span><br><span class="line">k:</span><br><span class="line"> - v1</span><br><span class="line"> - v2</span><br><span class="line"> - v3</span><br></pre></td></tr></table></figure>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">@Data</span><br><span class="line">public class Person &#123;</span><br><span class="line">    </span><br><span class="line">    private String userName;</span><br><span class="line">    private Boolean boss;</span><br><span class="line">    private Date birth;</span><br><span class="line">    private Integer age;</span><br><span class="line">    private Pet pet;</span><br><span class="line">    private String[] interests;</span><br><span class="line">    private List&lt;String&gt; animal;</span><br><span class="line">    private Map&lt;String, Object&gt; score;</span><br><span class="line">    private Set&lt;Double&gt; salarys;</span><br><span class="line">    private Map&lt;String, List&lt;Pet&gt;&gt; allPets;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Data</span><br><span class="line">public class Pet &#123;</span><br><span class="line">    private String name;</span><br><span class="line">    private Double weight;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># yaml表示以上对象</span></span><br><span class="line"><span class="attr">person:</span></span><br><span class="line">  <span class="attr">userName:</span> <span class="string">zhangsan</span></span><br><span class="line">  <span class="attr">boss:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">birth:</span> <span class="number">2019</span><span class="string">/12/12</span> <span class="number">20</span><span class="string">:12:33</span></span><br><span class="line">  <span class="attr">age:</span> <span class="number">18</span></span><br><span class="line">  <span class="attr">pet:</span> </span><br><span class="line">    <span class="attr">name:</span> <span class="string">tomcat</span></span><br><span class="line">    <span class="attr">weight:</span> <span class="number">23.4</span></span><br><span class="line">  <span class="attr">interests:</span> [<span class="string">篮球</span>,<span class="string">游泳</span>]</span><br><span class="line">  <span class="attr">animal:</span> </span><br><span class="line">    <span class="bullet">-</span> <span class="string">jerry</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">mario</span></span><br><span class="line">  <span class="attr">score:</span></span><br><span class="line">    <span class="attr">english:</span> </span><br><span class="line">      <span class="attr">first:</span> <span class="number">30</span></span><br><span class="line">      <span class="attr">second:</span> <span class="number">40</span></span><br><span class="line">      <span class="attr">third:</span> <span class="number">50</span></span><br><span class="line">    <span class="attr">math:</span> [<span class="number">131</span>,<span class="number">140</span>,<span class="number">148</span>]</span><br><span class="line">    <span class="attr">chinese:</span> &#123;<span class="attr">first:</span> <span class="number">128</span>,<span class="attr">second:</span> <span class="number">136</span>&#125;</span><br><span class="line">  <span class="attr">salarys:</span> [<span class="number">3999</span>,<span class="number">4999.98</span>,<span class="number">5999.99</span>]</span><br><span class="line">  <span class="attr">allPets:</span></span><br><span class="line">    <span class="attr">sick:</span></span><br><span class="line">      <span class="bullet">-</span> &#123;<span class="attr">name:</span> <span class="string">tom</span>&#125;</span><br><span class="line">      <span class="bullet">-</span> &#123;<span class="attr">name:</span> <span class="string">jerry</span>,<span class="attr">weight:</span> <span class="number">47</span>&#125;</span><br><span class="line">    <span class="attr">health:</span> [&#123;<span class="attr">name:</span> <span class="string">mario</span>,<span class="attr">weight:</span> <span class="number">47</span>&#125;]</span><br></pre></td></tr></table></figure>
+<p>在对应的类上使用@ConfigurationProperties注解,设置prefix = “person”就可以自动注入了.</p>
+<h1 id="web开发"><a href="#web开发" class="headerlink" title="web开发"></a>web开发</h1><h2 id="静态资源访问"><a href="#静态资源访问" class="headerlink" title="静态资源访问"></a>静态资源访问</h2><p>只要静态资源放在类路径下： called static/public/resources/META-INF/resources<br>就可以直接访问.<br>在访问时会优先去控制器查询是否有动态资源, 如果有动态资源则进行动态资源的访问, 没有就查询是否有静态资源.<br>为了区别静态资源, 可以选择给静态资源添加前缀(默认无前缀).</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  mvc:</span><br><span class="line">  #默认是/**</span><br><span class="line">    static-path-pattern: /res/**</span><br></pre></td></tr></table></figure>
+<p>也可以修改默认的静态资源访问路径</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">spring:  </span><br><span class="line">  resources:</span><br><span class="line">  #加中括号是因为这里传入的是数组</span><br><span class="line">    static-locations: [classpath:/haha/]</span><br></pre></td></tr></table></figure>
+
+<p>欢迎页面<br>静态资源路径下有index.html则访问主页面时可以直接跳转.(这个方式配置了静态资源前缀后会失效!)<br>控制器能处理/index则交给控制器处理.</p>
+<h2 id="静态资源访问原理"><a href="#静态资源访问原理" class="headerlink" title="静态资源访问原理"></a>静态资源访问原理</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">        public void addResourceHandlers(ResourceHandlerRegistry registry) &#123;</span><br><span class="line">            //这里进行是否映射静态资源路径的判断(配置文件可以修改addMappings属性)</span><br><span class="line">            //resourceProperties对应的就是spring.web.resources</span><br><span class="line">            if (!this.resourceProperties.isAddMappings()) &#123;</span><br><span class="line">                logger.debug(&quot;Default resource handling disabled&quot;);</span><br><span class="line">                return;</span><br><span class="line">            &#125;</span><br><span class="line">            //从配置文件取得缓存周期,取得缓存控制器(因此也可以通过配置文件修改)</span><br><span class="line">            Duration cachePeriod = this.resourceProperties.getCache().getPeriod();</span><br><span class="line">            CacheControl cacheControl = this.resourceProperties.getCache().getCachecontrol().toHttpCacheControl();</span><br><span class="line">            //webjars的规则</span><br><span class="line">            if (!registry.hasMappingForPattern(&quot;/webjars/**&quot;)) &#123;</span><br><span class="line">                //为webjars路径下的文件配置查找路径, 配置缓存周期和缓存控制器</span><br><span class="line">                customizeResourceHandlerRegistration(registry.addResourceHandler(&quot;/webjars/**&quot;)</span><br><span class="line">                        .addResourceLocations(&quot;classpath:/META-INF/resources/webjars/&quot;)</span><br><span class="line">                        .setCachePeriod(getSeconds(cachePeriod)).setCacheControl(cacheControl));</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            //静态资源路径的规则</span><br><span class="line">            String staticPathPattern = this.mvcProperties.getStaticPathPattern();</span><br><span class="line">            if (!registry.hasMappingForPattern(staticPathPattern)) &#123;</span><br><span class="line">                customizeResourceHandlerRegistration(registry.addResourceHandler(staticPathPattern)</span><br><span class="line">                        //这里的staticlocation就是配置中的默认静态资源访问路径</span><br><span class="line">                        .addResourceLocations(getResourceLocations(this.resourceProperties.getStaticLocations()))</span><br><span class="line">                        .setCachePeriod(getSeconds(cachePeriod)).setCacheControl(cacheControl));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="请求参数处理"><a href="#请求参数处理" class="headerlink" title="请求参数处理"></a>请求参数处理</h2><h3 id="rest原理"><a href="#rest原理" class="headerlink" title="rest原理"></a>rest原理</h3><p>boot会帮助我们自动注册hiddenHttpMethodFilter, 它默认接收请求方式的key为_method.<br>它的开启条件是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//项目中没有</span><br><span class="line">@ConditionalOnMissingBean(&#123;HiddenHttpMethodFilter.class&#125;)</span><br><span class="line">//配置文件的enabled是true</span><br><span class="line">@ConditionalOnProperty(</span><br><span class="line">    prefix = &quot;spring.mvc.hiddenmethod.filter&quot;,</span><br><span class="line">    name = &#123;&quot;enabled&quot;&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>实现过程:(能直接发送的请求方式不会走这个过程)<br>先由Filter判断请求方式, 传入的method是否满足要求. 再把这些交给包装模式的wapper, wapper重写了getMethod方法, 让返回值为传入的method.</p>
+<h3 id="请求映射原理"><a href="#请求映射原理" class="headerlink" title="请求映射原理"></a>请求映射原理</h3><p>这里对springMVC的DispatcherServlet服务过程进行进一步的源码分析.</p>
+<p>handlermapping取得的方法的过程:<br>程序中所有的mapping注解请求地址和它绑定的控制器的地址都会以键值对的形式存储在handlermapping中, 当收到请求地址时会逐个遍历键值对, 为请求地址分配控制器.<br>所以我们也可以自定义handlermapping为不同前缀的键值对分配不同的handlermapping, 形成前缀与handlermapping的映射, 提高查找控制器的速度.</p>
+<p>handleradapter为方法进行适配的具体方法:<br>将handlermapping取得的方法交给handleradapter,handleradapter会持有几种适配器, 逐个使用support方法进行判断是否与当前方法进行适配(因此这里也可以自定义), 如果适配则返回这个适配器.<br>使用这个适配器对方法进行解析, 设置参数解析器与返回值处理器. 接着会取得形参的所有详细信息(参数类型,位置,注解等等), 逐个遍历这些形参, 把这些形参交给参数解析器, 参数解析器会遍历它持有的解析方法, 如果参数与解析方法符合, 则利用它的信息进行解析.</p>
+<p>解析器解析自定义类的过程:<br>解析器遍历找到解析自定义类的解析器, 进入这个解析器. 创建空的自定义类对象, 逐个遍历传入的参数, 比对属性名, 比对成功后使用converter转换器将这个参数转换为需要的类型, 再把这个数据交给类对象对应的属性. 这里存在一个问题, 当自定义类中属性的类型converter转换器无法转换时, 会出现异常, 所以当自定义类有自定义类属性时, 需要定制自己的converter转换器.</p>
+<h3 id="普通参数与基本注解"><a href="#普通参数与基本注解" class="headerlink" title="普通参数与基本注解"></a>普通参数与基本注解</h3><p>(对springMVC笔记的获取请求参数方法进行重写, 建议对照查看)<br>1.注解(为形参注入的注解)<br>@PathVariable:获取请求地址中的参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//可以取得单个值, 也可以依靠map取得所有的值</span><br><span class="line">@PathVariable(&quot;id&quot;) Integer id,</span><br><span class="line">@PathVariable(&quot;username&quot;) String name,</span><br><span class="line">@PathVariable Map&lt;String,String&gt; pv,</span><br></pre></td></tr></table></figure>
+<p>@RequestHeader:获取请求头中的参数<br>@RequestParam:获取请求中的参数<br>@CookieValue:获取cookie的参数<br>以上都可以通过单个或map获取.<br>@RequestBody:获取整个请求体(只有post才有).<br>@RequesAttribute:获取请求域中的参数.</p>
+<p>2.使用原生requestAPI取得参数</p>
+<p>3.复杂参数(主要作用是用于域对象的设置)<br>map,model 用于设置request域数据.<br>redirectAttributes用于重定向的数据设置.<br>ServletResponse</p>
+<p>4.使用预设的自定义对象接收参数</p>
+<h2 id="响应值处理"><a href="#响应值处理" class="headerlink" title="响应值处理"></a>响应值处理</h2><p>参数有自己的解析器, 返回值也有自己的解析器. 拿到返回值与类型, 使用类型与返回值解析器进行比对, 比对成功将返回值交给对应的解析器. 解析器通过内容协商确定要响应的类型, 匹配响应的httpmessageconverter进行类型的转换, 同时在响应头告诉浏览器响应的类型.<br>messageconverter有boot再带的一些转换方法, 引入json,xml依赖等也会为其添加转换方法.也可以自己定制相应的转换器.</p>
+<h3 id="ResponseBody"><a href="#ResponseBody" class="headerlink" title="@ResponseBody"></a>@ResponseBody</h3><p>响应分为页面跳转与页面响应.<br>将此注释加到控制器上, 返回的String就会作为响应体送回, 不再进行页面跳转.</p>
+<h3 id="内容协商"><a href="#内容协商" class="headerlink" title="内容协商"></a>内容协商</h3><p>浏览器在发送请求的时候会附上自己能接收的响应类型, 这个操作称为内容协商.<br>会先取出可以解析杯发送数据的converter, 再逐个判断是否能发送需要的类型, 当满足要求后就使用.</p>
+<h2 id="springMVC的定制"><a href="#springMVC的定制" class="headerlink" title="springMVC的定制"></a>springMVC的定制</h2><p>在webConfig中使用方法返回一个新的WebMvcConfigurer, 并在其中重写要定制的方法.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@Bean</span><br><span class="line">public WebMvcConfigurer webMvcConfigurer()&#123;</span><br><span class="line">    return new WebMvcConfigurer() &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="配置url匹配模式"><a href="#配置url匹配模式" class="headerlink" title="配置url匹配模式"></a>配置url匹配模式</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public void configurePathMatch(PathMatchConfigurer configurer) &#123;</span><br><span class="line">    //是否将url末尾的/忽略, /user=/user/</span><br><span class="line">    configurer.setUseTrailingSlashMatch(true);</span><br><span class="line">    //创建一个帮助类并交给configurer, 它本身带有一些优化url的方法</span><br><span class="line">    //可以直接使用, 也可以对它进行一些改造</span><br><span class="line">    UrlPathHelper urlPathHelper = new UrlPathHelper();</span><br><span class="line">    //设置自动删除分号,默认true, 设置为false是为了接收矩阵变量</span><br><span class="line">    urlPathHelper.setRemoveSemicolonContent(false);</span><br><span class="line">    configurer.setUrlPathHelper(urlPathHelper);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="添加converter转换器"><a href="#添加converter转换器" class="headerlink" title="添加converter转换器"></a>添加converter转换器</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public void addFormatters(FormatterRegistry registry) &#123;</span><br><span class="line">    //添加转换器</span><br><span class="line">    //假设传入的字符串是以逗号分隔属性</span><br><span class="line">    registry.addConverter(new Converter&lt;String, Student&gt;() &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public Student convert(String source) &#123;</span><br><span class="line">            if (!source.isEmpty())&#123;</span><br><span class="line">                Student student = new Student();</span><br><span class="line">                String[] split = source.split(&quot;,&quot;);</span><br><span class="line">                student.setName(split[0]);</span><br><span class="line">                student.setAge(Integer.parseInt(split[1]));</span><br><span class="line">                student.setGender(split[2]);</span><br><span class="line">                return student;</span><br><span class="line">            &#125;</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="扩展messageconverter"><a href="#扩展messageconverter" class="headerlink" title="扩展messageconverter"></a>扩展messageconverter</h3><p>先自定义messageconverter</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">public class MyConverter implements HttpMessageConverter&lt;Student&gt; &#123;</span><br><span class="line">    @Override</span><br><span class="line">    //不允许读</span><br><span class="line">    public boolean canRead(Class clazz, MediaType mediaType) &#123;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public boolean canWrite(Class clazz, MediaType mediaType) &#123;</span><br><span class="line">        //如果要写入的类为student则允许写</span><br><span class="line">        if (clazz==Student.class)&#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public List&lt;MediaType&gt; getSupportedMediaTypes() &#123;</span><br><span class="line">        //告诉外部可以输出的协议数据类型xml,json,自定义等</span><br><span class="line">        return MediaType.parseMediaTypes(&quot;application/mytype&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    //不写读入方法</span><br><span class="line">    @Override</span><br><span class="line">    public Student read(Class clazz, HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void write(Student student, MediaType contentType, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException &#123;</span><br><span class="line">        //自定义协议数据的写出, 让属性以句子发送</span><br><span class="line">        String data = student.getName()+&quot;今年&quot;+student.getAge()+&quot;岁,是个&quot;+student.getGender()+&quot;生&quot;;</span><br><span class="line">        //写出</span><br><span class="line">        OutputStream body = outputMessage.getBody();</span><br><span class="line">        body.write(data.getBytes());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在WebMvcConfigurer中调用方法, 添加这个messageconverter</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> @Override</span><br><span class="line">public void extendMessageConverters(List&lt;HttpMessageConverter&lt;?&gt;&gt; converters) &#123;</span><br><span class="line">    converters.add(new MyConverter);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="扩展内容协商功能"><a href="#扩展内容协商功能" class="headerlink" title="扩展内容协商功能"></a>扩展内容协商功能</h3><p>为了使用自定义的messageconverter就需要服务器可以接收到自定义的响应类型请求.<br>传统的写法为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?formant= 响应类型</span><br></pre></td></tr></table></figure>
+<p>但服务器默认是不知道自定义的响应类型的, 所以需要扩展内容协商功能<br>这里是重写, 并不是添加.所以如果不添加请求头方式的请求的解析方式的话, 会无法解析请求头发送的请求响应类型.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public void configureContentNegotiation(ContentNegotiationConfigurer configurer) &#123;</span><br><span class="line">    //设置接收的属性名与响应类型的对应关系</span><br><span class="line">    HashMap&lt;String, MediaType&gt; map = new HashMap&lt;&gt;();</span><br><span class="line">    map.put(&quot;json&quot;,MediaType.APPLICATION_JSON);</span><br><span class="line">    map.put(&quot;xml&quot;,MediaType.APPLICATION_ATOM_XML);</span><br><span class="line">    map.put(&quot;mytype&quot;,MediaType.parseMediaType(&quot;application/mytype&quot;));</span><br><span class="line">    //使用map生成策略</span><br><span class="line">    //生成参数类型请求解析策略</span><br><span class="line">    ParameterContentNegotiationStrategy parameterContentNegotiationStrategy = new ParameterContentNegotiationStrategy(map);</span><br><span class="line">    //生成请求头类型请求解析策略,如果不添加, 就视为默认</span><br><span class="line">    HeaderContentNegotiationStrategy headerContentNegotiationStrategy = new HeaderContentNegotiationStrategy();</span><br><span class="line">    configurer.strategies(Arrays.asList(parameterContentNegotiationStrategy,headerContentNegotiationStrategy));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/12/28/leetcode%E9%A2%98%E8%A7%A3/%E4%B8%8D%E7%94%A8%E4%B9%98%E9%99%A4%E5%8F%8A%E5%88%A4%E6%96%AD%E5%AE%9E%E7%8E%B0%E7%B4%AF%E5%8A%A0/" rel="prev" title="不用乘除及判断实现累加">
+      <i class="fa fa-chevron-left"></i> 不用乘除及判断实现累加
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/12/29/leetcode%E9%A2%98%E8%A7%A3/%E9%87%8D%E5%BB%BA%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="next" title="重建二叉树">
+      重建二叉树 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%A5%E9%97%A8"><span class="nav-number">1.</span> <span class="nav-text">入门</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">1.1.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8C%96%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.</span> <span class="nav-text">简化配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8C%96%E9%83%A8%E7%BD%B2"><span class="nav-number">1.3.</span> <span class="nav-text">简化部署</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">自动配置原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86"><span class="nav-number">2.1.</span> <span class="nav-text">依赖管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.</span> <span class="nav-text">自动配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="nav-number">2.3.</span> <span class="nav-text">自动配置的过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%89%E9%9C%80%E5%BC%80%E5%90%AF%E9%85%8D%E7%BD%AE"><span class="nav-number">2.4.</span> <span class="nav-text">按需开启配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E9%BB%98%E8%AE%A4%E9%85%8D%E7%BD%AE"><span class="nav-number">2.5.</span> <span class="nav-text">修改默认配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A5%E7%94%A8%E6%88%B7%E9%85%8D%E7%BD%AE%E4%BC%98%E5%85%88"><span class="nav-number">2.6.</span> <span class="nav-text">以用户配置优先</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%95%E5%B1%82%E6%B3%A8%E8%A7%A3"><span class="nav-number">3.</span> <span class="nav-text">底层注解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Configuration"><span class="nav-number">3.1.</span> <span class="nav-text">@Configuration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#import"><span class="nav-number">3.2.</span> <span class="nav-text">@import</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conditional"><span class="nav-number">3.3.</span> <span class="nav-text">@Conditional</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ImportResource"><span class="nav-number">3.4.</span> <span class="nav-text">ImportResource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ConfigurationProperties"><span class="nav-number">3.5.</span> <span class="nav-text">@ConfigurationProperties</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#yml"><span class="nav-number">4.</span> <span class="nav-text">yml</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95"><span class="nav-number">4.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">4.2.</span> <span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-number">4.3.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web%E5%BC%80%E5%8F%91"><span class="nav-number">5.</span> <span class="nav-text">web开发</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E8%AE%BF%E9%97%AE"><span class="nav-number">5.1.</span> <span class="nav-text">静态资源访问</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E8%AE%BF%E9%97%AE%E5%8E%9F%E7%90%86"><span class="nav-number">5.2.</span> <span class="nav-text">静态资源访问原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E5%A4%84%E7%90%86"><span class="nav-number">5.3.</span> <span class="nav-text">请求参数处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#rest%E5%8E%9F%E7%90%86"><span class="nav-number">5.3.1.</span> <span class="nav-text">rest原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82%E6%98%A0%E5%B0%84%E5%8E%9F%E7%90%86"><span class="nav-number">5.3.2.</span> <span class="nav-text">请求映射原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%99%AE%E9%80%9A%E5%8F%82%E6%95%B0%E4%B8%8E%E5%9F%BA%E6%9C%AC%E6%B3%A8%E8%A7%A3"><span class="nav-number">5.3.3.</span> <span class="nav-text">普通参数与基本注解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%93%8D%E5%BA%94%E5%80%BC%E5%A4%84%E7%90%86"><span class="nav-number">5.4.</span> <span class="nav-text">响应值处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ResponseBody"><span class="nav-number">5.4.1.</span> <span class="nav-text">@ResponseBody</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AE%B9%E5%8D%8F%E5%95%86"><span class="nav-number">5.4.2.</span> <span class="nav-text">内容协商</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#springMVC%E7%9A%84%E5%AE%9A%E5%88%B6"><span class="nav-number">5.5.</span> <span class="nav-text">springMVC的定制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEurl%E5%8C%B9%E9%85%8D%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.5.1.</span> <span class="nav-text">配置url匹配模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0converter%E8%BD%AC%E6%8D%A2%E5%99%A8"><span class="nav-number">5.5.2.</span> <span class="nav-text">添加converter转换器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A9%E5%B1%95messageconverter"><span class="nav-number">5.5.3.</span> <span class="nav-text">扩展messageconverter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E5%86%85%E5%AE%B9%E5%8D%8F%E5%95%86%E5%8A%9F%E8%83%BD"><span class="nav-number">5.5.4.</span> <span class="nav-text">扩展内容协商功能</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="征途"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">征途</p>
+  <div class="site-description" itemprop="description">我的学习笔记</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://leetcode-cn.com/limit-v" title="Leetcode → https:&#x2F;&#x2F;leetcode-cn.com&#x2F;limit-v" rel="noopener" target="_blank"><i class="leetcode fa-fw"></i>Leetcode</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.topgoer.cn/" title="https:&#x2F;&#x2F;www.topgoer.cn" rel="noopener" target="_blank">Javaguide</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.xuesql.cn/static/%E9%87%91%E8%80%81%E5%B8%88%E6%89%8B%E5%86%8C.html" title="http:&#x2F;&#x2F;www.xuesql.cn&#x2F;static&#x2F;%E9%87%91%E8%80%81%E5%B8%88%E6%89%8B%E5%86%8C.html" rel="noopener" target="_blank">SQL手册</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://github.phodal.com/" title="http:&#x2F;&#x2F;github.phodal.com" rel="noopener" target="_blank">Github漫游指南</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.topgoer.cn/" title="https:&#x2F;&#x2F;www.topgoer.cn" rel="noopener" target="_blank">地鼠文档</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">征途</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
