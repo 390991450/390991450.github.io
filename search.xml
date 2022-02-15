@@ -687,6 +687,10 @@
 <p>double check lock<br>在给部分代码上锁的过程中一般会进行判断，但注意不可以只在上锁前进行判断，因为线程可能会在任意<br>阶段发生切换，多个线程同时挤进判断语句中也会发生，所以在锁内要再加判断，如果情况变了，要归还锁。<br>这种上锁方式，只对内层进行上锁仍然可以起到相同的效果，但加入外层锁后可以减少上锁解锁的过程，<br>提升代码效率。</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//单例模式取得对象</span><br><span class="line">if(INSTANCE == null)&#123;</span><br><span class="line">	synchronized(当前类)&#123;</span><br><span class="line">		if(INSTANCE == null)&#123;</span><br><span class="line">			INSTANCE = new 类对象;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这个双锁仍旧有问题，new对象时如果发生指令重排，当只指向地址但未赋值时，此时恰好又有另一个线程访问对象，就会访问到未初始的对象。(虽然被锁定，但是上锁的代码和未上锁的代码是可以访问到中间态的)(java高版本已经解决了这个问题)<br>cpu级防止指令交换：添加屏障指令<br>jvm中防止指令交换：四种内存屏障Load-Store<br>java中防止指令交换：在修饰的前面加volatile</p>
+<h1 id="如何减少多线程上下文切换开销"><a href="#如何减少多线程上下文切换开销" class="headerlink" title="如何减少多线程上下文切换开销"></a>如何减少多线程上下文切换开销</h1><p>无锁并发编程:当任何特定的运算被阻塞的时候，所有CPU可以继续处理其他的运算。换种方式说，在无锁系统中，当给定线程被其他线程阻塞的时候，所有CPU可以不停的继续处理其他工作。无锁算法大大增加系统整体的吞吐量，因为它只偶尔会增加一定的交易延迟。大部分高端数据库系统是基于无锁算法而构造的，以满足不同级别。</p>
+<p>CAS算法:Java提供了一套原子性操作的数据类型（java.util.concurrent.atomic包下），使用CAS算法来更新数据，不需要加锁。如:AtomicInteger、AtomicLong等。</p>
+<p>避免创建过多的线程:如任务量少时，尽可能减少创建线程。对于某个时间段任务量很大的这种情况，我们可以通过线程池来管理线程的数量，避免创建过多线程。</p>
+<p>协程：即协作式程序，其思想是，一系列互相依赖的协程间依次使用CPU，每次只有一个协程工作，而其他协程处于休眠状态。如：JAVA中使用wait和notify来达到线程之间的协同工作。</p>
 ]]></content>
       <categories>
         <category>知识点解析</category>
@@ -1605,6 +1609,7 @@
 <h2 id="dependencies和dependency"><a href="#dependencies和dependency" class="headerlink" title="dependencies和dependency"></a>dependencies和dependency</h2><p>与gav组合管理依赖.</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">	&lt;dependency&gt;</span><br><span class="line">		gav</span><br><span class="line">	&lt;/dependency&gt;</span><br><span class="line">&lt;/dependencies&gt;</span><br></pre></td></tr></table></figure>
 <h2 id="packaging"><a href="#packaging" class="headerlink" title="packaging"></a>packaging</h2><p>项目的打包类型,可以是jar,war,rar,ear,pom,默认是jar.</p>
+<h1 id="dependencyManagement和dependencies"><a href="#dependencyManagement和dependencies" class="headerlink" title="dependencyManagement和dependencies"></a>dependencyManagement和dependencies</h1><p>dependencyManagement能让所有子项目不需要进行版本管理, 如果没有声明版本号maven会沿着父项目向上走, 直到遇到dependencyManagement后使用它其中的版本号.</p>
 <h1 id="maven的生命周期-插件和命令"><a href="#maven的生命周期-插件和命令" class="headerlink" title="maven的生命周期,插件和命令"></a>maven的生命周期,插件和命令</h1><p>生命周期:项目构建的各个阶段.包括清理,编译,测试,报告,打包,安装,部署.<br>插件:要完成maven的各个阶段要使用maven命令,执行的命令是通过插件完成的,是jar.<br>命令:执行maven功能是由命令发出的.</p>
 <table>
 <thead>
@@ -1838,8 +1843,8 @@
 <td>压缩或解压 -cvzf表示压缩 -xzvf表示解压</td>
 </tr>
 </tbody></table>
-<h1 id="Vi-Vim"><a href="#Vi-Vim" class="headerlink" title="Vi/Vim"></a>Vi/Vim</h1><p>vim+文件名：如果文件存在，直接打开该文件，如果文件不存在，那么会创建该名字的新文件并打开<br>vim分为三个模式，一个是ESC模式（命令模式），一个是I模式（编辑模式），还有一个是底行命令模式<br>命令模式是通过移动光标在代码段上，输入命令完成操作,编辑模式就是正常的输入内容</p>
-<p>命令模式常用命令:</p>
+<h1 id="Vi-Vim"><a href="#Vi-Vim" class="headerlink" title="Vi/Vim"></a>Vi/Vim</h1><p>vim+文件名：如果文件存在，直接打开该文件，如果文件不存在，那么会创建该名字的新文件并打开<br>vim分为三个模式，一个是ESC模式（一般模式），一个是I模式（编辑模式），还有一个是命令模式<br>一般模式是通过移动光标在代码段上，输入命令完成操作,编辑模式就是正常的输入内容</p>
+<p>一般模式常用命令:</p>
 <table>
 <thead>
 <tr>
@@ -1848,16 +1853,16 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>dd</td>
-<td>删除当前行</td>
+<td>(数字)+dd</td>
+<td>删除行</td>
 </tr>
 <tr>
 <td>x</td>
 <td>删除光标所在字符</td>
 </tr>
 <tr>
-<td>yy</td>
-<td>拷贝当前行</td>
+<td>(数字)+yy</td>
+<td>拷贝行</td>
 </tr>
 <tr>
 <td>p</td>
@@ -1867,11 +1872,8 @@
 <td>u</td>
 <td>撤销到上一步</td>
 </tr>
-<tr>
-<td>底行命令模式常用的命令</td>
-<td></td>
-</tr>
 </tbody></table>
+<p>命令模式常用的命令:</p>
 <table>
 <thead>
 <tr>
@@ -1898,6 +1900,10 @@
 <tr>
 <td>/关键字</td>
 <td>在内容中搜素该关键字，n往下搜素下一个，N往上搜索上一个</td>
+</tr>
+<tr>
+<td>set nu</td>
+<td>显示行数</td>
 </tr>
 </tbody></table>
 <h1 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h1><table>
@@ -4226,6 +4232,362 @@
 <span id="more"></span>
 <h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><p>对数据高并发的读写<br>海量数据的读写<br>对数据高可扩展性的</p>
 <h2 id="不适应场景"><a href="#不适应场景" class="headerlink" title="不适应场景"></a>不适应场景</h2><p>需要事务<br>基于SQL的结构化查询, 处理复杂的关系 </p>
+<h1 id="Redis目录"><a href="#Redis目录" class="headerlink" title="Redis目录"></a>Redis目录</h1><p>redis-benchmark: 性能测试<br>redis-check-aof: 修复有问题的aof<br>redis-check-dump: 修复有问题的dump.rdb文件<br>redis-sentinel: redis集群使用<br>redis-server: redis服务启动命令<br>redis-cli( -p 端口号): 客户端</p>
+<h1 id="后台启动"><a href="#后台启动" class="headerlink" title="后台启动"></a>后台启动</h1><p>将配置文件移动到etc文件, 修改daemonize 为no.<br>redis-server /etc/redis.conf<br>redis-cli</p>
+<h1 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h1><h2 id="Redis键"><a href="#Redis键" class="headerlink" title="Redis键"></a>Redis键</h2><p>keys* :查看当前库所有key<br>exist key :判断某个key是否存在<br>type key :查看key类型<br>del key :删除指定的key<br>unlink key :根据value选择非阻塞删除(仅将keys从keyspace元数据中删除, 真正的删除会在后续异步操作)<br>expire key 10 :为给定的key设置过期时间<br>ttl key :查看多少秒过期,-1为永久,-2为已过期<br>select :切换库<br>dbsize :查看当前库key数量<br>flushdb :清空当前库<br>flushall :清空全部库</p>
+<h2 id="String"><a href="#String" class="headerlink" title="String"></a>String</h2><p>二进制安全的,即可以包含任何数据. value最大512M.</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>set key value</td>
+<td>添加键</td>
+</tr>
+<tr>
+<td>get</td>
+<td>取</td>
+</tr>
+<tr>
+<td>append key value</td>
+<td>将给定的value追加到value后</td>
+</tr>
+<tr>
+<td>strlen key</td>
+<td>获得value长度</td>
+</tr>
+<tr>
+<td>setnx key value</td>
+<td>当key不存在时设置为这个value</td>
+</tr>
+<tr>
+<td>incr key</td>
+<td>value如果是数字则其中数字加1</td>
+</tr>
+<tr>
+<td>decr key</td>
+<td>value如果是数字则其中数字减1</td>
+</tr>
+<tr>
+<td>incrby/decrby key 步长:</td>
+<td></td>
+</tr>
+<tr>
+<td>mset</td>
+<td>同时设置多个键值对</td>
+</tr>
+<tr>
+<td>mget</td>
+<td>同时获取多个键值对</td>
+</tr>
+<tr>
+<td>msetnx</td>
+<td>设置多个(只有所有key都不存在时才会设置成功)</td>
+</tr>
+<tr>
+<td>getrange key 起始 结束</td>
+<td>取出value.substring()</td>
+</tr>
+<tr>
+<td>setrange key index 值</td>
+<td>在value[index]位置插入</td>
+</tr>
+<tr>
+<td>setex key time value</td>
+<td>设置键值对同时设置时间</td>
+</tr>
+<tr>
+<td>getset key value</td>
+<td>取得旧值同时设置新值</td>
+</tr>
+</tbody></table>
+<h2 id="List"><a href="#List" class="headerlink" title="List"></a>List</h2><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>lpush/rpush k v v</td>
+<td>从左边或右边加一个或多个value</td>
+</tr>
+<tr>
+<td>lpop/rpop</td>
+<td>从左边/右边弹出值, 一旦值为空销毁键</td>
+</tr>
+<tr>
+<td>rpoplpush/lpoprpush</td>
+<td>从一边弹栈另一边入栈</td>
+</tr>
+<tr>
+<td>lrange key start stop</td>
+<td>从一边数取得start到stop的元素(0到-1取所有)</td>
+</tr>
+<tr>
+<td>lindex key index</td>
+<td>取出第index个(左开头)</td>
+</tr>
+<tr>
+<td>llen key</td>
+<td>取得list.size</td>
+</tr>
+<tr>
+<td>linsert key before/after value newvalue</td>
+<td>插入value</td>
+</tr>
+<tr>
+<td>lrem key n value</td>
+<td>从左数前n个value删除</td>
+</tr>
+<tr>
+<td>lset key index value</td>
+<td>替换第index个value</td>
+</tr>
+</tbody></table>
+<h2 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h2><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>sadd k v v</td>
+<td>set中加入多个value</td>
+</tr>
+<tr>
+<td>smembers key</td>
+<td>取出set</td>
+</tr>
+<tr>
+<td>sismember kv</td>
+<td>判断是否有value</td>
+</tr>
+<tr>
+<td>scard key</td>
+<td>返回该集合的元素个数</td>
+</tr>
+<tr>
+<td>srem k v v</td>
+<td>删除一个或多个元素</td>
+</tr>
+<tr>
+<td>spop key</td>
+<td>随机从集合中吐出一个值</td>
+</tr>
+<tr>
+<td>srandmember k n</td>
+<td>随机从集合取出n个值,不会从集合中删除</td>
+</tr>
+<tr>
+<td>smove k1 k2 value</td>
+<td>把k1中的value移动到k2</td>
+</tr>
+<tr>
+<td>sinter k1 k2</td>
+<td>返回交集</td>
+</tr>
+<tr>
+<td>sunion k1 k2</td>
+<td>返回并集</td>
+</tr>
+<tr>
+<td>sdiff k1 k2</td>
+<td>返回k1相对k2的差集</td>
+</tr>
+</tbody></table>
+<h2 id="Hash"><a href="#Hash" class="headerlink" title="Hash"></a>Hash</h2><p>value是一个String类型的field和value的映射表, 适合存储对象.<br>类似Map&lt;String,Object&gt;,整体结构类似Map&lt;String,Map&gt;</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>hset key field value</td>
+<td>添加指定key的键值对</td>
+</tr>
+<tr>
+<td>heget key field</td>
+<td>取出key指定的键值对</td>
+</tr>
+<tr>
+<td>hmset key field value key field value</td>
+<td>批量设置hash的值</td>
+</tr>
+<tr>
+<td>hexists key field</td>
+<td>查看是否存在</td>
+</tr>
+<tr>
+<td>hvals key</td>
+<td>列出values</td>
+</tr>
+<tr>
+<td>hkeys key</td>
+<td>列出keyset</td>
+</tr>
+<tr>
+<td>hincrby key field increment</td>
+<td>为对应的key 的field加一</td>
+</tr>
+<tr>
+<td>hsetnx key field value</td>
+<td>当这个key没有这个field时设置value</td>
+</tr>
+</tbody></table>
+<h2 id="Zset"><a href="#Zset" class="headerlink" title="Zset"></a>Zset</h2><p>它是set的一个改进, 为每个set设置了优先级, 可以根据score或者position快速获得一个范围的元素</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>zadd key score value score value</td>
+<td>加入一个或多个元素</td>
+</tr>
+<tr>
+<td>zrange key start stop</td>
+<td>返回score在规定区间的v</td>
+</tr>
+<tr>
+<td>zrangebycore key minmax</td>
+<td>从小到大排列显示</td>
+</tr>
+<tr>
+<td>zrangebycore key maxmin</td>
+<td>从大到小排列显示</td>
+</tr>
+<tr>
+<td>zincrby key increment value</td>
+<td>增大score</td>
+</tr>
+<tr>
+<td>zcount key min max</td>
+<td>统计区间元素个数</td>
+</tr>
+<tr>
+<td>zrank key value</td>
+<td>返回排名,0开始</td>
+</tr>
+</tbody></table>
+<h2 id="Bitmaps"><a href="#Bitmaps" class="headerlink" title="Bitmaps"></a>Bitmaps</h2><p>这个bitmap可以看作是一个String表示的二进制数字, key就是位数, value就是0或1.<br>主要用于节省空间, 表示true和false.</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>setbit key offset value</td>
+<td>为指定的bitmap设定指定的位的值</td>
+</tr>
+<tr>
+<td>getbit key offset</td>
+<td>取出指定bitmap的指定位的值</td>
+</tr>
+<tr>
+<td>bitcount key</td>
+<td>计算1的数量</td>
+</tr>
+<tr>
+<td>bitop 位运算 key1 key2 key3</td>
+<td>对k2, k3进行位运算存入k1, 同时返回count</td>
+</tr>
+</tbody></table>
+<h2 id="HyperLoglog"><a href="#HyperLoglog" class="headerlink" title="HyperLoglog"></a>HyperLoglog</h2><p>这个数据结构不会存储添加的元素, 而是维护一个加入的不同元素的数量的值</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pfadd key element</td>
+<td>添加元素到数据类型中</td>
+</tr>
+<tr>
+<td>pfcount key</td>
+<td>统计数量</td>
+</tr>
+<tr>
+<td>pfmerge key1 key2 key3</td>
+<td>将key2,key3的元素合并到key1中</td>
+</tr>
+</tbody></table>
+<h1 id="发布和订阅"><a href="#发布和订阅" class="headerlink" title="发布和订阅"></a>发布和订阅</h1><p>是一种消息的通信模式, 订阅到同一频道进行消息的发送和接收.</p>
+<h1 id="Jedis使用"><a href="#Jedis使用" class="headerlink" title="Jedis使用"></a>Jedis使用</h1><p>服务防火墙外部配置redis端口<br>服务器内部打开redis端口<br>修改/etc/redis.conf文件的bind, 注释方便非本机访问.<br>将protected-mode 改为no<br>重启redis</p>
+<h1 id="boot整合redis"><a href="#boot整合redis" class="headerlink" title="boot整合redis"></a>boot整合redis</h1><p>引入依赖</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;</span><br><span class="line">        &lt;scope&gt;test&lt;/scope&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- redis --&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- spring2.X集成redis所需common-pool2--&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;commons-pool2&lt;/artifactId&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;/dependencies&gt;</span><br></pre></td></tr></table></figure>
+<p>创建配置文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">spring:</span><br><span class="line">  redis:</span><br><span class="line">    host: 101.200.131.200</span><br><span class="line">    port: 6379</span><br><span class="line">    password: lixin123</span><br><span class="line">    database: 0</span><br><span class="line">    timeout: 1000</span><br><span class="line">    jedis:</span><br><span class="line">      pool:</span><br><span class="line">        max-active: 20</span><br><span class="line">        max-wait: -1</span><br><span class="line">        max-idle: 5</span><br><span class="line">        min-idle: 0</span><br></pre></td></tr></table></figure>
+<p>创建配置类</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@EnableCaching</span><br><span class="line">@Configuration</span><br><span class="line">public class RedisConfig extends CachingConfigurerSupport &#123;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public RedisTemplate&lt;String, Object&gt; redisTemplate(RedisConnectionFactory factory) &#123;</span><br><span class="line">        RedisTemplate&lt;String, Object&gt; template = new RedisTemplate&lt;&gt;();</span><br><span class="line">        RedisSerializer&lt;String&gt; redisSerializer = new StringRedisSerializer();</span><br><span class="line">        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);</span><br><span class="line">        ObjectMapper om = new ObjectMapper();</span><br><span class="line">        om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);</span><br><span class="line">        om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);</span><br><span class="line">        jackson2JsonRedisSerializer.setObjectMapper(om);</span><br><span class="line">        template.setConnectionFactory(factory);</span><br><span class="line">//key序列化方式</span><br><span class="line">        template.setKeySerializer(redisSerializer);</span><br><span class="line">//value序列化</span><br><span class="line">        template.setValueSerializer(jackson2JsonRedisSerializer);</span><br><span class="line">//value hashmap序列化</span><br><span class="line">        template.setHashValueSerializer(jackson2JsonRedisSerializer);</span><br><span class="line">        return template;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public CacheManager cacheManager(RedisConnectionFactory factory) &#123;</span><br><span class="line">        RedisSerializer&lt;String&gt; redisSerializer = new StringRedisSerializer();</span><br><span class="line">        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);</span><br><span class="line">//解决查询缓存转换异常的问题</span><br><span class="line">        ObjectMapper om = new ObjectMapper();</span><br><span class="line">        om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);</span><br><span class="line">        om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);</span><br><span class="line">        jackson2JsonRedisSerializer.setObjectMapper(om);</span><br><span class="line">// 配置序列化（解决乱码的问题）,过期时间600秒</span><br><span class="line">        RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()</span><br><span class="line">                .entryTtl(Duration.ofSeconds(600))</span><br><span class="line">                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(redisSerializer))</span><br><span class="line">                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer))</span><br><span class="line">                .disableCachingNullValues();</span><br><span class="line">        RedisCacheManager cacheManager = RedisCacheManager.builder(factory)</span><br><span class="line">                .cacheDefaults(config)</span><br><span class="line">                .build();</span><br><span class="line">        return cacheManager;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;	</span><br></pre></td></tr></table></figure>
+<h1 id="redis事务"><a href="#redis事务" class="headerlink" title="redis事务"></a>redis事务</h1><p>redis事务的命令会序列化后串联起来, 不会被其他客户端命令打断.</p>
+<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><p>multi表示开启队列, 此时命令可以进行排队准备执行.<br>exec表示开始执行, 将队列中的命令开始依次执行.<br>discard表示放弃组队, 清空事务队列.<br>当组队过程中出现错误, 使用执行操作时并不会执行.<br>当执行过程中出现错误, 只有错误的命令不会执行.</p>
+<h2 id="事务冲突"><a href="#事务冲突" class="headerlink" title="事务冲突"></a>事务冲突</h2><p>悲观锁:适用多改操作<br>操作前进行上锁, 操作结束才归还锁.</p>
+<p>乐观锁:适用多读操作,抢票高并发操作<br>为操作及数据库添加版本号, 每次操作都会更新版本号, 只有版本号一致才允许操作<br>乐观锁的使用:<br>使用watch key, 监视一个或多个key, 如果在事务执行之前这些key被更改, 则打断事务<br>##redis事务特性<br>所有事务都会序列化按序执行, 不会被打断.<br>不存在隔离级别.<br>如果有一条事务失败并不会回滚而是跳过.</p>
+<h2 id="ab工具模拟并发"><a href="#ab工具模拟并发" class="headerlink" title="ab工具模拟并发"></a>ab工具模拟并发</h2><p>-n: 请求数量<br>-c: 请求并发数量<br>-p: post提交<br>-u: put提交<br>-T: 内容类型<br>示例:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ab -n 1000 -c 100 -p postfile -T contentType host</span><br></pre></td></tr></table></figure>
+<h2 id="解决并发的连接超时问题"><a href="#解决并发的连接超时问题" class="headerlink" title="解决并发的连接超时问题"></a>解决并发的连接超时问题</h2><p>启用jedis连接池</p>
+<h2 id="解决超卖问题"><a href="#解决超卖问题" class="headerlink" title="解决超卖问题"></a>解决超卖问题</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//监视库存</span><br><span class="line">jedis.watch(kckey);</span><br><span class="line">//开启事务</span><br><span class="line">Transaction multi = jedis.multi();</span><br><span class="line">//要执行的操作</span><br><span class="line"></span><br><span class="line">//执行</span><br><span class="line">List&lt;Object&gt; result = multi.exec();</span><br><span class="line">if(result == null||result.size()==0)&#123;</span><br><span class="line">    System.out.println(&quot;秒杀失败&quot;);</span><br><span class="line">    jedis.close;</span><br><span class="line">    return false;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="持久化-只做缓存不需要"><a href="#持久化-只做缓存不需要" class="headerlink" title="持久化(只做缓存不需要)"></a>持久化(只做缓存不需要)</h1><h2 id="RDB-默认"><a href="#RDB-默认" class="headerlink" title="RDB(默认)"></a>RDB(默认)</h2><p>每隔一段时间fork出一套临时文件, 再将持久化文件进行替换. 这是为了防止在持久化过程中出现意外, 导致现有内容未完全写完, 而原有内容又不完整的情况出现.<br>save: 手动保存<br>bgsave: 后台异步快照操作.</p>
+<p>适合大规模的数据恢复, 对数据完整性和一致性要求不高的情况. 节省磁盘空间, 恢复速度快.<br>缺点是最后一次持久化数据可能会丢失.</p>
+<h2 id="AOF-有bug-不推荐单独使用"><a href="#AOF-有bug-不推荐单独使用" class="headerlink" title="AOF(有bug, 不推荐单独使用)"></a>AOF(有bug, 不推荐单独使用)</h2><p>以日志形式记录所有增删改, 通过执行所有操作实现数据的还原.<br>将redis.config中的appendonly设为yes即可切换到aof持久化.<br>如果遇到aof文件损坏, 通过/usr/local/bin/reids-check-aof–fix appendonly.aof可以修复.<br>appendfsync always: 始终同步<br>appendfsync everysec: 每秒同步<br>appendfsync no: 只允许手动同步</p>
+<p>rewrite<br>将多条重复度高的命令整合为一个长命令.<br>只有当aof文件是上次rewrite后大小的一倍(即aof变大一倍)且大于64M时才会触发.</p>
+<p>备份文件机制更稳健, 日志形式, 可以处理误操作.<br>缺点是占用磁盘更多, 恢复速度慢, 同步频率高的话有性能压力.</p>
+<h1 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h1><p>主服务器负责写, 写完后将内容复制给副服务器, 副服务器只进行读操作.</p>
+<h2 id="搭建"><a href="#搭建" class="headerlink" title="搭建"></a>搭建</h2><p>创建新的conf文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//引入公共部分</span><br><span class="line">include /myredis/redis.conf</span><br><span class="line">//设置新锁</span><br><span class="line">pidfile /var/run/redis_6379.pid</span><br><span class="line">//设置新端口</span><br><span class="line">port 6379</span><br><span class="line">//设置持久化文件名称</span><br><span class="line">dbfilename dump6379.rdb</span><br><span class="line">//设置aof文件名称或关闭aof</span><br></pre></td></tr></table></figure>
+
+<p>启动服务</p>
+<p>info replication查看主从复制相关信息</p>
+<p>在副服务器上执行:slaveof ip 端口 实现与主服务器的绑定<br>slaveof no one 解除与主服务器的绑定, 自身升级为主服务器, 将原本的主服务器和其他从服务器绑定到它下面</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>当从服务器挂掉后重启, 会变为主服务器, 需要再次绑定<br>基于主从服务区可以将多个服务器数据库进行树化, 方便管理</p>
+<p>哨兵模式: 为服务器创建一个哨兵进行监听, 需要的时候将从服务器升级为主服务器.<br>使用配置文件启动<br>配置文件:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//设定监控的主机</span><br><span class="line">sentinel monitor mymaster ip 端口 需要哨兵同意的数量</span><br></pre></td></tr></table></figure>
+<p>启动:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">redis-sentinel 配置文件路径</span><br></pre></td></tr></table></figure>
+<p>选择条件<br>优先级: reids.conf中的replica-priority的值越小优先级越高<br>与主机同步高的<br>runid小的</p>
+<h1 id="redis集群"><a href="#redis集群" class="headerlink" title="redis集群"></a>redis集群</h1><h2 id="组装"><a href="#组装" class="headerlink" title="组装"></a>组装</h2><p>配置文件:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//引入公共部分</span><br><span class="line">include /myredis/redis.conf</span><br><span class="line">//设置新锁</span><br><span class="line">pidfile /var/run/redis_6379.pid</span><br><span class="line">//设置新端口</span><br><span class="line">port 6379</span><br><span class="line">//设置持久化文件名称</span><br><span class="line">dbfilename dump6379.rdb</span><br><span class="line">//设置aof文件名称或关闭aof</span><br><span class="line">//开启集群</span><br><span class="line">cluster-enable yes</span><br><span class="line">//设置节点配置文件名称</span><br><span class="line">cluster-config 名称</span><br><span class="line">//设定失联时间, 超过这时间集群自动进行主从切换</span><br><span class="line">cluster-node-timeout 时间</span><br></pre></td></tr></table></figure>
+<p>启动所有需要集群的服务.<br>使用redis/src下执行以下操作, 进行集群的自动组装<br>集群方式1:一主一从</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">redies-cli --cluster create --cluster-replicas 集群方式 &#123;ip 端口&#125;</span><br></pre></td></tr></table></figure>
+<p>开启</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">redis-cli -c -p 端口</span><br></pre></td></tr></table></figure>
+<p>在其中使用cluster nodes查看集群</p>
+<h2 id="集群操作"><a href="#集群操作" class="headerlink" title="集群操作"></a>集群操作</h2><p>集群中有一个插槽概念, 根据key会生成一个插槽值, 每个服务器可以接收固定范围的一个插槽值. 当存入key时会自动将key存入对应的服务器并切换过去.<br>因此当批量存入key时无法同时为它们分派一个插槽值, 因此无法一次性存入多个key.<br>除非为这些key设定一个统一的生成插槽的key:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mest name&#123;user&#125; lucy age&#123;user&#125; 20</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//查询键的插槽</span><br><span class="line">cluster keyslot key</span><br><span class="line">//计算插槽存入的键的数量(必须在持有插槽的服务器进行查询)</span><br><span class="line">cluster countkeysinlot 插槽</span><br><span class="line">//获取插槽的第n个键</span><br><span class="line">cluster getkeysinslot 插槽 n</span><br></pre></td></tr></table></figure>
+
+<p>配置文件:<br>cluster-require-full-coverage<br>如果为yes则当集群一部分功能停止时, 整个集群都停止.<br>如果为no, 则不会停止.</p>
+<h1 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h1><h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>大量请求的key不在缓存中, 也不在数据库, 因此也不会在缓存中进行缓存, 这会使得每次请求都要经过缓存然后再向数据库发送请求, 造成服务器压力增大或崩溃.</p>
+<h2 id="表现"><a href="#表现" class="headerlink" title="表现"></a>表现</h2><p>应用服务器压力变大,redis服务器压力也会变大<br>redis命中率降低<br>一直查询数据库</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>1.对空值进行缓存:如果查询返回值数据为空(不管数据库是否不存在), 仍将这个空结果进行缓存, 设置较短的过期时间(不超过五分钟).<br>2.设置可访问的白名单:名单id作为bitmap的偏移量, 每次访问和bitmap进行比较, 进行拦截.<br>3.采用布隆过滤器:bitmap方式的一种优化方案(空间和时间效率高, 但是命中率较低)<br>4.实时监控:当发现Redis的命中率开始急剧降低, 需要排查访问对象和访问数据, 设置黑名单.</p>
+<h1 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h1><h2 id="原因-1"><a href="#原因-1" class="headerlink" title="原因"></a>原因</h2><p>redis中的某个key过期了, 同时又有大量访问使用这个key.</p>
+<h2 id="表现-1"><a href="#表现-1" class="headerlink" title="表现"></a>表现</h2><p>数据库访问压力变大<br>redis没有出现大量过期<br>redis正常运行</p>
+<h2 id="解决方法-1"><a href="#解决方法-1" class="headerlink" title="解决方法"></a>解决方法</h2><p>1.预先设置热门数据: 在redis高峰访问前, 把一些热门数据提前存入到redis中, 增加时长.<br>2.实时调整: 监控key的访问频率, 依据频率分配时长.<br>3.使用锁: 这种原因是大量对同一个key进行访问数据库导致, 所以可以为key添加互斥锁, 当在查询数据库时不再允许相同的查询.</p>
+<h1 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h1><h2 id="原因-2"><a href="#原因-2" class="headerlink" title="原因"></a>原因</h2><p>极短时间内, 大量key同时过期.</p>
+<h2 id="表现-2"><a href="#表现-2" class="headerlink" title="表现"></a>表现</h2><p>数据库压力变大服务器崩溃</p>
+<h2 id="解决方法-2"><a href="#解决方法-2" class="headerlink" title="解决方法"></a>解决方法</h2><p>1.构建多级缓存: nginx+redis+其他<br>2.使用锁或者队列<br>3.设置过期标志更新缓存<br>4.将缓存失效时间分散</p>
+<h1 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h1><h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//上锁</span><br><span class="line">setnx k v</span><br><span class="line">//设置过期时间</span><br><span class="line">exprie k seconds</span><br><span class="line">//解锁</span><br><span class="line">del k</span><br></pre></td></tr></table></figure>
+<p>为了防止上锁与设置过期时间之间出现意外, 可以合并操作</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">set k v nx ex seconds</span><br></pre></td></tr></table></figure>
+
+<p>java代码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@GetMapping(&quot;/test&quot;)</span><br><span class="line">    public void blockTest()&#123;</span><br><span class="line">        //生成uuid</span><br><span class="line">        String uuid = UUID.randomUUID().toString();</span><br><span class="line">        //获取锁</span><br><span class="line">        Boolean lock = redisTemplate.opsForValue().setIfAbsent(&quot;lock&quot;, uuid,3, TimeUnit.SECONDS);</span><br><span class="line">        //取到锁开始操作</span><br><span class="line">        if (lock)&#123;</span><br><span class="line">            //需要锁的操作</span><br><span class="line"></span><br><span class="line">            //如果uuid相等则解锁</span><br><span class="line">            if (redisTemplate.opsForValue().get(&quot;lock&quot;).equals(uuid))&#123;</span><br><span class="line">                this.redisTemplate.delete(&quot;lock&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;else &#123;</span><br><span class="line">                //否则进行重试</span><br><span class="line">            try &#123;</span><br><span class="line">                Thread.sleep(100);</span><br><span class="line">                blockTest();</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="防止误删"><a href="#防止误删" class="headerlink" title="防止误删"></a>防止误删</h2><p>当一个服务器持有锁卡顿时, 锁被自动释放, 此时其他服务器会重新上锁, 但此时如果原本的卡顿服务器恢复则会将这个锁删除. 为了防止这种情况出现, 要为锁设置uuid(为同一个id设置不同的value实现)防止误删.</p>
+<p>即使这样, 但因为uuid的判断与删除不为原子操作, 所以当在这个两个语句之间锁出现过期并被其他服务器使用也会导致误删.<br>因此需要使用lua脚本将这部分语句进行封装.</p>
 ]]></content>
       <categories>
         <category>学习笔记</category>
@@ -4299,29 +4661,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Nginx</title>
-    <url>/2022/01/12/Nginx/</url>
-    <content><![CDATA[<h1 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h1><p>用于在分布式前实现动静分离,负载均衡和反向代理, 以它为中介管理多个后台服务器</p>
-<h1 id="如何保证session可用"><a href="#如何保证session可用" class="headerlink" title="如何保证session可用"></a>如何保证session可用</h1><p>对id进行hash操作, 使id与服务器形成固定的映射(不建议),使用Redis最好.</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>Dubbo</title>
-    <url>/2022/01/13/%E6%A1%86%E6%9E%B6/Dubbo/</url>
-    <content><![CDATA[<h1 id="RPC"><a href="#RPC" class="headerlink" title="RPC"></a>RPC</h1>]]></content>
-      <categories>
-        <category>框架</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>MapReduce</title>
-    <url>/2022/01/12/%E7%AC%94%E8%AE%B0/MapReduce/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-  </entry>
-  <entry>
     <title>分布式</title>
     <url>/2022/01/12/%E7%AC%94%E8%AE%B0/%E5%88%86%E5%B8%83%E5%BC%8F/</url>
     <content><![CDATA[<h1 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h1><p>高性能, 高并发, 可容错</p>
@@ -4345,6 +4684,123 @@
 <h2 id="遗留问题"><a href="#遗留问题" class="headerlink" title="遗留问题"></a>遗留问题</h2><p>这种架构的问题是超大集群服务间的相互交流对网络传输的要求跟高, 这个架构的瓶颈也是网络传输速度, 只能在设计上尽可能避免使用网络传输</p>
 <h1 id="GFS"><a href="#GFS" class="headerlink" title="GFS"></a>GFS</h1><p>GFS用于配合MapReduce, 它会将接收到的数据以64kb分散到所有服务器中, 这样在进行MapReduce时这些数据本身就已经被划分为了一个个map.<br>同时为了避免使用网络传输, 谷歌将GFS和MapReduce部署在同一服务器集群中, 这样当进行map或reduce操作时, master会要求其尽可能从当前服务器进行map和reduce操作.<br>大型存储集群要解决的核心问题就是一致性与性能的权衡, 这二者一方提升的代价往往是另一方下降.    </p>
 ]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>解决智力问题</title>
+    <url>/2022/01/16/leetcode%E9%A2%98%E8%A7%A3/%E8%A7%A3%E5%86%B3%E6%99%BA%E5%8A%9B%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给你一个下标从 0 开始的二维整数数组 questions ，其中 questions[i] = [pointsi, brainpoweri] 。</p>
+<p>这个数组表示一场考试里的一系列题目，你需要 按顺序 （也就是从问题 0 开始依次解决），针对每个问题选择 解决 或者 跳过 操作。解决问题 i 将让你 获得  pointsi 的分数，但是你将 无法 解决接下来的 brainpoweri 个问题（即只能跳过接下来的 brainpoweri 个问题）。如果你跳过问题 i ，你可以对下一个问题决定使用哪种操作。</p>
+<p>比方说，给你 questions = [[3, 2], [4, 3], [4, 4], [2, 5]] ：<br>如果问题 0 被解决了， 那么你可以获得 3 分，但你不能解决问题 1 和 2 。<br>如果你跳过问题 0 ，且解决问题 1 ，你将获得 4 分但是不能解决问题 2 和 3 。<br>请你返回这场考试里你能获得的 最高 分数。</p>
+<span id="more"></span>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>这里可以将题目转换为获得start开始的一个最大串, 比如例题, 我们可以选择start=0开始的某个串, 如果选择第0个为串的头, 就要取得串的第二个数, 串的第二个数字可以转化为start=0+2+1开始的某个串.<br>这样思考就形成了一个递归问题. 接着, 我们需要对算法进行优化, 当我们取得一个start的最大串, 就可以将它存储起来, 当进行循环时遇到这个数字, 说明后面的最大计算已经完成, 只需与前面的数字进行最大值的比较就能得到整体的最大值.</p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int[][] questions;</span><br><span class="line">//记录已经算出的start</span><br><span class="line">HashMap&lt;Integer, Long&gt; map;</span><br><span class="line"></span><br><span class="line">public long mostPoints(int[][] questions) &#123;</span><br><span class="line">    map = new HashMap&lt;&gt;();</span><br><span class="line">    this.questions = questions;</span><br><span class="line">    return getMax(0);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public long getMax(int start) &#123;</span><br><span class="line">    long max = 0;</span><br><span class="line">    long sum = 0;</span><br><span class="line">    for (int i = start; i &lt; questions.length; i++) &#123;</span><br><span class="line">        if (map.containsKey(i)) &#123;</span><br><span class="line">        	//这里的max就是前面未算的最大值, 而取出的value就是后面的, 二者取最大就可以</span><br><span class="line">            max = Math.max(map.get(i), max);</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">        if (questions[i][1] + i + 1 &gt;= questions.length) &#123;</span><br><span class="line">            sum = questions[i][0];</span><br><span class="line">        &#125;else &#123;</span><br><span class="line">            sum = questions[i][0] + getMax(questions[i][1] + i + 1);</span><br><span class="line">        &#125;</span><br><span class="line">        max = Math.max(sum, max);</span><br><span class="line">    &#125;</span><br><span class="line">    //到这里已经算出当前start对应的最大值了, 存储</span><br><span class="line">    map.put(start, max);</span><br><span class="line">    return max;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>leetcode解析</category>
+        <category>中等</category>
+      </categories>
+      <tags>
+        <tag>递归</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux笔记</title>
+    <url>/2022/01/14/%E7%AC%94%E8%AE%B0/Linux%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h1 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h1><p>/etc:配置文件子目录<br>/user:用户应用程序及文件<br>/boot:启动Linux使用的核心文件<br>/tmp:临时文件<br>/dev:硬件文件<br>/mnt:临时挂载其他系统<br>/opt:主机额外安装软件存放的目录<br>/usr/local:安装软件安装的目录<br>/var:存放经常被修改的文件的目录, 日志等</p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Nginx</title>
+    <url>/2022/01/12/%E7%AC%94%E8%AE%B0/Nginx/</url>
+    <content><![CDATA[<h1 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h1><p>用于在分布式前实现动静分离,负载均衡和反向代理, 以它为中介管理多个后台服务器</p>
+<h1 id="如何保证session可用"><a href="#如何保证session可用" class="headerlink" title="如何保证session可用"></a>如何保证session可用</h1><p>对id进行hash操作, 使id与服务器形成固定的映射(不建议),使用Redis最好.</p>
+<h1 id="常用命令-nginx目录下操作"><a href="#常用命令-nginx目录下操作" class="headerlink" title="常用命令(nginx目录下操作)"></a>常用命令(nginx目录下操作)</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 查看版本号</span><br><span class="line">./nginx -v</span><br><span class="line"># 开启</span><br><span class="line">./nginx</span><br><span class="line"># 关闭</span><br><span class="line">./nginx -s stop</span><br><span class="line"># 重加载</span><br><span class="line">./nginx -s reload</span><br></pre></td></tr></table></figure>
+
+<h1 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h1><h2 id="全局块"><a href="#全局块" class="headerlink" title="全局块"></a>全局块</h2><p>开始到events块之间的内容, 主要设置一些影响nginx服务器整体运行的配置指令</p>
+<p>worker processes:工作进程数</p>
+<h2 id="events块"><a href="#events块" class="headerlink" title="events块"></a>events块</h2><p>影响Nginx服务器与用户的网络连接, 常用的设置包括是否开启对多work process下的网络连接进行序列化, 是否允许同时接收多个网络连接, 选取哪种事件驱动模型来处理连接请求, 每个work process可以同时支持的最大连接数等.</p>
+<p>worker_connections:每个work process支持的最大连接数.</p>
+<h2 id="http块"><a href="#http块" class="headerlink" title="http块"></a>http块</h2><p>server{<br>    listen:监听端口号<br>    server_name:主机名称<br>    location / {<br>            root   html;<br>            index  index.html index.htm;<br>        }<br>}</p>
+<h2 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a>反向代理</h2><p>实现效果: 打开特定页面跳转到linux系统的tomcat主页面</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  101.200.131.200;</span><br><span class="line">    # 这里进行配置的并不是全路径, 而是类似于拦截器, 识别到对应的标志后 </span><br><span class="line">    # 就使用对应的服务器进行资源的查找</span><br><span class="line">    location / &#123;</span><br><span class="line">        root   html;</span><br><span class="line">        proxy_pass http://101.200.131.200:8080;</span><br><span class="line">        index  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">    # 这里将路径中有1的请求分发给8081</span><br><span class="line">    location ~ /1/ &#123;</span><br><span class="line">    	proxy_pass http://101.200.131.200:8081;</span><br><span class="line">    &#125;</span><br><span class="line">    location ~ /2/ &#123;</span><br><span class="line">    	proxy_pass http://101.200.131.200:8082;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>location =:不含正则表达式的url<br>location ~:正则表达, 区分大小写<br>location ~* :正则表达式, 不区分大小写</p>
+<h2 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h2><p>因为要进行相同的工作, 所以两个服务器要求接收相同路径可以跳转到相同的资源</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">http&#123;</span><br><span class="line">	# 启用负载均衡</span><br><span class="line">	upstream myserver &#123;</span><br><span class="line">		server 101.200.131.200:8080;</span><br><span class="line">		server 101.200.131.200:8081;</span><br><span class="line">	&#125;</span><br><span class="line">	server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  101.200.131.200;</span><br><span class="line">    location / &#123;</span><br><span class="line">        root   html;</span><br><span class="line">        proxy_pass http://myserver;</span><br><span class="line">        index  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>分配策略:<br>1.轮询(默认)<br>2.weight: 在每个服务器后加wieght = n设置服务器权重<br>3.ip_hash(解决session问题): 在upstream中加入ip_hash;即可<br>4.fair(根据服务器响应时间分配): 在upstream中加入fair;即可</p>
+<h2 id="动静分离"><a href="#动静分离" class="headerlink" title="动静分离"></a>动静分离</h2><p>nginx处理静态请求, tomcat处理动态请求</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">location /image/ &#123;</span><br><span class="line">    # 将路径中含有image的请求的根路径定位为/data文件</span><br><span class="line">    root  /data/;</span><br><span class="line">    # 列出访问目录</span><br><span class="line">    autoindex on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="配置主从nginx"><a href="#配置主从nginx" class="headerlink" title="配置主从nginx"></a>配置主从nginx</h2><p>使用keepalived配置主从服务器, 并对外使用虚拟ip<br>安装keepalived(/etc/keepalived/)</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum install keepalived -y</span><br></pre></td></tr></table></figure>
+<p>修改配置文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">global_defs &#123;</span><br><span class="line">   notification_email &#123;</span><br><span class="line">     acassen@firewall.loc</span><br><span class="line">     failover@firewall.loc</span><br><span class="line">     sysadmin@firewall.loc</span><br><span class="line">   &#125;</span><br><span class="line">   notification_email_from Alexandre.Cassen@firewall.loc</span><br><span class="line">   smtp_server 192.168.200.1</span><br><span class="line">   smtp_connect_timeout 30</span><br><span class="line">   # 服务器名称</span><br><span class="line">   router_id LVS_DEVEL</span><br><span class="line">&#125;</span><br><span class="line"># 配置检测脚本</span><br><span class="line">vrrp_script chk_http_port &#123;</span><br><span class="line">    # 路径</span><br><span class="line">    script &quot;/usr/local/src/nginx_check.sh&quot;</span><br><span class="line">    #间隔</span><br><span class="line">    interval 2</span><br><span class="line">    #脚本执行成功后的权重</span><br><span class="line">    weight 2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line">    state MASTER   #主服务器Master副服务器Backup</span><br><span class="line">    interface eth0  #网卡</span><br><span class="line">    virtual_router_id 51  #主,备机的这个id必须相同  </span><br><span class="line">    priority 100   </span><br><span class="line">    advert_int 1</span><br><span class="line">    authentication &#123;</span><br><span class="line">        auth_type PASS</span><br><span class="line">        auth_pass 1111</span><br><span class="line">    &#125;</span><br><span class="line">    # 虚拟ip地址</span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        192.168.200.16</span><br><span class="line">        192.168.200.17</span><br><span class="line">        192.168.200.18</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>SpringCloud</title>
+    <url>/2022/02/07/%E6%A1%86%E6%9E%B6/SpringCloud/</url>
+    <content><![CDATA[<h1 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h1><p>RestTemplate:<br>用于不同服务器间的交互.<br>参数: url,requestMap,ResponseBean.class<br>注入容器(Configration文件):</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@Bean</span><br><span class="line">   public RestTemplate getRestTemplate()&#123;</span><br><span class="line">       return new RestTemplate();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>公共部分提取:<br>使用maven打包公共文件后引入到其他模块的依赖之中.</p>
+<h1 id="服务注册中心"><a href="#服务注册中心" class="headerlink" title="服务注册中心"></a>服务注册中心</h1><p>当服务数量到达一个量级时, 服务与服务间的调用会变得非常复杂, 所以需要一个工具来管理服务间的依赖关系, 相互调用, 负载均衡, 容错等功能. 即服务注册中心, 通过服务的发现与注册, 对服务进行统一的管理.</p>
+<h2 id="Eureka"><a href="#Eureka" class="headerlink" title="Eureka"></a>Eureka</h2><p>全部设置完成后, 在RestTemplate处配置好负载均衡功能, 微服务间的交互便不再使用直接地址, 而是使用application name进行交互(集群交互的基础).</p>
+<h3 id="Eureka-Server"><a href="#Eureka-Server" class="headerlink" title="Eureka Server"></a>Eureka Server</h3><p>提供服务注册, 注册后监听心跳, 如果一段时间未收到心跳, 则将服务移出.</p>
+<p>创建:<br>1.配置pom<br>2.yml文件配置</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">server:</span><br><span class="line">  port: 7001</span><br><span class="line"></span><br><span class="line">eureka:</span><br><span class="line">  instance:</span><br><span class="line">    hostname: eureka7001.com</span><br><span class="line">  client:</span><br><span class="line">    #false表示不向注册中心注册自己</span><br><span class="line">    register-with-eureka: false</span><br><span class="line">    #false表示自己就是注册中心, 无需检索</span><br><span class="line">    fetch-registry: false</span><br><span class="line">    service-url:</span><br><span class="line">      # 设置eureka的交互地址</span><br><span class="line">      defaultZone: &quot;http://eureka7002.com:7002/eureka/,</span><br><span class="line">                    http://eureka7003.com:7003/eureka/&quot;</span><br></pre></td></tr></table></figure>
+<p>3.在main函数使用@EnableEurekaServer注解注册</p>
+<h3 id="Eureka-Client"><a href="#Eureka-Client" class="headerlink" title="Eureka Client"></a>Eureka Client</h3><p>通过注册中心进行访问<br>对所有需要进行注册中心的微服务进行eureka client配置.<br>1.pom配置<br>2.yml配置</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">eureka:</span><br><span class="line">  instance:</span><br><span class="line">    instance-id: payment8002</span><br><span class="line">    #访问路径可以显示ip</span><br><span class="line">    prefer-ip-address: true</span><br><span class="line">  client:</span><br><span class="line">    #注册</span><br><span class="line">    register-with-eureka: true</span><br><span class="line">    #是否从注册中心抓取注册信息, 单节点无所谓,集群必须设置为true才能配合ribbon使用负载均衡</span><br><span class="line">    fetch-registry: true</span><br><span class="line">    service-url:</span><br><span class="line">      defaultZone: &quot;http://eureka7001.com:7001/eureka/,</span><br><span class="line">                    http://eureka7002.com:7002/eureka/</span><br><span class="line">                    http://eureka7003.com:7003/eureka/&quot;</span><br></pre></td></tr></table></figure>
+<p>3.main函数注解</p>
+<h3 id="Eureka的保护机制"><a href="#Eureka的保护机制" class="headerlink" title="Eureka的保护机制"></a>Eureka的保护机制</h3><p>当Eureka短时间内丢失大量客户, 此时Eureka会判断可能是网络原因导致无法接受到心跳, 就会进入到保护机制.<br>在保护机制下, 不会再注销任何微服务, 这样可以防止因为网络原因使本可以正常允许的微服务被注销.<br>如何关闭:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 服务端</span><br><span class="line">eureka:</span><br><span class="line">  server:</span><br><span class="line">    enable-self-preservation: false</span><br><span class="line">    # 清理无效节点的时间间隔</span><br><span class="line">    eviction-interval-timer-in-ms: 2000</span><br><span class="line"># 客户端</span><br><span class="line">eureka:</span><br><span class="line">  instance:</span><br><span class="line">    # 心跳间隔</span><br><span class="line">    lease-renewal-interval-in-seconds: 1</span><br><span class="line">    # 超时剔除时间 </span><br><span class="line">    lease-expiration-duration-in-seconds: 2</span><br></pre></td></tr></table></figure>
+<h2 id="服务发现Discovery"><a href="#服务发现Discovery" class="headerlink" title="服务发现Discovery"></a>服务发现Discovery</h2><p>对于注册进eureka的微服务, 可以通过服务发现来获得该服务的信息<br>main函数使用@EnableDiscoveryClient注解, 之后controller就可以使用discoveryClient进行服务发现.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//DiscoveryClient类应该从cloud包中导入，而不是从netflix包导入</span><br><span class="line">//从netflix包中导入的DiscoveryClient类没有getServices()方法，且无法自动注入</span><br><span class="line">@Autowired</span><br><span class="line">private DiscoveryClient discoveryClient;</span><br><span class="line"></span><br><span class="line">@GetMapping(&quot;/discovery&quot;)</span><br><span class="line">private Object discovery()&#123;</span><br><span class="line">    //取得服务列表</span><br><span class="line">    List&lt;String&gt; services = discoveryClient.getServices();</span><br><span class="line">    for (String element : services)&#123;</span><br><span class="line">        log.info(&quot;**********element:&quot;+element);</span><br><span class="line">    &#125;</span><br><span class="line">    //获得服务实例</span><br><span class="line">    List&lt;ServiceInstance&gt; instances = discoveryClient.getInstances(&quot;PAYMENT-SERVICE&quot;);</span><br><span class="line">    for (ServiceInstance instance : instances)&#123;</span><br><span class="line">        log.info(instance.getServiceId()+&quot;\t&quot;+instance.getHost()+&quot;\t&quot;+</span><br><span class="line">                instance.getPort()+&quot;\t&quot;+instance.getUri());</span><br><span class="line">    &#125;</span><br><span class="line">    return discoveryClient;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Zookeeper"><a href="#Zookeeper" class="headerlink" title="Zookeeper"></a>Zookeeper</h2><p>Eureka是为AP设计: 选择可用性 A(Availability)，此时，那个失去联系的节点依然可以向系统提供服务，不过它的数据就不能保证是同步的了<br>Zookeeper是为CP设计: 选择一致性C(Consistency)，为了保证数据库的一致性，我们必须等待失去联系的节点恢复过来，在这个过程中，那个节点是不允许对外提供服务的，这时候系统处于不可用状态(失去了A属性)。</p>
+<h3 id="yml注册"><a href="#yml注册" class="headerlink" title="yml注册"></a>yml注册</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8003</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="comment">#指定别名</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">payment-service</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">zookeeper:</span></span><br><span class="line">      <span class="attr">connect-string:</span> <span class="number">101.200</span><span class="number">.131</span><span class="number">.200</span><span class="string">:2181</span></span><br></pre></td></tr></table></figure>
+<h3 id="linux处理"><a href="#linux处理" class="headerlink" title="linux处理"></a>linux处理</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 安装</span><br><span class="line">docker pull zookeeper</span><br><span class="line">docker run -d --name zk -p 2181:2181 zookeeper</span><br><span class="line"># 进入</span><br><span class="line">docker exec -it zk /bin/bash</span><br><span class="line">cd bin</span><br><span class="line">./zkCli.sh</span><br><span class="line"># 查看服务</span><br><span class="line">ls /</span><br><span class="line">[services, zookeeper]</span><br><span class="line">ls /services</span><br><span class="line">[payment-service]</span><br><span class="line"># 继续深入目录就可以看到转发信息的json串</span><br></pre></td></tr></table></figure>
+<h2 id="Consul"><a href="#Consul" class="headerlink" title="Consul"></a>Consul</h2>]]></content>
+      <categories>
+        <category>框架</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>RabbitMQ</title>
+    <url>/2022/01/26/%E7%AC%94%E8%AE%B0/RabbitMQ/</url>
+    <content><![CDATA[<h1 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h1><p>1.流量削峰<br>2.应用解耦<br>3.异步处理</p>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p><a href="https://github.com/rabbitmq/erlang-rpm/releases">https://github.com/rabbitmq/erlang-rpm/releases</a> 选择合适的erlang版本进行下载<br>使用rpm命令进行安装.<br><a href="https://www.rabbitmq.com/install-rpm.html#downloads">https://www.rabbitmq.com/install-rpm.html#downloads</a> 选择合适版本进行下载<br>使用rpm命令进行安装.<br>使用rabbitmq-plugins enable rabbitmq_managemanent安装web页面插件<br>配置开启防火墙,15672端口.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#配置用户</span><br><span class="line">rabbitmqctl add_user 账号 密码</span><br><span class="line">#设置角色</span><br><span class="line">rabbitmqctl set_user_tags 账号 administrator </span><br><span class="line">#设置权限</span><br><span class="line">rabbitmqctl set_permissions -p &quot;/&quot; admin &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;</span><br><span class="line">#查看账户</span><br><span class="line">rabbitmqctl list_users</span><br></pre></td></tr></table></figure>
+<h1 id="生产消费模型"><a href="#生产消费模型" class="headerlink" title="生产消费模型"></a>生产消费模型</h1><p>为了接收消息, 首先开启防火墙的5672端口<br>生产者:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public class Producer &#123;</span><br><span class="line">    public static final String QUEUE_NAME= &quot;hello&quot;;</span><br><span class="line">    public static final String HOST = &quot;101.200.131.200&quot;;</span><br><span class="line">    public static void main(String[] args) throws IOException, TimeoutException &#123;</span><br><span class="line">        //创建工厂并连接</span><br><span class="line">        ConnectionFactory factory = new ConnectionFactory();</span><br><span class="line">        factory.setHost(HOST);</span><br><span class="line">        factory.setUsername(&quot;admin&quot;);</span><br><span class="line">        factory.setPassword(&quot;lixin123&quot;);</span><br><span class="line">        //创建连接</span><br><span class="line">        Connection connection = factory.newConnection();</span><br><span class="line">        //获取信道</span><br><span class="line">        Channel channel = connection.createChannel();</span><br><span class="line">        //声明队列:名称, 持久化(false),不支持多消费者(false),自动删除(true),其他参数</span><br><span class="line">        channel.queueDeclare(QUEUE_NAME,false,false,false,null);</span><br><span class="line">        String message = &quot;hello, world&quot;;</span><br><span class="line">        //发送消息:交换机,路由key值,消息配置,消息体</span><br><span class="line">        channel.basicPublish(&quot;&quot;,QUEUE_NAME,null,message.getBytes());</span><br><span class="line">        System.out.println(&quot;消息发送完毕&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>消费者:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public class Consumer &#123;</span><br><span class="line">    public static final String QUEUE_NAME= &quot;hello&quot;;</span><br><span class="line">    public static final String HOST = &quot;101.200.131.200&quot;;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws IOException, TimeoutException &#123;</span><br><span class="line">        //创建工厂并连接</span><br><span class="line">        ConnectionFactory factory = new ConnectionFactory();</span><br><span class="line">        factory.setHost(HOST);</span><br><span class="line">        factory.setUsername(&quot;admin&quot;);</span><br><span class="line">        factory.setPassword(&quot;lixin123&quot;);</span><br><span class="line">        //创建连接</span><br><span class="line">        Connection connection = factory.newConnection();</span><br><span class="line">        //创建信道</span><br><span class="line">        Channel channel = connection.createChannel();</span><br><span class="line">        //实例化消息回调</span><br><span class="line">        DeliverCallback deliverCallback = (var1,var2)-&gt;&#123;</span><br><span class="line">            //这里输出得到的消息</span><br><span class="line">            System.out.println(new String(var2.getBody()));</span><br><span class="line">        &#125;;</span><br><span class="line">        //实例化取消消息时的回调</span><br><span class="line">        CancelCallback cancelCallback = (var1)-&gt;&#123;</span><br><span class="line">            System.out.println(var1+&quot;消息消费被取消&quot;);</span><br><span class="line">        &#125;;</span><br><span class="line">        //接收消息:队列名,是否自动答,消息回调,取消回调</span><br><span class="line">        channel.basicConsume(QUEUE_NAME,true,deliverCallback,cancelCallback);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="轮询分发消息"><a href="#轮询分发消息" class="headerlink" title="轮询分发消息"></a>轮询分发消息</h1><p>当生产者端大量发送消息时, 就会产生需要多个消费者进行处理分摊压力的情况, 队列会轮询向消费者分发消息.</p>
+<h1 id="消息应答"><a href="#消息应答" class="headerlink" title="消息应答"></a>消息应答</h1><p>只有当消费者处理消息完成后通知队列, 队列才会将当前消息进行删除. 当队列判断消费者未能处理消息, 则会对消息进行重新入队.</p>
+<h2 id="自动应答-异步"><a href="#自动应答-异步" class="headerlink" title="自动应答(异步)"></a>自动应答(异步)</h2><p>吞吐量高, 但安全性较低. 适合消费者可以高效处理消息的情况.</p>
+<h2 id="手动应答"><a href="#手动应答" class="headerlink" title="手动应答"></a>手动应答</h2><p>Channel.basicAck(用于肯定确认)<br>Channel.basicNack(用于否定确认)<br>Channel.basicReject(用于否定确认,少一个批量应答参数)<br>参数: 消息tag,是否批量,<br>批量应答: 对于当前以及之前所有未应答的消息进行统一的应答.</p>
+<h1 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h1><p>持久化需要队列与消息都进行持久化.生产者负责.<br>队列持久化由queueDeclare设置, 消息持久化由basicPublish设置.<br>但即使这样在队列将消息持久化到磁盘的过程种出现宕机, 也可能导致持久化失败. 因此需要当队列将消息存储到磁盘后向生产者进行回复, 即发布确认.<br>持久化的会在写入磁盘后进行回复, 非持久化的会在收到后回复.<br>发布确认:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//开启</span><br><span class="line">channel.confirmSelect();</span><br><span class="line">//发布确认</span><br><span class="line">channel.basicPublish();</span><br><span class="line">channel.waitForConfirms();</span><br></pre></td></tr></table></figure>
+<p>根据waitForconFirms的不同使用方法, 分为单个发布确认, 批量发布确认, 以及异步发布确认.<br>异步发布确认(性价比最高):<br>生产者只负责不断的发送消息以及维护一个已发送但未确认的列表, 不再等待消息的确认, 而是接收broker的回复与持有的列表进行比较做出相应处理.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Channel channel = RabbitmqUtil.getChannel();</span><br><span class="line">channel.queueDeclare(QUEUE_NAME,true,false,false,null);</span><br><span class="line">//开启发布确认</span><br><span class="line">channel.confirmSelect();</span><br><span class="line">//准备消息监听器</span><br><span class="line">//创建一个发送列表&lt;消息编号,内容&gt;</span><br><span class="line">ConcurrentSkipListMap&lt;Long, String&gt; map = new ConcurrentSkipListMap&lt;&gt;();</span><br><span class="line">//实现监听器需要的接口</span><br><span class="line">//成功回调函数</span><br><span class="line">ConfirmCallback ackCallBack = (deliveryTag, multiple)-&gt;&#123;</span><br><span class="line">    //删除发送成功的消息</span><br><span class="line">    //批量确认</span><br><span class="line">    if (multiple)&#123;</span><br><span class="line">        //返回此映射的部分视图</span><br><span class="line">        ConcurrentNavigableMap&lt;Long, String&gt; navigableMap = map.headMap(deliveryTag);</span><br><span class="line">        navigableMap.clear();</span><br><span class="line">    //单个确认</span><br><span class="line">    &#125;else &#123;</span><br><span class="line">        map.remove(deliveryTag);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">//失败回调函数</span><br><span class="line">ConfirmCallback nackCallBack = (deliveryTag, multiple)-&gt;&#123;</span><br><span class="line">    System.out.println(&quot;uncheck:&quot;+deliveryTag);</span><br><span class="line">&#125;;</span><br><span class="line">channel.addConfirmListener(ackCallBack,nackCallBack);</span><br><span class="line">for (int i = 1;i&lt;100;i++)&#123;</span><br><span class="line">    channel.basicPublish(&quot;&quot;,QUEUE_NAME,null,Integer.toString(i).getBytes());</span><br><span class="line">    //记录发送的消息</span><br><span class="line">    map.put(channel.getNextPublishSeqNo(),Integer.toString(i));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="不公平分发"><a href="#不公平分发" class="headerlink" title="不公平分发"></a>不公平分发</h1><p>消费者负责. channel.basicQos()进行不公平分发设置.<br>这里要填入数字, 这个数字是一个预取值, 用来限制当前通道允许的最大未确认消息数.</p>
+<h1 id="交换机"><a href="#交换机" class="headerlink" title="交换机"></a>交换机</h1><p>一个队列只能允许一个消息一个消费者进行消费, 如果要同时多个消费者消费同一消息, 则需要交换机分配多个队列实现.<br>分为默认(),直接(direct),主题(topic),标题(headers),扇出(fanout).<br>在交换机处设置要发送的队列,以及用于接收生产者消息的routing key.<br>channel.queueDeclare().getQueue()创建临时队列, 连接关闭就会删除.</p>
+<h2 id="fanout"><a href="#fanout" class="headerlink" title="fanout"></a>fanout</h2><p>发布订阅模式, 它不会处理routingKey, 只需要将队列绑定到交换机上实现广播.<br>消费者:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Channel channel = RabbitmqUtil.getChannel();</span><br><span class="line">//声明一个交换机</span><br><span class="line">channel.exchangeDeclare(&quot;logs&quot;,&quot;fanout&quot;);</span><br><span class="line">//声明一个临时队列</span><br><span class="line">String queueName = channel.queueDeclare().getQueue();</span><br><span class="line">//绑定</span><br><span class="line">channel.queueBind(queueName,&quot;logs&quot;,&quot;routingKey&quot;);</span><br><span class="line">channel.basicConsume(QUEUE_NAME,true,RabbitmqUtil.getDeliverCallback(),RabbitmqUtil.getCancelCallback());</span><br></pre></td></tr></table></figure>
+<p>生产者:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Channel channel = RabbitmqUtil.getChannel();</span><br><span class="line">//声明一个交换机,声明两次是因为不知道哪个先启动</span><br><span class="line">channel.exchangeDeclare(&quot;logs&quot;,&quot;fanout&quot;);</span><br><span class="line">String message = &quot;message&quot;;</span><br><span class="line">channel.basicPublish(&quot;logs&quot;,&quot;routingKey&quot;,null,message.getBytes(StandardCharsets.UTF_8));</span><br></pre></td></tr></table></figure>
+<h2 id="direct"><a href="#direct" class="headerlink" title="direct"></a>direct</h2><p>路由模式<br>相比扇出模式, 它的区别只是它会识别routingKey.</p>
+<h2 id="topic"><a href="#topic" class="headerlink" title="topic"></a>topic</h2><p>在路由模式进行进一步的升级, 它要求routingKey必须是一个单词列表, 用点号分开.<br>在这种约束下, 就可以使用类似正则表达式的形式对多个队列进行匹配.</p>
+<ul>
+<li>代替任意字符, # 代替零个或多个单词.<br>示例:<br>队列1key:a.<em>.</em><br>队列2key:<em>.b.</em><br>队列3key:<em>.</em>.c<br>生产者key:a.a.c一三队列接收<h1 id="死信队列"><a href="#死信队列" class="headerlink" title="死信队列"></a>死信队列</h1>死信来源:</li>
+</ul>
+<p>1.消息TTL过期<br>2.队列满<br>3.消息被拒绝(basic.reject或basic.nack)并且requeue=false<br>普通消费者处进行普通交换和队列以及死信交换和队列的声明和绑定.<br>之后死信消费者处只需要进行死信的消费即可.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//普通交换机</span><br><span class="line">public static final String NORMAL_EXCHANGE = &quot;normalExchange&quot;;</span><br><span class="line">//死信交换机</span><br><span class="line">public static final String DEAD_EXCHANGE = &quot;deadExchange&quot;;</span><br><span class="line">//普通队列</span><br><span class="line">public static final String NORMAL_QUEUE = &quot;normalQueue&quot;;</span><br><span class="line">//死信队列</span><br><span class="line">public static final String DEAD_QUEUE = &quot;deadQueue&quot;;</span><br><span class="line"></span><br><span class="line">public static void main(String[] args) throws IOException, TimeoutException &#123;</span><br><span class="line">    Channel channel = RabbitmqUtil.getChannel();</span><br><span class="line">    //声明普通交换机</span><br><span class="line">    channel.exchangeDeclare(NORMAL_EXCHANGE,&quot;direct&quot;);</span><br><span class="line">    //声明死信交换机</span><br><span class="line">    channel.exchangeDeclare(DEAD_EXCHANGE,&quot;direct&quot;);</span><br><span class="line">    //声明普通队列</span><br><span class="line">    //这里就需要用到参数map对普通队列进行额外的设定</span><br><span class="line">    Map&lt;String, Object&gt; arguments = new HashMap&lt;&gt;();</span><br><span class="line">    //设定死信转发的交换机</span><br><span class="line">    arguments.put(&quot;x-dead-letter-exchange&quot;,DEAD_EXCHANGE);</span><br><span class="line">    //设定死转发使用的key</span><br><span class="line">    arguments.put(&quot;x-dead-letter-routing-key&quot;,&quot;dead&quot;);</span><br><span class="line">    //设定自动过期</span><br><span class="line">    arguments.put(&quot;x-message-ttl&quot;,10000);</span><br><span class="line">    //设定队列长度</span><br><span class="line">    arguments.put(&quot;x-max-length&quot;,10);</span><br><span class="line">    //消息的拒绝由DeliverCallback()接口实现.</span><br><span class="line">    //正式声明普通队列</span><br><span class="line">    channel.queueDeclare(NORMAL_QUEUE,false,false,false,arguments);</span><br><span class="line">    //声明死信队列</span><br><span class="line">    channel.queueDeclare(DEAD_QUEUE,false,false,false,null);</span><br><span class="line">    //为普通交换机绑定队列并设定key</span><br><span class="line">    channel.queueBind(NORMAL_QUEUE,NORMAL_EXCHANGE,&quot;normal&quot;);</span><br><span class="line">    //为死信交换机绑定队列并设定key</span><br><span class="line">    channel.queueBind(DEAD_QUEUE,DEAD_EXCHANGE,&quot;dead&quot;);</span><br><span class="line">    //对普通消息进行消费</span><br><span class="line">    channel.basicConsume(NORMAL_QUEUE,true,RabbitmqUtil.getDeliverCallback(),RabbitmqUtil.getCancelCallback());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习笔记</category>
       </categories>

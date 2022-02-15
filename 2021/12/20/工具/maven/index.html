@@ -28,7 +28,7 @@
 <meta property="og:description" content="作用1.帮助开发人员做项目的编译,测试,打包,安装部署等工作.2.管理依赖">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-12-20T13:06:18.000Z">
-<meta property="article:modified_time" content="2021-12-25T09:37:04.688Z">
+<meta property="article:modified_time" content="2022-02-07T15:53:34.298Z">
 <meta property="article:author" content="征途">
 <meta name="twitter:card" content="summary">
 
@@ -218,7 +218,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-25 17:37:04" itemprop="dateModified" datetime="2021-12-25T17:37:04+08:00">2021-12-25</time>
+                <time title="修改时间：2022-02-07 23:53:34" itemprop="dateModified" datetime="2022-02-07T23:53:34+08:00">2022-02-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -248,6 +248,7 @@
 <h2 id="dependencies和dependency"><a href="#dependencies和dependency" class="headerlink" title="dependencies和dependency"></a>dependencies和dependency</h2><p>与gav组合管理依赖.</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">	&lt;dependency&gt;</span><br><span class="line">		gav</span><br><span class="line">	&lt;/dependency&gt;</span><br><span class="line">&lt;/dependencies&gt;</span><br></pre></td></tr></table></figure>
 <h2 id="packaging"><a href="#packaging" class="headerlink" title="packaging"></a>packaging</h2><p>项目的打包类型,可以是jar,war,rar,ear,pom,默认是jar.</p>
+<h1 id="dependencyManagement和dependencies"><a href="#dependencyManagement和dependencies" class="headerlink" title="dependencyManagement和dependencies"></a>dependencyManagement和dependencies</h1><p>dependencyManagement能让所有子项目不需要进行版本管理, 如果没有声明版本号maven会沿着父项目向上走, 直到遇到dependencyManagement后使用它其中的版本号.</p>
 <h1 id="maven的生命周期-插件和命令"><a href="#maven的生命周期-插件和命令" class="headerlink" title="maven的生命周期,插件和命令"></a>maven的生命周期,插件和命令</h1><p>生命周期:项目构建的各个阶段.包括清理,编译,测试,报告,打包,安装,部署.<br>插件:要完成maven的各个阶段要使用maven命令,执行的命令是通过插件完成的,是jar.<br>命令:执行maven功能是由命令发出的.</p>
 <table>
 <thead>
@@ -363,7 +364,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%A6%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">约定的目录结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pom%E6%96%87%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">pom文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#gav"><span class="nav-number">3.1.</span> <span class="nav-text">gav</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dependencies%E5%92%8Cdependency"><span class="nav-number">3.2.</span> <span class="nav-text">dependencies和dependency</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#packaging"><span class="nav-number">3.3.</span> <span class="nav-text">packaging</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#maven%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F-%E6%8F%92%E4%BB%B6%E5%92%8C%E5%91%BD%E4%BB%A4"><span class="nav-number">4.</span> <span class="nav-text">maven的生命周期,插件和命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%8F%92%E4%BB%B6"><span class="nav-number">5.</span> <span class="nav-text">配置插件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86"><span class="nav-number">6.</span> <span class="nav-text">依赖管理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E9%85%8D%E7%BD%AE%E9%98%B2%E6%AD%A2%E8%B5%84%E6%BA%90%E5%AF%BC%E5%87%BA%E5%A4%B1%E8%B4%A5%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">7.</span> <span class="nav-text">一些配置防止资源导出失败的问题</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%A6%E5%AE%9A%E7%9A%84%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">约定的目录结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pom%E6%96%87%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">pom文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#gav"><span class="nav-number">3.1.</span> <span class="nav-text">gav</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dependencies%E5%92%8Cdependency"><span class="nav-number">3.2.</span> <span class="nav-text">dependencies和dependency</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#packaging"><span class="nav-number">3.3.</span> <span class="nav-text">packaging</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#dependencyManagement%E5%92%8Cdependencies"><span class="nav-number">4.</span> <span class="nav-text">dependencyManagement和dependencies</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#maven%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F-%E6%8F%92%E4%BB%B6%E5%92%8C%E5%91%BD%E4%BB%A4"><span class="nav-number">5.</span> <span class="nav-text">maven的生命周期,插件和命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%8F%92%E4%BB%B6"><span class="nav-number">6.</span> <span class="nav-text">配置插件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86"><span class="nav-number">7.</span> <span class="nav-text">依赖管理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E9%85%8D%E7%BD%AE%E9%98%B2%E6%AD%A2%E8%B5%84%E6%BA%90%E5%AF%BC%E5%87%BA%E5%A4%B1%E8%B4%A5%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">8.</span> <span class="nav-text">一些配置防止资源导出失败的问题</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -379,7 +380,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-count">91</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

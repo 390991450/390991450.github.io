@@ -185,6 +185,212 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://390991450.github.io/2021/12/25/%E6%A1%86%E6%9E%B6/MyBatis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="征途">
+      <meta itemprop="description" content="我的学习笔记">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="每天一点儿">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/25/%E6%A1%86%E6%9E%B6/MyBatis/" class="post-title-link" itemprop="url">MyBatis</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-25 13:36:30" itemprop="dateCreated datePublished" datetime="2021-12-25T13:36:30+08:00">2021-12-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-12-29 11:00:29" itemprop="dateModified" datetime="2021-12-29T11:00:29+08:00">2021-12-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">框架</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><p>使用maven把依赖配置好.<br>使用idea连接数据库<br>配置mybatis的配置文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</span><br><span class="line">&lt;!DOCTYPE configuration</span><br><span class="line">        PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;</span><br><span class="line">        &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;</span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;environments default=&quot;development&quot;&gt;</span><br><span class="line">        &lt;environment id=&quot;development&quot;&gt;</span><br><span class="line">            &lt;transactionManager type=&quot;JDBC&quot;/&gt;</span><br><span class="line">            &lt;dataSource type=&quot;POOLED&quot;&gt;</span><br><span class="line">                &lt;property name=&quot;driver&quot; value=&quot;com.mysql.cj.jdbc.Driver&quot;/&gt;</span><br><span class="line">                &lt;property name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/mybatis?useSSL=true&amp;amp;useUnicode=true&amp;amp;characterEncoding=UTF-8&amp;amp;serverTimezone=UTC&quot;/&gt;</span><br><span class="line">                &lt;property name=&quot;username&quot; value=&quot;root&quot;/&gt;</span><br><span class="line">                &lt;property name=&quot;password&quot; value=&quot;lixin123&quot;/&gt;</span><br><span class="line">            &lt;/dataSource&gt;</span><br><span class="line">        &lt;/environment&gt;</span><br><span class="line">    &lt;/environments&gt;</span><br><span class="line">&lt;!--    在这里配置maipper.xml--&gt;</span><br><span class="line">    &lt;mappers&gt;</span><br><span class="line">        &lt;mapper resource=&quot;com/meitianyidian/mybatis/mapper/EmployeeMapper.xml&quot;/&gt;</span><br><span class="line">    &lt;/mappers&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<p>使用配置文件构建SqlSessionFactory, 并让它提供创建SqlSession的方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public class MyBatisUtil &#123;</span><br><span class="line">    private static SqlSessionFactory sqlSessionFactory;</span><br><span class="line">    static &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            String resource = &quot;mybatis-config.xml&quot;;</span><br><span class="line">            InputStream inputStream = Resources.getResourceAsStream(resource);</span><br><span class="line">            sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static SqlSession getSqlSession()&#123;</span><br><span class="line">        return sqlSessionFactory.openSession();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建实体类.<br>因为MyBatis避免了几乎所有的JDBC代码和手动设置参数以及获取结果集. 所以在这里没有了dao, 而是mapper与配置文件的集合.<br>创建mapper接口.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public interface EmployeeMapper &#123;</span><br><span class="line">    List&lt;Employee&gt; getEmployeeList();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建对应的xml文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</span><br><span class="line">&lt;!DOCTYPE mapper</span><br><span class="line">        PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;</span><br><span class="line">        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;</span><br><span class="line">&lt;!--绑定mapper接口--&gt;</span><br><span class="line">&lt;mapper namespace=&quot;com.meitianyidian.mybatis.mapper.EmployeeMapper&quot;&gt;</span><br><span class="line">&lt;!--    msq语句配置--&gt;</span><br><span class="line">    &lt;select id=&quot;getEmployeeList&quot; resultType=&quot;com.meitianyidian.mybatis.pojo.Employee&quot;&gt;</span><br><span class="line">        select * from tbl_employee</span><br><span class="line">    &lt;/select&gt;</span><br><span class="line"></span><br><span class="line">    &lt;select id=&quot;getEmployeeById&quot; parameterType=&quot;int&quot; resultType=&quot;com.meitianyidian.mybatis.pojo.Employee&quot;&gt;</span><br><span class="line">        select * from tbl_employee where id = #&#123;id&#125;</span><br><span class="line">    &lt;/select&gt;</span><br><span class="line"></span><br><span class="line">    &lt;insert id=&quot;addEmployee&quot; parameterType=&quot;com.meitianyidian.mybatis.pojo.Employee&quot;&gt;</span><br><span class="line">        insert into tbl_employee (last_name, gender, email) values (#&#123;last_name&#125;,#&#123;gender&#125;,#&#123;email&#125;)</span><br><span class="line">    &lt;/insert&gt;</span><br><span class="line"></span><br><span class="line">    &lt;update id=&quot;updateEmployee&quot; parameterType=&quot;com.meitianyidian.mybatis.pojo.Employee&quot;&gt;</span><br><span class="line">        update tbl_employee set last_name = #&#123;last_name&#125;,gender = #&#123;gender&#125;,email = #&#123;email&#125; where id = #&#123;id&#125;</span><br><span class="line">    &lt;/update&gt;</span><br><span class="line"></span><br><span class="line">    &lt;delete id=&quot;deleteEmployee&quot; parameterType=&quot;int&quot;&gt;</span><br><span class="line">        delete from tbl_employee where id = #&#123;id&#125;</span><br><span class="line">    &lt;/delete&gt;</span><br><span class="line">&lt;/mapper&gt;</span><br></pre></td></tr></table></figure>
+<p>创建sqlSession并用其生成mapper实体<br>注意: 因为默认是不自动提交事务的,所以dml语句要进行事务的提交</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public void test()&#123;</span><br><span class="line">    SqlSession sqlSession = null;</span><br><span class="line">    List&lt;Employee&gt; employeeList = null;</span><br><span class="line">    //确保能关闭session,使用try-catch-finally</span><br><span class="line">    try &#123;</span><br><span class="line">        sqlSession = MyBatisUtil.getSqlSession();</span><br><span class="line">        //通过类对象与配置文件生成对应的mapper实体</span><br><span class="line">        EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);</span><br><span class="line">        employeeList = mapper.getEmployeeList();</span><br><span class="line">    &#125; catch (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        //关闭sqlSession</span><br><span class="line">        sqlSession.close();</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(employeeList);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="配置解析"><a href="#配置解析" class="headerlink" title="配置解析"></a>配置解析</h1><h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- maybatis可以配置多个环境变量, 但每个sqlSession只能选择一个环境变量. 即数据库与sqlSession一一对应. --&gt;</span><br><span class="line">&lt;!-- 使用environments标签的default属性设置默认的环境(environment的id). --&gt;</span><br><span class="line">&lt;environments default=&quot;&quot;&gt;</span><br><span class="line">    &lt;environment id=&quot;&quot;&gt;</span><br><span class="line">        &lt;!-- 用于配置事务管理器 --&gt;</span><br><span class="line">        &lt;transactionManager type=&quot;&quot;&gt;</span><br><span class="line">        &lt;/transactionManager&gt;</span><br><span class="line">        &lt;!-- 用于配置数据源 --&gt;</span><br><span class="line">        &lt;UNPOOLED:无连接池,POOLED:有连接池,JNDI</span><br><span class="line">        &lt;dataSource type=&quot;&quot;&gt;</span><br><span class="line">        &lt;/dataSource&gt;</span><br><span class="line">    &lt;/environment&gt;</span><br><span class="line">&lt;/environments&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 实现引用标签, 导入后可以在下面的配置使用$&#123;&#125;引用, 当外部文件与property属性冲突时,会使用外部文件 --&gt;</span><br><span class="line">&lt;properties resource=&quot;&quot;&gt;</span><br><span class="line">    &lt;!-- 不使用properties标签是对当前标签属性进行更改 --&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/properties&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="别名"><a href="#别名" class="headerlink" title="别名"></a>别名</h2><p>基本类型默认别名前加_,包装类型默认别名为小写开头</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;typeAliases&gt;</span><br><span class="line">    &lt;typeAlias alias=&quot;别名&quot; type=&quot;名称&quot; /&gt;</span><br><span class="line">    &lt;!-- 可以指定一个包名, mybatis会在包名下搜索需要的bean --&gt;</span><br><span class="line">    &lt;package name=&quot;包名&quot; /&gt;</span><br><span class="line">&lt;/typeAliases&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;settings&gt;</span><br><span class="line">    &lt;!-- 缓存是否开启 --&gt;</span><br><span class="line">    &lt;setting name=&quot;cacheEnable&quot; value=&quot;true&quot; /&gt;</span><br><span class="line">    &lt;!-- 是否开启懒加载 --&gt;</span><br><span class="line">    &lt;setting name=&quot;lazyLoadingEnable&quot; value=&quot;false&quot; /&gt;</span><br><span class="line">    &lt;!-- 是否开启自动驼峰命名映射 --&gt;</span><br><span class="line">    &lt;setting name=&quot;mapUnderscoreToCamelCase&quot; value=&quot;false&quot; /&gt;</span><br><span class="line">    指定所用日志的具体实现</span><br><span class="line">    &lt;setting name=&quot;logImpl&quot; value=&quot;未设置&quot; /&gt;</span><br><span class="line">&lt;/settings&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="映射器"><a href="#映射器" class="headerlink" title="映射器"></a>映射器</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 在这里注册创建的mapper --&gt;</span><br><span class="line">&lt;mappers &gt;</span><br><span class="line">    &lt;!-- 使用xml类路径 --&gt;</span><br><span class="line">    &lt;mapper resource=&quot;&quot; /&gt;</span><br><span class="line">    &lt;!-- 使用mapper实现类全类名(要求其对应的xml文件在同一包下，且同名) --&gt;</span><br><span class="line">    &lt;mapper class=&quot;&quot; /&gt;</span><br><span class="line">    &lt;!-- 将包内的mapper接口实现全部注册为mapper(要求其对应的xml文件在同一包下，且同名) --&gt;</span><br><span class="line">    &lt;package name=&quot;&quot; /&gt;</span><br><span class="line">&lt;/mappers&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="生命周期和作用域"><a href="#生命周期和作用域" class="headerlink" title="生命周期和作用域"></a>生命周期和作用域</h1><p>错误使用会导致严重的并发问题。<br>SqlSessionFactoryBuilder：主要执行的是Builder的任务，它的作用是可以接收各种原材料并使用它们组装成为SqlSessionFactory。因为一旦创建SqlSessionFactory就不再需要它了，所以它是局部变量。<br>SqlSessionFactory：主要执行的是Factory的任务，它的作用是可以生产出各种各样的sqlSession。因为sqlSession需要回收，由它统一保管所以运气期间要一直存在，没有理由丢弃或重新创建（单例），它的作用域应该是整个应用。<br>SqlSession：它是执行Sql语句的主体。因为它并不是线程安全的，所以不能被共享，作用域应该是请求或者方法域。因为SqlSession资源很重要，所以要使用finally语句关闭它。</p>
+<h1 id="解决属性名与字段名不一致问题"><a href="#解决属性名与字段名不一致问题" class="headerlink" title="解决属性名与字段名不一致问题"></a>解决属性名与字段名不一致问题</h1><p>因为pojo属性的注入是基于反射调用对应set方法，当数据库与pojo属性不一致时就无法注入。<br>1.在sql语句中起别名，别名对应pojo中的属性名（不用）<br>2.使用结果集映射，规定pojo中属性名的映射名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;resultMap id=&quot;&quot; type=&quot;&quot;&gt;</span><br><span class="line">    &lt;!-- cloumn是数据库的字段，property是实体类属性名 --&gt;</span><br><span class="line">    &lt;result column=&quot;&quot; property=&quot;&quot;/&gt;</span><br><span class="line">&lt;/resultMap&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h1><h2 id="STDOUT-LOGGING"><a href="#STDOUT-LOGGING" class="headerlink" title="STDOUT_LOGGING"></a>STDOUT_LOGGING</h2><p>这是标准默认日志工厂，可以直接使用</p>
+<h2 id="LOG4G"><a href="#LOG4G" class="headerlink" title="LOG4G"></a>LOG4G</h2><p>1.导入依赖<br>2.创建log4j.properties</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">#将等级为DEBUG的日志信息输出到console和file这两个目的地，console和file的定义在下面的代码</span><br><span class="line">log4j.rootLogger=DEBUG,console,file</span><br><span class="line"></span><br><span class="line">#控制台输出的相关设置</span><br><span class="line">log4j.appender.console = org.apache.log4j.ConsoleAppender</span><br><span class="line">log4j.appender.console.Target = System.out</span><br><span class="line">log4j.appender.console.Threshold=DEBUG</span><br><span class="line">log4j.appender.console.layout = org.apache.log4j.PatternLayout</span><br><span class="line">log4j.appender.console.layout.ConversionPattern=[%c]-%m%n</span><br><span class="line"></span><br><span class="line">#文件输出的相关设置</span><br><span class="line">log4j.appender.file = org.apache.log4j.RollingFileAppender</span><br><span class="line">log4j.appender.file.File=./log/kuang.log</span><br><span class="line">log4j.appender.file.MaxFileSize=10mb</span><br><span class="line">log4j.appender.file.Threshold=DEBUG</span><br><span class="line">log4j.appender.file.layout=org.apache.log4j.PatternLayout</span><br><span class="line">log4j.appender.file.layout.ConversionPattern=[%p][%d&#123;yy-MM-dd&#125;][%c]%m%n</span><br><span class="line"></span><br><span class="line">#日志输出级别</span><br><span class="line">log4j.logger.org.mybatis=DEBUG</span><br><span class="line">log4j.logger.java.sql=DEBUG</span><br><span class="line">log4j.logger.java.sql.Statement=DEBUG</span><br><span class="line">log4j.logger.java.sql.ResultSet=DEBUG</span><br><span class="line">log4j.logger.java.sql.PreparedStatement=DEBUG</span><br></pre></td></tr></table></figure>
+<p>3.需要的时候设置log4j对应级别的输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import org.apache.log4j.Logger;</span><br><span class="line">public class EmployeeMapperTest &#123;</span><br><span class="line">    static Logger logger = Logger.getLogger(EmployeeMapperTest.class);</span><br><span class="line">    方法&#123;</span><br><span class="line">        logger.debug(&quot;调试信息&quot;);</span><br><span class="line">        logger.info(&quot;一般信息&quot;);</span><br><span class="line">        logger.warn(&quot;不会影响程序运行，但最好修正&quot;);</span><br><span class="line">        logger.error(&quot;影响到程序正常运行&quot;);</span><br><span class="line">        logger.fatal(&quot;整个项目无法运行&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="分页"><a href="#分页" class="headerlink" title="分页"></a>分页</h1><h2 id="使用limit分页"><a href="#使用limit分页" class="headerlink" title="使用limit分页"></a>使用limit分页</h2><p>接口创建</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Employee&gt; getEmployeeListLimit(Map&lt;String,Object&gt; map);</span><br></pre></td></tr></table></figure>
+<p>mysql语句设置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=&quot;getEmployeeListLimit&quot; resultType=&quot;employee&quot; parameterType=&quot;map&quot;&gt;</span><br><span class="line">    select * from tbl_employee where last_name=#&#123;name&#125; limit #&#123;startIndex&#125;,#&#123;pageSize&#125;</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure>
+<p>测试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public void getEmployeeListLimitTest()&#123;</span><br><span class="line">    HashMap&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span><br><span class="line">    map.put(&quot;name&quot;,&quot;admin2&quot;);</span><br><span class="line">    map.put(&quot;startIndex&quot;,2);</span><br><span class="line">    map.put(&quot;pageSize&quot;,5);</span><br><span class="line">    SqlSession sqlSession = null;</span><br><span class="line">    try &#123;</span><br><span class="line">        sqlSession = MyBatisUtil.getSqlSession();</span><br><span class="line">        //通过类对象与配置文件生成对应的mapper实体</span><br><span class="line">        EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);</span><br><span class="line">        List&lt;Employee&gt; employeeList = mapper.getEmployeeListLimit(map);</span><br><span class="line">        logger.info(employeeList);</span><br><span class="line">        sqlSession.commit();</span><br><span class="line">    &#125; catch (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        //关闭sqlSession</span><br><span class="line">        sqlSession.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="RowBounds分页-了解"><a href="#RowBounds分页-了解" class="headerlink" title="RowBounds分页(了解)"></a>RowBounds分页(了解)</h2><h1 id="使用注解开发-建议简单语句使用"><a href="#使用注解开发-建议简单语句使用" class="headerlink" title="使用注解开发(建议简单语句使用)"></a>使用注解开发(建议简单语句使用)</h1><p>不再在xml文件中写sql语句, 而是使用注解直接写sql语句.<br>这么的问题是不能使用resultmap, 如果名称不一致无法注入.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@Select(&quot;select * from tbl_employee where last_name=#&#123;name&#125; limit #&#123;startIndex&#125;,#&#123;pageSize&#125;&quot;)</span><br><span class="line">List&lt;Employee&gt; getEmployeeListLimit(Map&lt;String,Object&gt; map);</span><br><span class="line">//或者不使用map,使用注解参数实现</span><br><span class="line">@Select(&quot;select * from tbl_employee where last_name=#&#123;name&#125; limit #&#123;startIndex&#125;,#&#123;pageSize&#125;&quot;)</span><br><span class="line">List&lt;Employee&gt; getEmployeeListLimit(@Param(&quot;name&quot;)String name,@Param(&quot;startIndex&quot;)int startIndex,@Param(&quot;pageSize&quot;)int pageSize);</span><br></pre></td></tr></table></figure>
+<h1 id="mybatis执行流程"><a href="#mybatis执行流程" class="headerlink" title="mybatis执行流程"></a>mybatis执行流程</h1><p>1.Resources获取加载全局配置文件<br>2.实例化SqlSessionFactoryBuilder,解析文件流, 生成Configuration.<br>3.使用Configuration生成SqlSessionFactory.<br>4.SqlSessionFactory调用openSession方法取得sqlSession. 中间要生成事务对象以及核心执行器.<br>5.通过sqlSession执行相关语句, 成功使用commit方法提交事务, 失败则调用rollback回滚, 最后调用close关闭session.</p>
+<h1 id="复杂查询"><a href="#复杂查询" class="headerlink" title="复杂查询"></a>复杂查询</h1><h2 id="多对一"><a href="#多对一" class="headerlink" title="多对一"></a>多对一</h2><h3 id="按照查询嵌套处理"><a href="#按照查询嵌套处理" class="headerlink" title="按照查询嵌套处理"></a>按照查询嵌套处理</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=&quot;getStudentsList&quot; resultMap=&quot;StudentTeacher&quot;&gt;</span><br><span class="line">    select * from student</span><br><span class="line">&lt;/select&gt;</span><br><span class="line">&lt;!-- 因为不能自动帮助查询老师,所以要使用resultMap定义,结果集会把column给property --&gt;</span><br><span class="line">&lt;resultMap id=&quot;StudentTeacher&quot; type=&quot;Student&quot;&gt;</span><br><span class="line">    &lt;result property=&quot;id&quot; column=&quot;id&quot; /&gt;</span><br><span class="line">    &lt;result property=&quot;name&quot; column=&quot;name&quot; /&gt;</span><br><span class="line">&lt;!--关联对象, 告诉java这个teacher对象对应的类, 获取的方式, 以及查询要使用的属性--&gt;</span><br><span class="line">    &lt;association property=&quot;teacher&quot; column=&quot;tid&quot; javaType=&quot;Teacher&quot; select=&quot;getTeacher&quot; /&gt;</span><br><span class="line">&lt;/resultMap&gt;</span><br><span class="line">&lt;!-- 当上面的association标签被调用时, 会进一步搜寻select中的方法, 并把column的值给这个方法让它调用 --&gt;</span><br><span class="line">&lt;select id=&quot;getTeacher&quot; resultType=&quot;Teacher&quot;&gt;</span><br><span class="line">    select * from teacher where id = #&#123;id&#125;</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="按照结果嵌套处理"><a href="#按照结果嵌套处理" class="headerlink" title="按照结果嵌套处理"></a>按照结果嵌套处理</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=&quot;getgetStudentsList&quot; resultMap=&quot;StudentTeacher&quot;&gt;</span><br><span class="line">    select student.id sid,student.name sname,teacher.name tname from student left join teacher on tid=teacher.id</span><br><span class="line">&lt;/select&gt;</span><br><span class="line">&lt;resultMap id=&quot;StudentTeacher&quot; type=&quot;Student&quot;&gt;</span><br><span class="line">    &lt;result property=&quot;id&quot; column=&quot;sid&quot; /&gt;</span><br><span class="line">    &lt;result property=&quot;name&quot; column=&quot;sname&quot; /&gt;</span><br><span class="line">    &lt;association property=&quot;teacher&quot; javaType=&quot;Teacher&quot;&gt;</span><br><span class="line">        &lt;result property=&quot;name&quot; column=&quot;tnam&quot; /&gt;</span><br><span class="line">    &lt;/association&gt;</span><br><span class="line">&lt;/resultMap&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="一对多"><a href="#一对多" class="headerlink" title="一对多"></a>一对多</h2><h3 id="按照查询嵌套处理-1"><a href="#按照查询嵌套处理-1" class="headerlink" title="按照查询嵌套处理"></a>按照查询嵌套处理</h3><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="keyword">select</span> id=&quot;getTeacherAndStudents&quot; resultMap=&quot;TeacherAndStudents&quot;&gt;</span><br><span class="line">    <span class="keyword">select</span> * <span class="keyword">from</span> teacher <span class="keyword">where</span> id = #&#123;id&#125;</span><br><span class="line">&lt;/<span class="keyword">select</span>&gt;</span><br><span class="line">&lt;resultMap id=&quot;TeacherAndStudents&quot; <span class="keyword">type</span>=&quot;Teacher&quot;&gt;</span><br><span class="line">    &lt;collection property=&quot;students&quot; javaType=&quot;ArrayList&quot; ofType=&quot;Student&quot; <span class="keyword">select</span>=&quot;getStudents&quot; column=&quot;id&quot;/&gt;</span><br><span class="line">&lt;/resultMap&gt;</span><br><span class="line">&lt;<span class="keyword">select</span> id=&quot;getStudents&quot; resultType=&quot;Student&quot;&gt;</span><br><span class="line">    <span class="keyword">select</span> id,<span class="type">name</span> <span class="keyword">from</span> student <span class="keyword">where</span> tid = #&#123;id&#125;</span><br><span class="line">&lt;/<span class="keyword">select</span>&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="按照结果嵌套处理-1"><a href="#按照结果嵌套处理-1" class="headerlink" title="按照结果嵌套处理"></a>按照结果嵌套处理</h3><h1 id="动态SQL"><a href="#动态SQL" class="headerlink" title="动态SQL"></a>动态SQL</h1><h2 id="if"><a href="#if" class="headerlink" title="if"></a>if</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">//我们可以在语句中加入if判断, 如果存在这个参数, 则使用这个参数</span><br><span class="line">    &lt;select id=&quot;getStudentsList&quot; resultMap=&quot;StudentTeacher&quot;&gt;</span><br><span class="line">        select * from student where 1=1</span><br><span class="line">        &lt;if test=&quot;id != null&quot;&gt;</span><br><span class="line">            and id &gt; #&#123;id&#125;</span><br><span class="line">        &lt;/if&gt;</span><br><span class="line">    &lt;/select&gt;</span><br><span class="line">//而在接口处可以采用重载的方法</span><br><span class="line">    List&lt;Student&gt; getStudentsList(int id);</span><br><span class="line">    List&lt;Student&gt; getStudentsList();</span><br><span class="line">//或者直接在接口处传入map(省事),在map中添加参数</span><br><span class="line">    List&lt;Student&gt; getStudentsList(Map map)</span><br></pre></td></tr></table></figure>
+<h2 id="choose-when-otherwise"><a href="#choose-when-otherwise" class="headerlink" title="choose,when,otherwise"></a>choose,when,otherwise</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 使用方法与if类似, 这里的choose相当于switch --&gt;</span><br><span class="line">    &lt;select id=&quot;getStudentsList&quot; resultMap=&quot;StudentTeacher&quot;&gt;</span><br><span class="line">        select * from student where 1=1</span><br><span class="line">        &lt;choose&gt;</span><br><span class="line">            &lt;when test=&quot;&quot;&gt;</span><br><span class="line"></span><br><span class="line">            &lt;/when&gt;</span><br><span class="line">            &lt;otherwise&gt;</span><br><span class="line"></span><br><span class="line">            &lt;/otherwise&gt;</span><br><span class="line">        &lt;/choose&gt;</span><br><span class="line">    &lt;/select&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="where"><a href="#where" class="headerlink" title="where"></a>where</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 在上面的if使用中我们发现为了保证语句通顺我们使用了where 1=1 --&gt;</span><br><span class="line">&lt;!-- 为了简化这种操作，可以使用where标签, 这样就能在必要时添加where，且可以正确的进行and或or的剔除 --&gt;</span><br><span class="line">    &lt;select id=&quot;getStudentsList&quot; resultMap=&quot;StudentTeacher&quot;&gt;</span><br><span class="line">        select * from student</span><br><span class="line">        &lt;where&gt;</span><br><span class="line">            &lt;if test=&quot;id != null&quot;&gt;</span><br><span class="line">                and id &gt; #&#123;id&#125;</span><br><span class="line">            &lt;/if&gt;</span><br><span class="line">        &lt;/where&gt;</span><br><span class="line">    &lt;/select&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="set"><a href="#set" class="headerlink" title="set"></a>set</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- set与where类似, 它是为了应对update的拼接问题, 也可以正确剔除逗号 --&gt;</span><br><span class="line">&lt;update id=&quot;updateAuthorIfNecessary&quot;&gt;</span><br><span class="line">  update Author</span><br><span class="line">    &lt;set&gt;</span><br><span class="line">      &lt;if test=&quot;username != null&quot;&gt;username=#&#123;username&#125;,&lt;/if&gt;</span><br><span class="line">      &lt;if test=&quot;password != null&quot;&gt;password=#&#123;password&#125;,&lt;/if&gt;</span><br><span class="line">      &lt;if test=&quot;email != null&quot;&gt;email=#&#123;email&#125;,&lt;/if&gt;</span><br><span class="line">      &lt;if test=&quot;bio != null&quot;&gt;bio=#&#123;bio&#125;&lt;/if&gt;</span><br><span class="line">    &lt;/set&gt;</span><br><span class="line">  where id=#&#123;id&#125;</span><br><span class="line">&lt;/update&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="trim"><a href="#trim" class="headerlink" title="trim"></a>trim</h2><p>set与where都是由trim实现的, 所以也可以使用trim自定义标签</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- where设计了前缀剔除 --&gt;</span><br><span class="line">&lt;trim prefix=&quot;WHERE&quot; prefixOverrides=&quot;AND |OR &quot;&gt;</span><br><span class="line">  ...</span><br><span class="line">&lt;/trim&gt;</span><br><span class="line">&lt;!-- set设计了后缀剔除 --&gt;</span><br><span class="line">&lt;trim prefix=&quot;SET&quot; suffixOverrides=&quot;,&quot;&gt;</span><br><span class="line">  ...</span><br><span class="line">&lt;/trim&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="sql片段"><a href="#sql片段" class="headerlink" title="sql片段"></a>sql片段</h2><p>可以使用sql标签把复用部分的sql语句包裹起来, 复用时使用include标签复用.<br>注意: sql片段颗粒度要小, 方便复用, 不要包含trim标签</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;sql id=&quot;property&quot;&gt;</span><br><span class="line">  &lt;if test=&quot;username != null&quot;&gt;username=#&#123;username&#125;,&lt;/if&gt;</span><br><span class="line">  &lt;if test=&quot;password != null&quot;&gt;password=#&#123;password&#125;,&lt;/if&gt;</span><br><span class="line">  &lt;if test=&quot;email != null&quot;&gt;email=#&#123;email&#125;,&lt;/if&gt;</span><br><span class="line">  &lt;if test=&quot;bio != null&quot;&gt;bio=#&#123;bio&#125;&lt;/if&gt;</span><br><span class="line">&lt;/sql&gt;</span><br><span class="line">&lt;update id=&quot;updateAuthorIfNecessary&quot;&gt;</span><br><span class="line">  update Author</span><br><span class="line">    &lt;set&gt;</span><br><span class="line">        &lt;include refid=&quot;property&quot;/&gt;</span><br><span class="line">    &lt;/set&gt;</span><br><span class="line">  where id=#&#123;id&#125;</span><br><span class="line">&lt;/update&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="froeach"><a href="#froeach" class="headerlink" title="froeach"></a>froeach</h2><p>主要作用是接收集合, 对集合进行拼接</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=&quot;getStudentsByList&quot; parameterType=&quot;map&quot; resultType=&quot;Student&quot;&gt;</span><br><span class="line">    select * from student</span><br><span class="line">    &lt;where&gt;</span><br><span class="line">        &lt;!-- 如果规定了老师的id就使用 --&gt;</span><br><span class="line">        &lt;if test=&quot;tid != null&quot;&gt;</span><br><span class="line">            and tid = #&#123;tid&#125;</span><br><span class="line">        &lt;/if&gt;</span><br><span class="line">        &lt;!-- 如果给了学生的list就使用 --&gt;</span><br><span class="line">        &lt;if test=&quot;studentsList != null&quot;&gt;</span><br><span class="line">        &lt;!-- 例如我需要生成(a or b or c)的句子,abc在同一集合中 --&gt;</span><br><span class="line">            &lt;foreach collection=&quot;studentsList&quot; item=&quot;id&quot; open=&quot;and (&quot; separator=&quot;or&quot; close=&quot;)&quot;&gt;</span><br><span class="line">                id = #&#123;id&#125;</span><br><span class="line">            &lt;/foreach&gt;</span><br><span class="line">        &lt;/if&gt;</span><br><span class="line">    &lt;/where&gt;</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h1><p>使用情况: 经常查询且不经常改变的数据<br>一级缓存默认开启(sqlSession级别),会缓存当前sqlSession查询到的数据.<br>二级缓存要手动开启(namespace级别),通过实现cache接口定义二级缓存.</p>
+<h2 id="清除策略"><a href="#清除策略" class="headerlink" title="清除策略"></a>清除策略</h2><p>LRU – 最近最少使用：移除最长时间不被使用的对象。<br>FIFO – 先进先出：按对象进入缓存的顺序来移除它们。<br>SOFT – 软引用：基于垃圾回收器状态和软引用规则移除对象。<br>WEAK – 弱引用：更积极地基于垃圾收集器状态和弱引用规则移除对象。</p>
+<h2 id="缓存失效的情况"><a href="#缓存失效的情况" class="headerlink" title="缓存失效的情况"></a>缓存失效的情况</h2><p>所有增删改都因为会更改数据库内容, 导致缓存刷新.<br>sqlSession.clearCache可以手动刷新缓存.</p>
+<h2 id="二级缓存配置"><a href="#二级缓存配置" class="headerlink" title="二级缓存配置"></a>二级缓存配置</h2><p>二级缓存会接收一级缓存的内容, 不同mapper的缓存相互独立. 且实体类需要序列化,否则会报错.<br>config文件中开启缓存</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;settings&gt;</span><br><span class="line">    &lt;!-- 缓存是否开启 --&gt;</span><br><span class="line">    &lt;setting name=&quot;cacheEnable&quot; value=&quot;true&quot; /&gt;</span><br><span class="line">&lt;/settings&gt;</span><br></pre></td></tr></table></figure>
+<p>mapper配置文件配置缓存</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;cache</span><br><span class="line">    &lt;!-- 清除策略 --&gt;</span><br><span class="line">  eviction=&quot;FIFO&quot;</span><br><span class="line">  &lt;!-- 刷新时间 --&gt;</span><br><span class="line">  flushInterval=&quot;60000&quot;</span><br><span class="line">  &lt;!-- 缓存大小 --&gt;</span><br><span class="line">  size=&quot;512&quot;</span><br><span class="line">  &lt;!-- 是否只读 --&gt;</span><br><span class="line">  readOnly=&quot;true&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="查询顺序"><a href="#查询顺序" class="headerlink" title="查询顺序"></a>查询顺序</h2><p>二级缓存-&gt;一级缓存-&gt;查询数据库</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://390991450.github.io/2021/12/22/leetcode%E9%A2%98%E8%A7%A3/%E5%92%8C%E4%B8%BAs%E7%9A%84%E4%B8%A4%E4%B8%AA%E6%95%B0%E5%AD%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="征途">
+      <meta itemprop="description" content="我的学习笔记">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="每天一点儿">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/22/leetcode%E9%A2%98%E8%A7%A3/%E5%92%8C%E4%B8%BAs%E7%9A%84%E4%B8%A4%E4%B8%AA%E6%95%B0%E5%AD%97/" class="post-title-link" itemprop="url">和为s的两个数字</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-12-22 23:17:16 / 修改时间：23:34:35" itemprop="dateCreated datePublished" datetime="2021-12-22T23:17:16+08:00">2021-12-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/leetcode%E8%A7%A3%E6%9E%90/" itemprop="url" rel="index"><span itemprop="name">leetcode解析</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/leetcode%E8%A7%A3%E6%9E%90/%E6%9C%80%E4%BC%98/" itemprop="url" rel="index"><span itemprop="name">最优</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>输入一个递增排序的数组和一个数字s，在数组中查找两个数，使得它们的和正好是s。如果有多对数字的和等于s，则输出任意一对即可。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/22/leetcode%E9%A2%98%E8%A7%A3/%E5%92%8C%E4%B8%BAs%E7%9A%84%E4%B8%A4%E4%B8%AA%E6%95%B0%E5%AD%97/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://390991450.github.io/2021/12/22/%E5%B7%A5%E5%85%B7/Thymeleaf/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -461,7 +667,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-25 17:37:04" itemprop="dateModified" datetime="2021-12-25T17:37:04+08:00">2021-12-25</time>
+                <time title="修改时间：2022-02-07 23:53:34" itemprop="dateModified" datetime="2022-02-07T23:53:34+08:00">2022-02-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -825,170 +1031,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://390991450.github.io/2021/12/16/leetcode%E9%A2%98%E8%A7%A3/%E4%B9%8B%E5%AD%97%E5%9E%8B%E6%89%93%E5%8D%B0%E4%BA%8C%E5%8F%89%E6%A0%91/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="征途">
-      <meta itemprop="description" content="我的学习笔记">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="每天一点儿">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/16/leetcode%E9%A2%98%E8%A7%A3/%E4%B9%8B%E5%AD%97%E5%9E%8B%E6%89%93%E5%8D%B0%E4%BA%8C%E5%8F%89%E6%A0%91/" class="post-title-link" itemprop="url">之字型打印二叉树</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-12-16 00:07:42 / 修改时间：00:10:32" itemprop="dateCreated datePublished" datetime="2021-12-16T00:07:42+08:00">2021-12-16</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/leetcode%E8%A7%A3%E6%9E%90/" itemprop="url" rel="index"><span itemprop="name">leetcode解析</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/leetcode%E8%A7%A3%E6%9E%90/%E4%B8%AD%E7%AD%89/" itemprop="url" rel="index"><span itemprop="name">中等</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>请实现一个函数按照之字形顺序打印二叉树，即第一行按照从左到右的顺序打印，第二层按照从右到左的顺序打印，第三行再按照从左到右的顺序打印，其他行以此类推。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/12/16/leetcode%E9%A2%98%E8%A7%A3/%E4%B9%8B%E5%AD%97%E5%9E%8B%E6%89%93%E5%8D%B0%E4%BA%8C%E5%8F%89%E6%A0%91/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://390991450.github.io/2021/12/15/%E9%A1%B9%E7%9B%AE/leetcode%E8%A7%A3%E9%A2%98%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="征途">
-      <meta itemprop="description" content="我的学习笔记">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="每天一点儿">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/15/%E9%A1%B9%E7%9B%AE/leetcode%E8%A7%A3%E9%A2%98%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/" class="post-title-link" itemprop="url">leetcode测试框架搭建</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-12-15 10:42:47" itemprop="dateCreated datePublished" datetime="2021-12-15T10:42:47+08:00">2021-12-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-12 11:02:39" itemprop="dateModified" datetime="2022-01-12T11:02:39+08:00">2022-01-12</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">项目</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>为了方便leetcode的数据在idea中使用, 决定搭建一个测试框架.<br>要求:调用一个方法, 在方法参数中写入要调用的方法以及其需要的参数可以直接进行方法的调用.<br>所有输入为字符串, 要求可以通过要调用的方法判断参数需要转换的类型.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/12/15/%E9%A1%B9%E7%9B%AE/leetcode%E8%A7%A3%E9%A2%98%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1056,7 +1102,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-count">91</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

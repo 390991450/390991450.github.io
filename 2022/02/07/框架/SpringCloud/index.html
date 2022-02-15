@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"390991450.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="入门RestTemplate:用于不同服务器间的交互.参数: url,requestMap,ResponseBean.class注入容器(Configration文件): 1234@Bean   public RestTemplate getRestTemplate()&amp;#123;       return new RestTemplate();   &amp;#125;  公共部分提取:使用maven打">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringCloud">
+<meta property="og:url" content="https://390991450.github.io/2022/02/07/%E6%A1%86%E6%9E%B6/SpringCloud/index.html">
+<meta property="og:site_name" content="每天一点儿">
+<meta property="og:description" content="入门RestTemplate:用于不同服务器间的交互.参数: url,requestMap,ResponseBean.class注入容器(Configration文件): 1234@Bean   public RestTemplate getRestTemplate()&amp;#123;       return new RestTemplate();   &amp;#125;  公共部分提取:使用maven打">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-02-07T05:45:24.000Z">
+<meta property="article:modified_time" content="2022-02-14T14:06:00.774Z">
+<meta property="article:author" content="征途">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://390991450.github.io/2022/02/07/%E6%A1%86%E6%9E%B6/SpringCloud/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>SpringCloud | 每天一点儿</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">每天一点儿</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://390991450.github.io/2022/02/07/%E6%A1%86%E6%9E%B6/SpringCloud/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="征途">
+      <meta itemprop="description" content="我的学习笔记">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="每天一点儿">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SpringCloud
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-02-07 13:45:24" itemprop="dateCreated datePublished" datetime="2022-02-07T13:45:24+08:00">2022-02-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-14 22:06:00" itemprop="dateModified" datetime="2022-02-14T22:06:00+08:00">2022-02-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">框架</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h1><p>RestTemplate:<br>用于不同服务器间的交互.<br>参数: url,requestMap,ResponseBean.class<br>注入容器(Configration文件):</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@Bean</span><br><span class="line">   public RestTemplate getRestTemplate()&#123;</span><br><span class="line">       return new RestTemplate();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>公共部分提取:<br>使用maven打包公共文件后引入到其他模块的依赖之中.</p>
+<h1 id="服务注册中心"><a href="#服务注册中心" class="headerlink" title="服务注册中心"></a>服务注册中心</h1><p>当服务数量到达一个量级时, 服务与服务间的调用会变得非常复杂, 所以需要一个工具来管理服务间的依赖关系, 相互调用, 负载均衡, 容错等功能. 即服务注册中心, 通过服务的发现与注册, 对服务进行统一的管理.</p>
+<h2 id="Eureka"><a href="#Eureka" class="headerlink" title="Eureka"></a>Eureka</h2><p>全部设置完成后, 在RestTemplate处配置好负载均衡功能, 微服务间的交互便不再使用直接地址, 而是使用application name进行交互(集群交互的基础).</p>
+<h3 id="Eureka-Server"><a href="#Eureka-Server" class="headerlink" title="Eureka Server"></a>Eureka Server</h3><p>提供服务注册, 注册后监听心跳, 如果一段时间未收到心跳, 则将服务移出.</p>
+<p>创建:<br>1.配置pom<br>2.yml文件配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">server:</span><br><span class="line">  port: 7001</span><br><span class="line"></span><br><span class="line">eureka:</span><br><span class="line">  instance:</span><br><span class="line">    hostname: eureka7001.com</span><br><span class="line">  client:</span><br><span class="line">    #false表示不向注册中心注册自己</span><br><span class="line">    register-with-eureka: false</span><br><span class="line">    #false表示自己就是注册中心, 无需检索</span><br><span class="line">    fetch-registry: false</span><br><span class="line">    service-url:</span><br><span class="line">      # 设置eureka的交互地址</span><br><span class="line">      defaultZone: &quot;http://eureka7002.com:7002/eureka/,</span><br><span class="line">                    http://eureka7003.com:7003/eureka/&quot;</span><br></pre></td></tr></table></figure>
+<p>3.在main函数使用@EnableEurekaServer注解注册</p>
+<h3 id="Eureka-Client"><a href="#Eureka-Client" class="headerlink" title="Eureka Client"></a>Eureka Client</h3><p>通过注册中心进行访问<br>对所有需要进行注册中心的微服务进行eureka client配置.<br>1.pom配置<br>2.yml配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">eureka:</span><br><span class="line">  instance:</span><br><span class="line">    instance-id: payment8002</span><br><span class="line">    #访问路径可以显示ip</span><br><span class="line">    prefer-ip-address: true</span><br><span class="line">  client:</span><br><span class="line">    #注册</span><br><span class="line">    register-with-eureka: true</span><br><span class="line">    #是否从注册中心抓取注册信息, 单节点无所谓,集群必须设置为true才能配合ribbon使用负载均衡</span><br><span class="line">    fetch-registry: true</span><br><span class="line">    service-url:</span><br><span class="line">      defaultZone: &quot;http://eureka7001.com:7001/eureka/,</span><br><span class="line">                    http://eureka7002.com:7002/eureka/</span><br><span class="line">                    http://eureka7003.com:7003/eureka/&quot;</span><br></pre></td></tr></table></figure>
+<p>3.main函数注解</p>
+<h3 id="Eureka的保护机制"><a href="#Eureka的保护机制" class="headerlink" title="Eureka的保护机制"></a>Eureka的保护机制</h3><p>当Eureka短时间内丢失大量客户, 此时Eureka会判断可能是网络原因导致无法接受到心跳, 就会进入到保护机制.<br>在保护机制下, 不会再注销任何微服务, 这样可以防止因为网络原因使本可以正常允许的微服务被注销.<br>如何关闭:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 服务端</span><br><span class="line">eureka:</span><br><span class="line">  server:</span><br><span class="line">    enable-self-preservation: false</span><br><span class="line">    # 清理无效节点的时间间隔</span><br><span class="line">    eviction-interval-timer-in-ms: 2000</span><br><span class="line"># 客户端</span><br><span class="line">eureka:</span><br><span class="line">  instance:</span><br><span class="line">    # 心跳间隔</span><br><span class="line">    lease-renewal-interval-in-seconds: 1</span><br><span class="line">    # 超时剔除时间 </span><br><span class="line">    lease-expiration-duration-in-seconds: 2</span><br></pre></td></tr></table></figure>
+<h2 id="服务发现Discovery"><a href="#服务发现Discovery" class="headerlink" title="服务发现Discovery"></a>服务发现Discovery</h2><p>对于注册进eureka的微服务, 可以通过服务发现来获得该服务的信息<br>main函数使用@EnableDiscoveryClient注解, 之后controller就可以使用discoveryClient进行服务发现.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">//DiscoveryClient类应该从cloud包中导入，而不是从netflix包导入</span><br><span class="line">//从netflix包中导入的DiscoveryClient类没有getServices()方法，且无法自动注入</span><br><span class="line">@Autowired</span><br><span class="line">private DiscoveryClient discoveryClient;</span><br><span class="line"></span><br><span class="line">@GetMapping(&quot;/discovery&quot;)</span><br><span class="line">private Object discovery()&#123;</span><br><span class="line">    //取得服务列表</span><br><span class="line">    List&lt;String&gt; services = discoveryClient.getServices();</span><br><span class="line">    for (String element : services)&#123;</span><br><span class="line">        log.info(&quot;**********element:&quot;+element);</span><br><span class="line">    &#125;</span><br><span class="line">    //获得服务实例</span><br><span class="line">    List&lt;ServiceInstance&gt; instances = discoveryClient.getInstances(&quot;PAYMENT-SERVICE&quot;);</span><br><span class="line">    for (ServiceInstance instance : instances)&#123;</span><br><span class="line">        log.info(instance.getServiceId()+&quot;\t&quot;+instance.getHost()+&quot;\t&quot;+</span><br><span class="line">                instance.getPort()+&quot;\t&quot;+instance.getUri());</span><br><span class="line">    &#125;</span><br><span class="line">    return discoveryClient;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Zookeeper"><a href="#Zookeeper" class="headerlink" title="Zookeeper"></a>Zookeeper</h2><p>Eureka是为AP设计: 选择可用性 A(Availability)，此时，那个失去联系的节点依然可以向系统提供服务，不过它的数据就不能保证是同步的了<br>Zookeeper是为CP设计: 选择一致性C(Consistency)，为了保证数据库的一致性，我们必须等待失去联系的节点恢复过来，在这个过程中，那个节点是不允许对外提供服务的，这时候系统处于不可用状态(失去了A属性)。</p>
+<h3 id="yml注册"><a href="#yml注册" class="headerlink" title="yml注册"></a>yml注册</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8003</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="comment">#指定别名</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">payment-service</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">zookeeper:</span></span><br><span class="line">      <span class="attr">connect-string:</span> <span class="number">101.200</span><span class="number">.131</span><span class="number">.200</span><span class="string">:2181</span></span><br></pre></td></tr></table></figure>
+<h3 id="linux处理"><a href="#linux处理" class="headerlink" title="linux处理"></a>linux处理</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 安装</span><br><span class="line">docker pull zookeeper</span><br><span class="line">docker run -d --name zk -p 2181:2181 zookeeper</span><br><span class="line"># 进入</span><br><span class="line">docker exec -it zk /bin/bash</span><br><span class="line">cd bin</span><br><span class="line">./zkCli.sh</span><br><span class="line"># 查看服务</span><br><span class="line">ls /</span><br><span class="line">[services, zookeeper]</span><br><span class="line">ls /services</span><br><span class="line">[payment-service]</span><br><span class="line"># 继续深入目录就可以看到转发信息的json串</span><br></pre></td></tr></table></figure>
+<h2 id="Consul"><a href="#Consul" class="headerlink" title="Consul"></a>Consul</h2>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/01/26/%E7%AC%94%E8%AE%B0/RabbitMQ/" rel="prev" title="RabbitMQ">
+      <i class="fa fa-chevron-left"></i> RabbitMQ
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%A5%E9%97%A8"><span class="nav-number">1.</span> <span class="nav-text">入门</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83"><span class="nav-number">2.</span> <span class="nav-text">服务注册中心</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Eureka"><span class="nav-number">2.1.</span> <span class="nav-text">Eureka</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Eureka-Server"><span class="nav-number">2.1.1.</span> <span class="nav-text">Eureka Server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Eureka-Client"><span class="nav-number">2.1.2.</span> <span class="nav-text">Eureka Client</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Eureka%E7%9A%84%E4%BF%9D%E6%8A%A4%E6%9C%BA%E5%88%B6"><span class="nav-number">2.1.3.</span> <span class="nav-text">Eureka的保护机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0Discovery"><span class="nav-number">2.2.</span> <span class="nav-text">服务发现Discovery</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Zookeeper"><span class="nav-number">2.3.</span> <span class="nav-text">Zookeeper</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#yml%E6%B3%A8%E5%86%8C"><span class="nav-number">2.3.1.</span> <span class="nav-text">yml注册</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux%E5%A4%84%E7%90%86"><span class="nav-number">2.3.2.</span> <span class="nav-text">linux处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Consul"><span class="nav-number">2.4.</span> <span class="nav-text">Consul</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="征途"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">征途</p>
+  <div class="site-description" itemprop="description">我的学习笔记</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://leetcode-cn.com/limit-v" title="Leetcode → https:&#x2F;&#x2F;leetcode-cn.com&#x2F;limit-v" rel="noopener" target="_blank"><i class="leetcode fa-fw"></i>Leetcode</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://javaguide.cn/home/" title="https:&#x2F;&#x2F;javaguide.cn&#x2F;home&#x2F;" rel="noopener" target="_blank">Javaguide</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.xuesql.cn/static/%E9%87%91%E8%80%81%E5%B8%88%E6%89%8B%E5%86%8C.html" title="http:&#x2F;&#x2F;www.xuesql.cn&#x2F;static&#x2F;%E9%87%91%E8%80%81%E5%B8%88%E6%89%8B%E5%86%8C.html" rel="noopener" target="_blank">SQL手册</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://github.phodal.com/" title="http:&#x2F;&#x2F;github.phodal.com" rel="noopener" target="_blank">Github漫游指南</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.topgoer.cn/" title="https:&#x2F;&#x2F;www.topgoer.cn" rel="noopener" target="_blank">地鼠文档</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">征途</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

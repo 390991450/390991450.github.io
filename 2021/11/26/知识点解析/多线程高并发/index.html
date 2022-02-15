@@ -28,7 +28,7 @@
 <meta property="og:description" content="进程与线程1.进程要分配一大部分的内存，而线程只需要分配一部分栈就可以了.2.一个程序至少有一个进程,一个进程至少有一个线程.3.进程是资源分配的最小单位，线程是程序执行的最小单位。4.一个线程可以创建和撤销另一个线程，同一个进程中的多个线程之间可以并发执行">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-11-26T11:42:46.000Z">
-<meta property="article:modified_time" content="2021-12-30T01:49:07.439Z">
+<meta property="article:modified_time" content="2022-01-14T06:48:23.366Z">
 <meta property="article:author" content="征途">
 <meta name="twitter:card" content="summary">
 
@@ -218,7 +218,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-30 09:49:07" itemprop="dateModified" datetime="2021-12-30T09:49:07+08:00">2021-12-30</time>
+                <time title="修改时间：2022-01-14 14:48:23" itemprop="dateModified" datetime="2022-01-14T14:48:23+08:00">2022-01-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -256,6 +256,10 @@
 <p>double check lock<br>在给部分代码上锁的过程中一般会进行判断，但注意不可以只在上锁前进行判断，因为线程可能会在任意<br>阶段发生切换，多个线程同时挤进判断语句中也会发生，所以在锁内要再加判断，如果情况变了，要归还锁。<br>这种上锁方式，只对内层进行上锁仍然可以起到相同的效果，但加入外层锁后可以减少上锁解锁的过程，<br>提升代码效率。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//单例模式取得对象</span><br><span class="line">if(INSTANCE == null)&#123;</span><br><span class="line">	synchronized(当前类)&#123;</span><br><span class="line">		if(INSTANCE == null)&#123;</span><br><span class="line">			INSTANCE = new 类对象;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这个双锁仍旧有问题，new对象时如果发生指令重排，当只指向地址但未赋值时，此时恰好又有另一个线程访问对象，就会访问到未初始的对象。(虽然被锁定，但是上锁的代码和未上锁的代码是可以访问到中间态的)(java高版本已经解决了这个问题)<br>cpu级防止指令交换：添加屏障指令<br>jvm中防止指令交换：四种内存屏障Load-Store<br>java中防止指令交换：在修饰的前面加volatile</p>
+<h1 id="如何减少多线程上下文切换开销"><a href="#如何减少多线程上下文切换开销" class="headerlink" title="如何减少多线程上下文切换开销"></a>如何减少多线程上下文切换开销</h1><p>无锁并发编程:当任何特定的运算被阻塞的时候，所有CPU可以继续处理其他的运算。换种方式说，在无锁系统中，当给定线程被其他线程阻塞的时候，所有CPU可以不停的继续处理其他工作。无锁算法大大增加系统整体的吞吐量，因为它只偶尔会增加一定的交易延迟。大部分高端数据库系统是基于无锁算法而构造的，以满足不同级别。</p>
+<p>CAS算法:Java提供了一套原子性操作的数据类型（java.util.concurrent.atomic包下），使用CAS算法来更新数据，不需要加锁。如:AtomicInteger、AtomicLong等。</p>
+<p>避免创建过多的线程:如任务量少时，尽可能减少创建线程。对于某个时间段任务量很大的这种情况，我们可以通过线程池来管理线程的数量，避免创建过多线程。</p>
+<p>协程：即协作式程序，其思想是，一系列互相依赖的协程间依次使用CPU，每次只有一个协程工作，而其他协程处于休眠状态。如：JAVA中使用wait和notify来达到线程之间的协同工作。</p>
 
     </div>
 
@@ -336,7 +340,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">进程与线程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E4%B8%8E%E5%B9%B6%E8%A1%8C"><span class="nav-number">2.</span> <span class="nav-text">并发与并行</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E7%A1%AE%E5%AE%9A%E5%90%88%E9%80%82%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">如何确定合适的线程数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E8%A1%8C%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7"><span class="nav-number">4.</span> <span class="nav-text">缓存行编程技巧</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8C%87%E4%BB%A4%E9%87%8D%E6%8E%92"><span class="nav-number">5.</span> <span class="nav-text">指令重排</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E9%AB%98%E5%B9%B6%E5%8F%91%E6%95%88%E7%8E%87"><span class="nav-number">6.</span> <span class="nav-text">提高并发效率</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">进程与线程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E4%B8%8E%E5%B9%B6%E8%A1%8C"><span class="nav-number">2.</span> <span class="nav-text">并发与并行</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E7%A1%AE%E5%AE%9A%E5%90%88%E9%80%82%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">如何确定合适的线程数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E8%A1%8C%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7"><span class="nav-number">4.</span> <span class="nav-text">缓存行编程技巧</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8C%87%E4%BB%A4%E9%87%8D%E6%8E%92"><span class="nav-number">5.</span> <span class="nav-text">指令重排</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E9%AB%98%E5%B9%B6%E5%8F%91%E6%95%88%E7%8E%87"><span class="nav-number">6.</span> <span class="nav-text">提高并发效率</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%87%8F%E5%B0%91%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2%E5%BC%80%E9%94%80"><span class="nav-number">7.</span> <span class="nav-text">如何减少多线程上下文切换开销</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -352,7 +356,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-count">91</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
