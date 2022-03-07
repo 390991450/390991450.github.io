@@ -28,7 +28,7 @@
 <meta property="og:description" content="入门微服务架构版本一:外部服务通过注册中心的信息相内部进行访问, 由Ribbon对要调用的具体服务器进行负载均衡, 然后执行调用.版本二:外部服务通过注册中心的信息相内部进行访问, 接着网关会拦截配置的网站请求(动态路由), 进行断言后再经过层层过滤器实现分发.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-02-07T05:45:24.000Z">
-<meta property="article:modified_time" content="2022-02-28T03:22:41.484Z">
+<meta property="article:modified_time" content="2022-03-02T11:35:41.108Z">
 <meta property="article:author" content="征途">
 <meta name="twitter:card" content="summary">
 
@@ -218,7 +218,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-28 11:22:41" itemprop="dateModified" datetime="2022-02-28T11:22:41+08:00">2022-02-28</time>
+                <time title="修改时间：2022-03-02 19:35:41" itemprop="dateModified" datetime="2022-03-02T19:35:41+08:00">2022-03-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -350,7 +350,7 @@
 <p>异常比例 (ERROR_RATIO)：当单位统计时长（statIntervalMs）内请求数目大于设置的最小请求数目，并且异常的比例大于阈值，则接下来的熔断时长内请求会自动被熔断。经过熔断时长后熔断器会进入探测恢复状态（HALF-OPEN 状态），若接下来的一个请求成功完成（没有错误）则结束熔断，否则会再次被熔断。异常比率的阈值范围是 [0.0, 1.0]，代表 0% - 100%。</p>
 <p>异常数 (ERROR_COUNT):当单位统计时长内的异常数目超过阈值之后会自动进行熔断。经过熔断时长后熔断器会进入探测恢复状态（HALF-OPEN 状态），若接下来的一个请求成功完成（没有错误）则结束熔断，否则会再次被熔断。</p>
 <h3 id="SentinelResource"><a href="#SentinelResource" class="headerlink" title="@SentinelResource"></a>@SentinelResource</h3><p>类似@HystrixCommand.<br>使用try-catch-finally实现.<br>value: 资源名称<br>blockHandler: 流控兜底方法 (兜底方法必须传入BlockException参数)<br>blockHandlerClass: 兜底方法所在类<br>fallback: 异常兜底方法<br>exceptionsToIngnore: 忽略的异常类.<br>使用这个注解后, Sentinel会将注解方法的参数作为参数传入到SphU.entry(res, args)中, 从而用于热点规则的判断.</p>
-<h3 id="热点规则"><a href="#热点规则" class="headerlink" title="热点规则"></a>热点规则</h3><p>配置资源名: @SentinelResource注解的value值<br>参数索引: SphU.entry(res, args)中参数的索引<br>单机阈值: QPS<br>设定好这些规则后, 当遇到@SentinelResource注解的对应方法时, 会将此方法的参数传入SphU.entry(res, args), 接着使用参数索引确定对应参数, 最后使用单机阈值进行判断, 一旦判断失败, 就进入catch方法, 调用blockHandler设定的兜底方法.</p>
+<h3 id="热点规则"><a href="#热点规则" class="headerlink" title="热点规则"></a>热点规则</h3><p>配置资源名: @SentinelResource注解的value值<br>参数索引: SphU.entry(res, args)中参数的索引(0开始)<br>单机阈值: 规定时间内允许的连接次数<br>设定好这些规则后, 当遇到@SentinelResource注解的对应方法时, 会将此方法的参数传入SphU.entry(res, args), 接着使用参数索引确定对应参数, 最后使用单机阈值进行判断, 一旦判断失败, 就进入catch方法, 调用blockHandler设定的兜底方法.</p>
 <p>参数例外项:当参数索引对应的参数出现特定值时赋予特定的阈值.</p>
 <h3 id="Feign的整合"><a href="#Feign的整合" class="headerlink" title="Feign的整合"></a>Feign的整合</h3><p>注意yml打开sentinel对feign的支持即可</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">feign:</span><br><span class="line">  sentinel:</span><br><span class="line">    enable: true</span><br></pre></td></tr></table></figure>
@@ -382,8 +382,8 @@
       <i class="fa fa-chevron-left"></i> RabbitMQ
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/02/27/leetcode%E9%A2%98%E8%A7%A3/%E5%AE%8C%E6%88%90%E6%97%85%E9%80%94%E7%9A%84%E6%9C%80%E5%B0%91%E6%97%B6%E9%97%B4/" rel="next" title="完成旅途的最少时间">
-      完成旅途的最少时间 <i class="fa fa-chevron-right"></i>
+    <a href="/2022/02/26/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%89%93%E5%8C%85/" rel="next" title="微服务打包">
+      微服务打包 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -459,14 +459,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">93</span>
+          <span class="site-state-item-count">95</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

@@ -679,7 +679,7 @@
 <h1 id="如何确定合适的线程数"><a href="#如何确定合适的线程数" class="headerlink" title="如何确定合适的线程数"></a>如何确定合适的线程数</h1><p>根据任务需要执行计算的时间占比分配线程数。如：4核，任务中计算占比25%的任务分配16线程。</p>
 <!-- more -->
 <h1 id="缓存行编程技巧"><a href="#缓存行编程技巧" class="headerlink" title="缓存行编程技巧"></a>缓存行编程技巧</h1><p>前提知识：缓存行每次从内存拉取64bytes的内容。同一缓存行在不同cpu中同时处理时需要不断对齐。<br>例：<br>创建一个类，类中存放一个long型数据，创建一个2容量这个类的数组，启动两个线程分别对这两个<br>类的long型数据处理。时间记作t1。<br>创建一个与上面相似的类，但在其中的long型数据前和后分别填充7个无用的long型数据，再执行与<br>上面相同的操作。时间记作t2。<br>结果是t2会比t1短很多。原因是，第一个类中，两个要处理的数据会处于同一缓存行，在处理时需要不断<br>的对齐。二第二个类中，因为无用long型数据的填充，使得两个被操作的数据无法处于同一缓存行，不用对齐。</p>
-<h1 id="指令重排"><a href="#指令重排" class="headerlink" title="指令重排"></a>指令重排</h1><p>问题：<br>在cpu执行语句时，happens-before规则约束后，可能会在执行过程中发生指令重排，<br>宏观表现为语句的倒转。而这种问题会导致this引用逃逸。如下面的代码就可能会输出0。</p>
+<h1 id="指令重排-this引用逃逸"><a href="#指令重排-this引用逃逸" class="headerlink" title="指令重排,this引用逃逸"></a>指令重排,this引用逃逸</h1><p>问题：<br>在cpu执行语句时，happens-before规则约束后，可能会在执行过程中发生指令重排，<br>宏观表现为语句的倒转。而这种问题会导致this引用逃逸。如下面的代码就可能会输出0。</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public class ThisEscape&#123;</span><br><span class="line">	private int num = 0;</span><br><span class="line">	public ThisEscape()&#123;</span><br><span class="line">		new Thread(()-&gt;System.out.println(this.num)).start();</span><br><span class="line">	&#125; </span><br><span class="line">	public static void mian(String[] args)throw Exception&#123;</span><br><span class="line">		new ThisEscape();</span><br><span class="line">		System.in.read();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>分析：num的初始在汇编中有三步，创建空间，赋值，再指向。但this一开始就指向了他本身，所以可能<br>在num没有初始化完成时就调用了this指针，将num发送出去。<br>如何避免：不要在构造方法中启动线程</p>
 <h1 id="提高并发效率"><a href="#提高并发效率" class="headerlink" title="提高并发效率"></a>提高并发效率</h1><p>合理的上锁，不要锁太多没必要的内容导致并发效率降低。</p>
@@ -692,8 +692,26 @@
 <p>避免创建过多的线程:如任务量少时，尽可能减少创建线程。对于某个时间段任务量很大的这种情况，我们可以通过线程池来管理线程的数量，避免创建过多线程。</p>
 <p>协程：即协作式程序，其思想是，一系列互相依赖的协程间依次使用CPU，每次只有一个协程工作，而其他协程处于休眠状态。如：JAVA中使用wait和notify来达到线程之间的协同工作。</p>
 <h1 id="锁的四种状态"><a href="#锁的四种状态" class="headerlink" title="锁的四种状态"></a>锁的四种状态</h1><p>锁分为无锁, 偏向锁(存储线程id), 轻量级锁(指向栈中锁记录的指针), 重量级锁(指向重量级锁的指针). 锁只能升级不可以进行降级.<br>当一段代码被线程取到, 他首先会进入偏向锁状态, 当出现其他线程竞争的时候会进入轻量级锁, 大多情况使用的是自旋锁, 当太多线程进行竞争, 导致一个线程长时间无法取得资源时, 会进一步升级为重量级锁.</p>
-<h1 id="CAS的原理"><a href="#CAS的原理" class="headerlink" title="CAS的原理"></a>CAS的原理</h1><p>CAS会为资源赋予一个状态值, 线程带有一个oldvalue值与newvalue值, 当oldvalue与资源当前状态值相同时, 就可以争抢资源, 并为资源赋予newvalue状态, 当oldvalue与资源状态值不同时, 该线程会进行自旋. 而要完成这个操作就需要CAS操作具有原子性, 所幸, 各种不同的CPU都提供了指令基本的CAS原子操作.</p>
+<h1 id="公平锁与非公平锁"><a href="#公平锁与非公平锁" class="headerlink" title="公平锁与非公平锁"></a>公平锁与非公平锁</h1><p>ReentrantLock生成的默认为非公平锁, synchronizad也默认为非公平锁<br>公平锁: 多个线程按照申请锁的顺序来获取锁<br>非公平锁: 线程来了会尝试抢锁, 抢不到才排队, 可能造成饥饿或优先级反转.</p>
+<h1 id="可重入锁-递归锁"><a href="#可重入锁-递归锁" class="headerlink" title="可重入锁(递归锁)"></a>可重入锁(递归锁)</h1><p>ReentrantLock/synchronized都是可重入锁.<br>一旦获取一部分代码的锁, 那么此线程可以获得这部分代码的所有子代码的锁, 即线程可以进入任何一个它已经拥有锁的代码的代码块, 它可以避免死锁.</p>
+<h1 id="ReentrantLock和synchronized区别"><a href="#ReentrantLock和synchronized区别" class="headerlink" title="ReentrantLock和synchronized区别"></a>ReentrantLock和synchronized区别</h1><p>1.一个是关键字属于JVM层,一个是具体类, 属于API层.<br>2.synchronized不需要手动释放锁. ReentrantLock需要手动释放锁.<br>3.synchronized不可中断, 除非异常. ReentrantLock可以设置主动中断或者在超时中断.<br>4.二者默认都是非公平锁, 但是ReentrantLock可以设置为公平锁.<br>5.ReentrantLock可以使用Condition类实现精确唤醒.</p>
+<h1 id="自旋锁和阻塞锁"><a href="#自旋锁和阻塞锁" class="headerlink" title="自旋锁和阻塞锁"></a>自旋锁和阻塞锁</h1><p>阻塞锁当没有抢到资源时会选择休眠, 等待被唤醒, 这个过程需要cpu切换状态, 占用cpu时间.<br>自旋锁当没有抢到资源时会进入循环尝试, 直到取得, 这个过程不需要cpu切换状态, 但是会耗费cpu资源.</p>
+<h1 id="CAS-compare-and-set-的原理-保证一致性-不加锁"><a href="#CAS-compare-and-set-的原理-保证一致性-不加锁" class="headerlink" title="CAS(compare and set)的原理(保证一致性,不加锁)"></a>CAS(compare and set)的原理(保证一致性,不加锁)</h1><p>CAS会为资源赋予一个状态值, 线程带有一个oldvalue值与newvalue值, 当oldvalue与资源当前状态值相同时, 就可以争抢资源, 并为资源赋予newvalue状态, 当oldvalue与资源状态值不同时, 该线程会进行自旋. 而要完成这个操作就需要CAS操作具有原子性, 所幸, 各种不同的CPU都提供了指令基本的CAS原子操作.</p>
+<h1 id="CAS缺点"><a href="#CAS缺点" class="headerlink" title="CAS缺点"></a>CAS缺点</h1><p>长期自旋会为CPU带来较大的负担.<br>无法察觉到处理过程中的非显性修改, 即ABA问题. </p>
+<h1 id="ABA问题的解决"><a href="#ABA问题的解决" class="headerlink" title="ABA问题的解决"></a>ABA问题的解决</h1><p>使用AtomicStampedReference, 它在原子引用类上的基础上添加了一个stamp, 在cas时不但要求value值符合要求, 同时要求stamp也符合相应的要求.</p>
 <h1 id="AQS"><a href="#AQS" class="headerlink" title="AQS"></a>AQS</h1><p>AQS有一个voliate修饰的state, 用于标识当前状态. 如果线程获取同步状态state失败时, 会将当前线程及等待信息等构成一个node, 并放入FIFO队列中, 并将这个线程阻塞. 当线程将同步状态state释放时, 会唤醒队列中的头节点, 使其同步状态state.</p>
+<h1 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h1><p>volatile算一个轻量级的synchronized, 他保证可见性,但不保证原子性,禁止了指令重排.<br>解决原子性问题:使用JUC包下的原子包装类(原理为CAS).</p>
+<h1 id="JMM-java内存模型"><a href="#JMM-java内存模型" class="headerlink" title="JMM(java内存模型)"></a>JMM(java内存模型)</h1><p>它本身只是一种抽象概念, 描述的是一组规则或规范. 它具有可见性, 原子性以及有序性三大特点.</p>
+<h1 id="集合类线程不安全解决"><a href="#集合类线程不安全解决" class="headerlink" title="集合类线程不安全解决"></a>集合类线程不安全解决</h1><p>1.使用集合类中自带的线程安全的的类<br>2.使用Collections.synchronizedList.();进行修饰<br>3.使用CopyOnWriteArrayList包装类.</p>
+<h1 id="CopyeOnWriteArrayList包装类原理"><a href="#CopyeOnWriteArrayList包装类原理" class="headerlink" title="CopyeOnWriteArrayList包装类原理"></a>CopyeOnWriteArrayList包装类原理</h1><p>集合类线程不安全是因为在next已赋予之后, 尾指针未移动之前又添加了新的next.<br>而CopyOnWriteArrayList是在添加next前将获取list的方式加锁, 将List进行复制, 此时这个新list的地址是非公开的, 所以仅当前线程可以进行数据的添加, 添加完成后再将新的list地址进行公开.</p>
+<h1 id="CountDownLatch-CyclicBarrier-Semaphore"><a href="#CountDownLatch-CyclicBarrier-Semaphore" class="headerlink" title="CountDownLatch/CyclicBarrier/Semaphore"></a>CountDownLatch/CyclicBarrier/Semaphore</h1><p>CountDowenLatch: 类似一个倒计时计数器, 当需要的线程都结束之前(CountDownLatch计数归零), 使用await对当前方法进行阻塞.<br>CyclicBarrier: 设置数量及要执行的方法, 使用await对线程进行阻塞, 直到阻塞线程到达规定的数量才集体放行并执行写入的方法.<br>Semaphore: 设置允许的线程数, 通过acquire方法争抢资源.</p>
+<h1 id="什么时候需要用到Callable接口"><a href="#什么时候需要用到Callable接口" class="headerlink" title="什么时候需要用到Callable接口"></a>什么时候需要用到Callable接口</h1><p>Callable接口相较于Runnable接口拥有返回值且能抛出异常, 更利于线程的管理. 且利用Callable接口可以返回数据的特点, 可以将一个任务拆分为多个任务交由不同线程处理, 最后进行汇总.</p>
+<h1 id="线程池的作用"><a href="#线程池的作用" class="headerlink" title="线程池的作用"></a>线程池的作用</h1><p>1.没有了重复的创建和销毁, 降低了资源消耗.<br>2.可以直接拿来使用, 提高了响应速度.<br>3.提高了线程的管理性.</p>
+<h1 id="三个常见的线程池"><a href="#三个常见的线程池" class="headerlink" title="三个常见的线程池"></a>三个常见的线程池</h1><p>Executors.newFixedThreadPool(int): 固定数量的线程池, 执行长期任务的线程<br>Executors.newSingleThreadExecutor(): 一个池一个线程, 适用于排队任务.<br>Executors.newCachedThreadPool(): 一个池多个线程, 适用于执行很多短的任务.</p>
+<h1 id="线程池的运行过程"><a href="#线程池的运行过程" class="headerlink" title="线程池的运行过程"></a>线程池的运行过程</h1><p>初始时只有设定的常驻线程数, 当任务增加时, 会先占用常驻线程, 再使用阻塞队列进行排队, 接着当阻塞队列满时, 开始扩容线程数, 直到达到最大线程数且阻塞队列也满时, 调用拒绝策略对多余任务进行处理. 当任务减少时, 扩容线程空闲时间到达设定的时间时会进行销毁.</p>
+<h1 id="线程池的拒绝策略"><a href="#线程池的拒绝策略" class="headerlink" title="线程池的拒绝策略"></a>线程池的拒绝策略</h1><p>AborPolicy(默认): 直接抛出异常, 阻止系统正常运行.<br>CallerRunsPolicy: 不抛弃任务, 也不抛出异常, 而是将某些任务回退到调用者<br>DiscardOldestPolicy: 抛弃队列中等待最久的任务<br>DiscardPolicy: 直接抛弃任务, 不予任何处理也不抛出异常. 如果允许任务丢失</p>
+<h1 id="线程池参数设置"><a href="#线程池参数设置" class="headerlink" title="线程池参数设置"></a>线程池参数设置</h1><p>CPU密集型:应尽可能减少线程数, 一般为CPU核数+1<br>IO密集型: CPU核数* 2或Cpu核数/(1-阻塞系数) ,阻塞系数一般为0.8-0.9</p>
+<h1 id="tomcat线程模型"><a href="#tomcat线程模型" class="headerlink" title="tomcat线程模型"></a>tomcat线程模型</h1><p>BIO模型:每个请求产生一个线程, 线程开销较大, 如果不能处理就阻塞, 不适合高并发.7版本以下默认.<br>NIO模型:在BIO基础上修改为了非阻塞模型.<br>APR模型:利用JNI从操作系统级别解决异步IO问题, 大幅提高处理响应性能, 高并发首选.<br>AIO模型:异步非阻塞, 适用连接多操作重的架构.</p>
 ]]></content>
       <categories>
         <category>知识点解析</category>
@@ -709,6 +727,9 @@
 <h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><p>转发整个过程实际是一个请求,而重定向是完全跳转到新页面,是两个请求.这个区别在刷新页面时会产生很大的不同.且重定向可以跨域.</p>
 <h1 id="cookie与session"><a href="#cookie与session" class="headerlink" title="cookie与session"></a>cookie与session</h1><p>session是一直在服务器端的, cookie是客户端保存信息的一种手段. 当有浏览器访问服务器时, 服务器会为这个浏览器开辟一个session, 并把这个session的钥匙sessionid放入cookie中让浏览器使用. 浏览器如果想进入同一个会话, 就需要每次发送请求时在cookie中附带上打开目标session的钥匙, sessionid.<br>具体作用就体现在浏览器在一个session会话中只需要向服务器发送一次用户名和密码, 此后用户名和密码的调用都是服务器从session中取得.</p>
 <h1 id="token"><a href="#token" class="headerlink" title="token"></a>token</h1><p>token是为了应对当大量用户集体对服务器进行访问时生成大量session的问题.<br>使用token后服务器不会存储原本session的内容, 而是加密后让浏览器自己保存, 服务器只负责解析.</p>
+<h1 id="Bean的作用域"><a href="#Bean的作用域" class="headerlink" title="Bean的作用域"></a>Bean的作用域</h1><p>singleton:懒汉单例模式<br>protoype:每次调用getBean时返回新实例<br>request:每次HTTP请求创建一个新实例<br>session:每个session使用一个实例</p>
+<h1 id="解决POST和GET请求的中文乱码问题"><a href="#解决POST和GET请求的中文乱码问题" class="headerlink" title="解决POST和GET请求的中文乱码问题"></a>解决POST和GET请求的中文乱码问题</h1><p>POST: 使用过滤器设定encoding<br>GET: 在tomcat的配置文件中设置编码方式</p>
+<h1 id="SpringMVC执行流程"><a href="#SpringMVC执行流程" class="headerlink" title="SpringMVC执行流程"></a>SpringMVC执行流程</h1><p>1.用户向服务器发送请求, 请求被DispatcherServlet捕获<br>2.交由handlerMapping处理判断是否存在映射, 没有就报404<br>3.有的话把对应的映射交给handlerAdapter, handlerAdapter为即将调用的控制器进行一系列的准备工作(提取req的信息, 注入参数, 数据验证等等)<br>4.然后交给prehandler进行处理<br>5.处理后再交给控制器, 控制器进行一些列操作并且设置mv<br>6.再由posthandler处理<br>7.处理后再交给视图解析器进行解析mv并渲染视图<br>8.接着执行拦截器的afterCompletion<br>9.最后把渲染结果交给客户端</p>
 ]]></content>
       <categories>
         <category>知识点解析</category>
@@ -717,11 +738,14 @@
   <entry>
     <title>javase</title>
     <url>/2021/12/03/%E7%9F%A5%E8%AF%86%E7%82%B9%E8%A7%A3%E6%9E%90/javase%E9%A2%98%E7%9B%AE/</url>
-    <content><![CDATA[<h1 id="hashmap的扩容与-amp-运算问题"><a href="#hashmap的扩容与-amp-运算问题" class="headerlink" title="hashmap的扩容与&amp;运算问题"></a>hashmap的扩容与&amp;运算问题</h1><p>基本知识<br>1、初始容量为1&lt;&lt;4<br>2、负载因子为0.75，到达负载因子时2次幂扩展<br>3、通过hashcode计算存放位置</p>
+    <content><![CDATA[<h1 id="i-的处理过程"><a href="#i-的处理过程" class="headerlink" title="i++的处理过程"></a>i++的处理过程</h1><p>i = i++在程序处理上分为三步, 第一步将i压入操作数栈中, 第二步自身值递增, 第三步将右值赋予左值.</p>
+<h1 id="i-为什么不能作为左值而-i却可以"><a href="#i-为什么不能作为左值而-i却可以" class="headerlink" title="i++为什么不能作为左值而++i却可以"></a>i++为什么不能作为左值而++i却可以</h1><p>因为++i是在自身基础上进行加和并返回, 地址不会发生变化, 但i++是后加处理, 因此他本身的地址上不能进行加和处理, 只能依靠临时变量进行加和并返回这个临时变量, 所以地址会发生变化, 而左值不允许在处理过程中地址发生变化.</p>
+<h1 id="hashmap的扩容与-amp-运算问题"><a href="#hashmap的扩容与-amp-运算问题" class="headerlink" title="hashmap的扩容与&amp;运算问题"></a>hashmap的扩容与&amp;运算问题</h1><p>基本知识<br>1、初始容量为1&lt;&lt;4<br>2、负载因子为0.75，到达负载因子时2次幂扩展<br>3、通过hashcode计算存放位置</p>
 <span id="more"></span>
 <p>hashcode的计算<br>1、获取hash值h，将h&gt;&gt;&gt;16后再与自身异或。<br>这是因为在计算hashmap存放位置时只取低位，正常运算会丢失高位的信息。这样处理后也可以将高位<br>的信息保留，减少冲突的可能性。<br>2、取模运算:(length-1)&amp;hash。<br>在这里可以解释为什么扩容是是2次幂，一般情况下，计算位置是需要%计算，但当length的长度为2的<br>次幂的时候，取余运算可以转化成上面的位与运算，大大节省了计算时间。</p>
 <p><a href="https://www.cnblogs.com/ysocean/p/9054804.html">来源</a></p>
 <h1 id="为什么重写-equals-还要重写-hashcode？"><a href="#为什么重写-equals-还要重写-hashcode？" class="headerlink" title="为什么重写 equals 还要重写 hashcode？"></a>为什么重写 equals 还要重写 hashcode？</h1><p>因为不重写hashcode在插入到哈希表时不能保证插入到同一位置，不插入到同一位置就无法触发equals判断。</p>
+<h1 id="Queue几种方法的区别"><a href="#Queue几种方法的区别" class="headerlink" title="Queue几种方法的区别"></a>Queue几种方法的区别</h1><p>add,remove,element一旦失败直接抛出异常.<br>offer,peek,poll失败不会抛出异常但会有响应值. 可以添加时间参数暂时升级为下面的方法.<br>put,take,只要失败就一直阻塞, 直到成功, 且不会有响应值</p>
 <h1 id="和-equals-比较的区别"><a href="#和-equals-比较的区别" class="headerlink" title="== 和 equals 比较的区别"></a>== 和 equals 比较的区别</h1><p>对于对象而言，==是在判断地址是否相同，equals是判断内容。</p>
 <h1 id="为什么浮点数运算会不精准"><a href="#为什么浮点数运算会不精准" class="headerlink" title="为什么浮点数运算会不精准"></a>为什么浮点数运算会不精准</h1><p>因为计算机的浮点数是用二进制的科学计数保存的，它可以保存1/2，1/4等，但却因为进制问题不能表示0.1这种数字，只能近似，所以在保存这些数字的时候会丢失精度。</p>
 <h1 id="为什么定义long类型与float类型时要加l和f"><a href="#为什么定义long类型与float类型时要加l和f" class="headerlink" title="为什么定义long类型与float类型时要加l和f"></a>为什么定义long类型与float类型时要加l和f</h1><p>这是因为定义变量的过程本质是使用指针将两个内存块连接的过程。long类型常量不加l修饰会这个常量只会被当作int型，分配的空间也只有int型的大小。而浮点型默认是double，如果不加f，相当于把double直接赋予float，编译器会不通过。</p>
@@ -731,6 +755,9 @@
 <h1 id="动态绑定"><a href="#动态绑定" class="headerlink" title="动态绑定"></a>动态绑定</h1><p>当调用对象方法时，该方法会和该对象的运行类型相绑定。而调用对象属性时不会有动态绑定，而是从该对象开始向上搜寻。</p>
 <h1 id="哪些情况会导致类被加载"><a href="#哪些情况会导致类被加载" class="headerlink" title="哪些情况会导致类被加载"></a>哪些情况会导致类被加载</h1><p>1.创建对象时<br>2.子类创建对象时<br>3.使用静态成员时</p>
 <h1 id="final的作用"><a href="#final的作用" class="headerlink" title="final的作用"></a>final的作用</h1><p>1.防止类被继承<br>2.防止方法被重写<br>3.防止属性或变量被更改<br>4.与static搭配使用可以提高效率，被final static修饰的属性(方法不可以)被调用时不会导致类加载，也就是说这么修饰的属性不需要类加载也能获得。</p>
+<h1 id="类初始化的过程"><a href="#类初始化的过程" class="headerlink" title="类初始化的过程"></a>类初始化的过程</h1><p>创建实例时会进行类初始化, 任何时候main方法所在类都会先加载和初始化.<br>类初始化时会将所有静态内容准备好,静态类的初始化自上向下.子类初始化会先初始化父类.</p>
+<h1 id="实例初始化"><a href="#实例初始化" class="headerlink" title="实例初始化"></a>实例初始化</h1><p>在静态内容初始化结束后, 会对非静态代码块, 非静态变量以及构造器进行初始化.<br>子类实例初始化也会先对父类进行初始化.<br>但是非静态方法前有一个默认对象为this, 如果父类中调用的是子类重写过的非静态方法, 实际是调用子类的方法.<br>非静态代码块和非静态变量会自上向下初始化, 构造器会最后初始化.<br>静态内容只会在类初始化过程中初始化一次.</p>
+<h1 id="包装类对象的不变性"><a href="#包装类对象的不变性" class="headerlink" title="包装类对象的不变性"></a>包装类对象的不变性</h1><p>包装类的数据一旦发生变化, 会为其分配新的地址, 而不是在原有地址上进行修改.</p>
 <h1 id="哪些情况Integer不会创建新对象"><a href="#哪些情况Integer不会创建新对象" class="headerlink" title="哪些情况Integer不会创建新对象"></a>哪些情况Integer不会创建新对象</h1><p>在Integr值在-128到127之间时。这是因为Integer有一个公用的闪存数组，数字在这个区间时会直接返回闪存数组中的对象。</p>
 <h1 id="String的两种创建方式的区别"><a href="#String的两种创建方式的区别" class="headerlink" title="String的两种创建方式的区别"></a>String的两种创建方式的区别</h1><p>不调用构造器直接赋值：<br>先从常量池查看是否有这个字符串，如果有就直接指向，没有则创建再指向，一级指针指向常量池。<br>调用构造器赋值：<br>先在堆中创建空间，里面维护value属性，指向常量池，如果常量池没有，则重新创建再指向，有就直接指向，一级指针指向堆。<br>使用intern方法后会进行规范化，如果常量池有目标字符串指向常量池。使用字符串加和创建的字符串一级指针也是指向堆。</p>
 <h1 id="StringBuffer的优点"><a href="#StringBuffer的优点" class="headerlink" title="StringBuffer的优点"></a>StringBuffer的优点</h1><p>StringBuffer创建的组合字符串不进入常量池，而是在堆中存放，但单个的字符串依旧会进入常量池.使用append方法添加字符串时也不会像String一样在常量池中重新创建新的字符串，而是在原有的字符串基础上进行扩容，当循环使用时比String要快很多。</p>
@@ -1715,8 +1742,16 @@
 <td>切换分支</td>
 </tr>
 <tr>
+<td>git checkout -b 分支名</td>
+<td>创建并切换分支</td>
+</tr>
+<tr>
 <td>git merge 分支名</td>
 <td>合并分支</td>
+</tr>
+<tr>
+<td>git branch -D 分支名</td>
+<td>删除分支(先切主分支)</td>
 </tr>
 <tr>
 <td>远程库操作</td>
@@ -3924,6 +3959,10 @@
     <title>项目架构</title>
     <url>/2021/12/30/%E7%9F%A5%E8%AF%86%E7%82%B9%E8%A7%A3%E6%9E%90/%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84/</url>
     <content><![CDATA[<h1 id="什么叫高内聚低耦合"><a href="#什么叫高内聚低耦合" class="headerlink" title="什么叫高内聚低耦合"></a>什么叫高内聚低耦合</h1><p>低耦合是要让各个模块间尽可能相互独立, 当一个模块出现问题时, 耦合度越低, 影响的范围也就越低.<br>高内聚是尽可能的让模块的单一性更高, 这样它所需要的大部分内容都依赖于自身, 对外的耦合度也可以降低.</p>
+<h1 id="单例模式设计要点"><a href="#单例模式设计要点" class="headerlink" title="单例模式设计要点"></a>单例模式设计要点</h1><p>1.构造器私有化<br>2.建议使用懒汉式, 饿汉式在并发场景存在一些安全问题.<br>3.使用静态变量保存唯一实例<br>4.当实例创建比较复杂时使用静态代码块创建</p>
+<h1 id="GC的种类"><a href="#GC的种类" class="headerlink" title="GC的种类"></a>GC的种类</h1><p>次数上较为频繁收集YOUNG区, minor GC<br>次数上少数收集Old区, Full GC<br>基本不动Perm区, 无GC</p>
+<h1 id="GC算法"><a href="#GC算法" class="headerlink" title="GC算法"></a>GC算法</h1><p>1.引用计数法:只要引用就不进行回收(已废弃)<br>2.复制算法:适用于young区, 将不回收的内容从一个地方迁移到另一个地方, 优点是效率高, 没有内存碎片, 缺点是需要双倍空间.<br>3.标记清除法:适用于old区, 将不回收的内容进行标记, 清除没被标记的数据, 优点是空间占用小, 缺点是效率底要扫描两次, 会产生内存碎片.<br>4.标记压缩法:适用于old区, 将标记的内容进行重排, 将剩余的数据集体删除, 优点是不再产生内存碎片, 缺点是耗时进一步被提高.</p>
+<h1 id="类加载过程"><a href="#类加载过程" class="headerlink" title="类加载过程"></a>类加载过程</h1><p>1.读取class文件将其转化为静态数据结构存储在方法区, 并在堆中生成一个便于用户调用的Class类对象.<br>2.对代码进行验证<br>3.准备:将所有静态变量赋予0值<br>4.解析:将一部分引用进行解析, 如果该引用是抽象的, 无法确定具体的实现就延后解析.<br>5.最后进行初始化动作:class层面的初始化.</p>
 ]]></content>
       <categories>
         <category>知识点解析</category>
@@ -4060,6 +4099,10 @@
 <p>图书馆借书登记<br>创建书籍条形码与书籍名称的映射, 使用aop为图书馆类的方法添加映射<br>实现获取书籍条形码与学生磁卡id在数据库生成对应的学生身份证以及书籍名称<br>借书登记<br>借书前进行已借书籍判断, 查看是超过借书上限或者有书籍逾期<br>还书登记<br>将书籍id设为键, 直接查询选择最后一条进行更新, 同时判断是否逾期<br>=====================================</p>
 <h2 id="收费端-1"><a href="#收费端-1" class="headerlink" title="收费端"></a>收费端</h2><p>=====================================</p>
 <h2 id="月报功能实现"><a href="#月报功能实现" class="headerlink" title="月报功能实现"></a>月报功能实现</h2><p>食堂, 打水, 超市, 洗澡消费占比,金额<br>最高充值金额<br>消费次数<br>总计消费金额<br>餐厅就餐天数<br>挂失次数<br>图书馆学习时间<br>图书馆最长学习时间</p>
+<h2 id="抢课系统优化"><a href="#抢课系统优化" class="headerlink" title="抢课系统优化"></a>抢课系统优化</h2><p>使用cookie+Sentinel限制每人QPS</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@GetMapping(&quot;/rushclass&quot;)</span><br><span class="line">@SentinelResource(value = &quot;rushclass&quot;,blockHandler = &quot;breakRush&quot;)</span><br><span class="line">public String rushCourse(@CookieValue(value = &quot;cantRush&quot;,defaultValue = &quot;1&quot;)String canRush, int studentId, int classId, HttpServletResponse response)&#123;</span><br><span class="line">    if (rushClassServer.RushClassService(studentId,classId))&#123;</span><br><span class="line">        Cookie cantRush = new Cookie(&quot;cantRush&quot;, &quot;1&quot;);</span><br><span class="line">        cantRush.setMaxAge(60);</span><br><span class="line">        response.addCookie(cantRush);</span><br><span class="line">        return &quot;抢课成功&quot;;</span><br><span class="line">    &#125;else &#123;</span><br><span class="line">        return &quot;抢课失败&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">public String breakRush(String canRush, int studentId, int classId, HttpServletResponse response,BlockException exception)&#123;</span><br><span class="line">    return &quot;请求过于频繁&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用Redis将学生与选到的课程进行缓存.<br>Redis提前预存热门课程</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@RestController</span><br><span class="line">public class RushClassController implements InitializingBean &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    RedisTemplate redisTemplate;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    RushClassServer rushClassServer;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    MQSender mqSender;</span><br><span class="line">    //创建一个map方便redis查询是否有库存</span><br><span class="line">    Map&lt;Long,Boolean&gt; emptyClassMap = new HashMap&lt;&gt;();</span><br><span class="line">    //系统初始化操作</span><br><span class="line">    @Override</span><br><span class="line">    public void afterPropertiesSet() throws Exception &#123;</span><br><span class="line">        //将数据库信息迁移到Reids</span><br><span class="line">        List&lt;ClassList&gt; classList = rushClassServer.getClassList();</span><br><span class="line">        classList.forEach(classList1 -&gt; &#123;</span><br><span class="line">            redisTemplate.opsForValue().set(&quot;rushClass:&quot;+classList1.classId,classList1.classNumber);</span><br><span class="line">            emptyClassMap.put((long)classList1.getClassId(),false);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    @GetMapping(&quot;/&quot;)</span><br><span class="line">    public String rushClassByRedis(int studentId, int classId)&#123;</span><br><span class="line">        ValueOperations valueOperations = redisTemplate.opsForValue();</span><br><span class="line">        //此语句为原语,好用</span><br><span class="line">        if (emptyClassMap.get(classId))&#123;</span><br><span class="line">            return &quot;抢课失败&quot;;</span><br><span class="line">        &#125;else &#123;</span><br><span class="line">            //此语句为原语,好用</span><br><span class="line">            Long classNumber = valueOperations.decrement(classId);</span><br><span class="line">            if (classNumber&lt;=0)&#123;</span><br><span class="line">                emptyClassMap.put((long)classId,true);</span><br><span class="line">            &#125;</span><br><span class="line">            //这里添加Rabbitmq实现异步操作</span><br><span class="line">            //先将学生抢课的记录存入Redis</span><br><span class="line">            redisTemplate.opsForValue().set(&quot;studentClass:&quot;+studentId,classId);</span><br><span class="line">            StudentClass studentClass = new StudentClass(studentId, classId);</span><br><span class="line">            mqSender.sendRushMessage(JsonUtil.objectToJson(studentClass));</span><br><span class="line">            return &quot;排队中...&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>项目</category>
@@ -4635,7 +4678,7 @@
 <h1 id="聚簇索引和非聚簇索引"><a href="#聚簇索引和非聚簇索引" class="headerlink" title="聚簇索引和非聚簇索引"></a>聚簇索引和非聚簇索引</h1><p>聚簇索引：数据与索引一体，表数据的顺序与索引顺序一致。<br>    聚簇索引默认是主键，如果表中没有主键，InnoDB会选择一个唯一非空索引代替。<br>    如果没有这样的索引InnoDB会在内部生成一个隐式索引。<br>非聚簇索引：数据与索引分开存放，表数据顺序与索引顺序无关, 普通索引就是非聚簇索引, 查询过程是通过普通索引的b+树查到对应的主键, 再拿着这个主键去主键的b+树进行查询. 如果使用普通索引查询主键, 则不需要回表.</p>
 <h1 id="行锁与表锁的比较"><a href="#行锁与表锁的比较" class="headerlink" title="行锁与表锁的比较"></a>行锁与表锁的比较</h1><p>行锁：锁力度小，开销大，上锁速度慢，会出现死锁，并发高。<br>表锁：锁力度大，开销小，上锁速度快，不会出现死锁，并发低。</p>
 <h1 id="mySQL索引的最左原则"><a href="#mySQL索引的最左原则" class="headerlink" title="mySQL索引的最左原则"></a>mySQL索引的最左原则</h1><p>当使用联合索引时，进行检索时，使用索引就像一个桥, 只有有前置索引后面的索引才可以生效(可以顺序不同, mysql会自动优化)，否则后面的索引就会失效。<br>这是因为在b+树中存储时，优先级是字段左到右的顺序，一旦不使用前面的字段，后面的字段就会无序。</p>
-<h1 id="哪种清空可以在违反最左原则的情况下还不会索引失效"><a href="#哪种清空可以在违反最左原则的情况下还不会索引失效" class="headerlink" title="哪种清空可以在违反最左原则的情况下还不会索引失效"></a>哪种清空可以在违反最左原则的情况下还不会索引失效</h1><h1 id="索引的优化"><a href="#索引的优化" class="headerlink" title="索引的优化"></a>索引的优化</h1><p>1.最左前缀法则<br>2.不要对索引进行计算，函数以及转型，会导致索引失效。<br>3.不可以在范围查找语句右边使用索引，会导致索引失效。<br>4.减少select* 的使用，尽量进行覆盖索引，即select查询字段与where中索引字段一致。<br>5.不要在使用like查找索引字段时在字段前面加%。<br>6.使用内存占用更小数据类型作为索引, 这样在建立B+树的时候单个节点容量更大, B+树高度更低.<br>7.使用覆盖索引</p>
+<h1 id="索引的优化"><a href="#索引的优化" class="headerlink" title="索引的优化"></a>索引的优化</h1><p>1.最左前缀法则<br>2.不要对索引进行计算，函数以及转型，会导致索引失效。<br>3.不可以在范围查找语句右边使用索引，会导致索引失效。<br>4.减少select* 的使用，尽量进行覆盖索引，即select查询字段与where中索引字段一致。<br>5.不要在使用like查找索引字段时在字段前面加%。<br>6.使用内存占用更小数据类型作为索引, 这样在建立B+树的时候单个节点容量更大, B+树高度更低.<br>7.使用覆盖索引</p>
 <h1 id="如何优化分页查询"><a href="#如何优化分页查询" class="headerlink" title="如何优化分页查询"></a>如何优化分页查询</h1><p>默认的分页查询是依序遍历整个表格, 当需要取出的数据是主键对应的一段连续数据的时候, 可以先使用索引对主键进行覆盖查询, 再拿找到的主键从数据中整段取出数据.<br>也可以对sql语句进行优化, 取出不连续的主键数据.</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SELECT * FROM tbl_works t1 </span><br><span class="line">JOIN (SELECT id from tbl_works WHERE status=1 </span><br><span class="line">limit 100000, 10) t2</span><br><span class="line">ON t1.id = t2.id </span><br></pre></td></tr></table></figure>
 <h1 id="为什么范围查找会导致索引失效"><a href="#为什么范围查找会导致索引失效" class="headerlink" title="为什么范围查找会导致索引失效"></a>为什么范围查找会导致索引失效</h1><p>因为b+树的叶节点是是一个有序链表，当进行范围查找时会会把整段链表直接取出等待下一步查找，这种情况下，除非取出的这整一段的范围查找的字段都相等，否则下一个字段一定是乱序的。</p>
@@ -4643,7 +4686,12 @@
 <h1 id="使用order-by查询时如何优化速度"><a href="#使用order-by查询时如何优化速度" class="headerlink" title="使用order by查询时如何优化速度"></a>使用order by查询时如何优化速度</h1><p>使用order by时要进量使用覆盖索引，因为不使用覆盖索引进行排序会发生文件内排序。或者在java中进行排序。</p>
 <h1 id="什么是慢查询，如何定位"><a href="#什么是慢查询，如何定位" class="headerlink" title="什么是慢查询，如何定位"></a>什么是慢查询，如何定位</h1><p>记录所有执行时间超过一个限度的查询和不适用索引的查询到慢查询日志，以待分析处理。<br>根据SHOW VARIABLES LIKE ‘%query%’语句查询文件路径。</p>
 <h1 id="行式数据库与列式数据库的优劣"><a href="#行式数据库与列式数据库的优劣" class="headerlink" title="行式数据库与列式数据库的优劣"></a>行式数据库与列式数据库的优劣</h1><p>行式存储更适合针对对象的查询, 列式存储更适合对综合数据的处理</p>
-<h1 id="InnoDB底层"><a href="#InnoDB底层" class="headerlink" title="InnoDB底层"></a>InnoDB底层</h1>]]></content>
+<h1 id="数据库事务的并发问题"><a href="#数据库事务的并发问题" class="headerlink" title="数据库事务的并发问题"></a>数据库事务的并发问题</h1><p>脏读: 读取到未提交的数据<br>不可重复读: 多次读取期间数据被提交修改<br>幻读: 多次读取期间, 拆入了新的数据</p>
+<h1 id="四种隔离级别的实现"><a href="#四种隔离级别的实现" class="headerlink" title="四种隔离级别的实现"></a>四种隔离级别的实现</h1><p>读未提交: 完全放任不进行管控<br>读已提交: 在执行事务期间使用临时的一个表, 知道提交再将临时表的数据刷入原表<br>可重复读(默认): 在读取期间对该条数据添加行锁<br>串行化: 读取期间使用表锁</p>
+<h1 id="MyBatis中当实体类中的属性名和表中的字段名不同时怎么办"><a href="#MyBatis中当实体类中的属性名和表中的字段名不同时怎么办" class="headerlink" title="MyBatis中当实体类中的属性名和表中的字段名不同时怎么办"></a>MyBatis中当实体类中的属性名和表中的字段名不同时怎么办</h1><p>1.在sql语句中使用别名<br>2.在yml配置中开启小驼峰识别<br>3.在Mapper映射文件中使用resultMap来自定义映射</p>
+<h1 id="Redis两种持久化的区别"><a href="#Redis两种持久化的区别" class="headerlink" title="Redis两种持久化的区别"></a>Redis两种持久化的区别</h1><p>RDB:fork出一个快照, 将快照写入内存. 备份时不会影响主线程, 但数据库过大时fork会消耗性能.<br>AOF:以日志形式记录操作, 会进行增加不会替换, 恢复时复现操作. 恢复速度没RDB快,占用磁盘空间大.</p>
+<h1 id="如何解决消息队列的不确定性"><a href="#如何解决消息队列的不确定性" class="headerlink" title="如何解决消息队列的不确定性"></a>如何解决消息队列的不确定性</h1><p>当在redis端抢到课程后, 返回一个等待页面, 等待消息在数据库是否成功进行的一个回复, 或者主动进行查询.</p>
+]]></content>
       <categories>
         <category>知识点解析</category>
       </categories>
@@ -4843,7 +4891,7 @@
 <p>异常比例 (ERROR_RATIO)：当单位统计时长（statIntervalMs）内请求数目大于设置的最小请求数目，并且异常的比例大于阈值，则接下来的熔断时长内请求会自动被熔断。经过熔断时长后熔断器会进入探测恢复状态（HALF-OPEN 状态），若接下来的一个请求成功完成（没有错误）则结束熔断，否则会再次被熔断。异常比率的阈值范围是 [0.0, 1.0]，代表 0% - 100%。</p>
 <p>异常数 (ERROR_COUNT):当单位统计时长内的异常数目超过阈值之后会自动进行熔断。经过熔断时长后熔断器会进入探测恢复状态（HALF-OPEN 状态），若接下来的一个请求成功完成（没有错误）则结束熔断，否则会再次被熔断。</p>
 <h3 id="SentinelResource"><a href="#SentinelResource" class="headerlink" title="@SentinelResource"></a>@SentinelResource</h3><p>类似@HystrixCommand.<br>使用try-catch-finally实现.<br>value: 资源名称<br>blockHandler: 流控兜底方法 (兜底方法必须传入BlockException参数)<br>blockHandlerClass: 兜底方法所在类<br>fallback: 异常兜底方法<br>exceptionsToIngnore: 忽略的异常类.<br>使用这个注解后, Sentinel会将注解方法的参数作为参数传入到SphU.entry(res, args)中, 从而用于热点规则的判断.</p>
-<h3 id="热点规则"><a href="#热点规则" class="headerlink" title="热点规则"></a>热点规则</h3><p>配置资源名: @SentinelResource注解的value值<br>参数索引: SphU.entry(res, args)中参数的索引<br>单机阈值: QPS<br>设定好这些规则后, 当遇到@SentinelResource注解的对应方法时, 会将此方法的参数传入SphU.entry(res, args), 接着使用参数索引确定对应参数, 最后使用单机阈值进行判断, 一旦判断失败, 就进入catch方法, 调用blockHandler设定的兜底方法.</p>
+<h3 id="热点规则"><a href="#热点规则" class="headerlink" title="热点规则"></a>热点规则</h3><p>配置资源名: @SentinelResource注解的value值<br>参数索引: SphU.entry(res, args)中参数的索引(0开始)<br>单机阈值: 规定时间内允许的连接次数<br>设定好这些规则后, 当遇到@SentinelResource注解的对应方法时, 会将此方法的参数传入SphU.entry(res, args), 接着使用参数索引确定对应参数, 最后使用单机阈值进行判断, 一旦判断失败, 就进入catch方法, 调用blockHandler设定的兜底方法.</p>
 <p>参数例外项:当参数索引对应的参数出现特定值时赋予特定的阈值.</p>
 <h3 id="Feign的整合"><a href="#Feign的整合" class="headerlink" title="Feign的整合"></a>Feign的整合</h3><p>注意yml打开sentinel对feign的支持即可</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">feign:</span><br><span class="line">  sentinel:</span><br><span class="line">    enable: true</span><br></pre></td></tr></table></figure>
@@ -4867,6 +4915,9 @@
     <content><![CDATA[<h1 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h1><p>1.流量削峰<br>2.应用解耦<br>3.异步处理</p>
 <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p><a href="https://github.com/rabbitmq/erlang-rpm/releases">https://github.com/rabbitmq/erlang-rpm/releases</a> 选择合适的erlang版本进行下载<br>使用rpm命令进行安装.<br><a href="https://www.rabbitmq.com/install-rpm.html#downloads">https://www.rabbitmq.com/install-rpm.html#downloads</a> 选择合适版本进行下载<br>使用rpm命令进行安装.<br>使用rabbitmq-plugins enable rabbitmq_managemanent安装web页面插件<br>配置开启防火墙,15672端口.</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#配置用户</span><br><span class="line">rabbitmqctl add_user 账号 密码</span><br><span class="line">#设置角色</span><br><span class="line">rabbitmqctl set_user_tags 账号 administrator </span><br><span class="line">#设置权限</span><br><span class="line">rabbitmqctl set_permissions -p &quot;/&quot; admin &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;</span><br><span class="line">#查看账户</span><br><span class="line">rabbitmqctl list_users</span><br></pre></td></tr></table></figure>
+<h1 id="Spring整合"><a href="#Spring整合" class="headerlink" title="Spring整合"></a>Spring整合</h1><p>yml配置</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">spring:</span><br><span class="line">  rabbitmq:</span><br><span class="line">    password: 123</span><br><span class="line">    host: 101.200.131.200</span><br><span class="line">    username: admin</span><br><span class="line">    # 虚拟主机</span><br><span class="line">    virtual-host: /</span><br><span class="line">    port: 5672</span><br><span class="line">    listener:</span><br><span class="line">      simple:</span><br><span class="line">        #消费者最小数量</span><br><span class="line">        concurrency: 10</span><br><span class="line">        #消费者最大数量</span><br><span class="line">        max-concurrency: 10</span><br><span class="line">        #限制消费者每次处理消息的上限</span><br><span class="line">        prefetch: 1</span><br><span class="line">        #是否默认启动容器</span><br><span class="line">        auto-startup: true</span><br><span class="line">        #当消息被拒绝时是否重新进入队列</span><br><span class="line">        default-requeue-rejected: true</span><br><span class="line">    template:</span><br><span class="line">      retry:</span><br><span class="line">        # 发布重试,默认false</span><br><span class="line">        enabled: true</span><br><span class="line">        # 重试时间</span><br><span class="line">        initial-interval: 1000</span><br><span class="line">        # 重试次数</span><br><span class="line">        max-attempts: 3</span><br><span class="line">        # 重试最大间隔时间</span><br><span class="line">        max-interval: 10000</span><br><span class="line">        # 重试间隔乘数, 每次重试将间隔时间乘以的数字</span><br><span class="line">        multiplier: 1</span><br></pre></td></tr></table></figure>
+
 <h1 id="生产消费模型"><a href="#生产消费模型" class="headerlink" title="生产消费模型"></a>生产消费模型</h1><p>为了接收消息, 首先开启防火墙的5672端口<br>生产者:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public class Producer &#123;</span><br><span class="line">    public static final String QUEUE_NAME= &quot;hello&quot;;</span><br><span class="line">    public static final String HOST = &quot;101.200.131.200&quot;;</span><br><span class="line">    public static void main(String[] args) throws IOException, TimeoutException &#123;</span><br><span class="line">        //创建工厂并连接</span><br><span class="line">        ConnectionFactory factory = new ConnectionFactory();</span><br><span class="line">        factory.setHost(HOST);</span><br><span class="line">        factory.setUsername(&quot;admin&quot;);</span><br><span class="line">        factory.setPassword(&quot;lixin123&quot;);</span><br><span class="line">        //创建连接</span><br><span class="line">        Connection connection = factory.newConnection();</span><br><span class="line">        //获取信道</span><br><span class="line">        Channel channel = connection.createChannel();</span><br><span class="line">        //声明队列:名称, 持久化(false),不支持多消费者(false),自动删除(true),其他参数</span><br><span class="line">        channel.queueDeclare(QUEUE_NAME,false,false,false,null);</span><br><span class="line">        String message = &quot;hello, world&quot;;</span><br><span class="line">        //发送消息:交换机,路由key值,消息配置,消息体</span><br><span class="line">        channel.basicPublish(&quot;&quot;,QUEUE_NAME,null,message.getBytes());</span><br><span class="line">        System.out.println(&quot;消息发送完毕&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>消费者:</p>
@@ -4928,5 +4979,25 @@
       <tags>
         <tag>二分查找</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>微服务打包</title>
+    <url>/2022/02/26/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%89%93%E5%8C%85/</url>
+    <content><![CDATA[<p>未将依赖打包进入jar包<br>未设置main函数入口<br>No auto configuration classes found in META-INF/spring.factories. </p>
+<span id="more"></span>
+<p>解决:使用正确的插件依赖</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;build&gt;</span><br><span class="line">        &lt;plugins&gt;</span><br><span class="line">            &lt;plugin&gt;</span><br><span class="line">                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">                &lt;configuration&gt;</span><br><span class="line">                    &lt;!-- 指定该Main Class为全局的唯一入口 --&gt;</span><br><span class="line">                    &lt;mainClass&gt;com.mtyd.rushclass.RushclassApplication&lt;/mainClass&gt;</span><br><span class="line">                    &lt;layout&gt;ZIP&lt;/layout&gt;</span><br><span class="line">                &lt;/configuration&gt;</span><br><span class="line">                &lt;executions&gt;</span><br><span class="line">                    &lt;execution&gt;</span><br><span class="line">                        &lt;goals&gt;</span><br><span class="line">                            &lt;goal&gt;repackage&lt;/goal&gt;&lt;!--可以把依赖的包都打包到生成的Jar包中--&gt;</span><br><span class="line">                        &lt;/goals&gt;</span><br><span class="line">                    &lt;/execution&gt;</span><br><span class="line">                &lt;/executions&gt;</span><br><span class="line">            &lt;/plugin&gt;</span><br><span class="line">        &lt;/plugins&gt;</span><br><span class="line">    &lt;/build&gt;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>异常处理</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>远程连接数据库</title>
+    <url>/2022/02/27/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93/</url>
+    <content><![CDATA[<p>问题:所有设置全部正确, navicat能连上服务器数据库, 但是项目连不上<br>解决: 排查发现是数据库依赖版本过低, 将数据库依赖版本升高后问题解决.</p>
+]]></content>
+      <categories>
+        <category>异常处理</category>
+      </categories>
   </entry>
 </search>
