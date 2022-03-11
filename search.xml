@@ -699,8 +699,9 @@
 <h1 id="CAS-compare-and-set-的原理-保证一致性-不加锁"><a href="#CAS-compare-and-set-的原理-保证一致性-不加锁" class="headerlink" title="CAS(compare and set)的原理(保证一致性,不加锁)"></a>CAS(compare and set)的原理(保证一致性,不加锁)</h1><p>CAS会为资源赋予一个状态值, 线程带有一个oldvalue值与newvalue值, 当oldvalue与资源当前状态值相同时, 就可以争抢资源, 并为资源赋予newvalue状态, 当oldvalue与资源状态值不同时, 该线程会进行自旋. 而要完成这个操作就需要CAS操作具有原子性, 所幸, 各种不同的CPU都提供了指令基本的CAS原子操作.</p>
 <h1 id="CAS缺点"><a href="#CAS缺点" class="headerlink" title="CAS缺点"></a>CAS缺点</h1><p>长期自旋会为CPU带来较大的负担.<br>无法察觉到处理过程中的非显性修改, 即ABA问题. </p>
 <h1 id="ABA问题的解决"><a href="#ABA问题的解决" class="headerlink" title="ABA问题的解决"></a>ABA问题的解决</h1><p>使用AtomicStampedReference, 它在原子引用类上的基础上添加了一个stamp, 在cas时不但要求value值符合要求, 同时要求stamp也符合相应的要求.</p>
-<h1 id="AQS"><a href="#AQS" class="headerlink" title="AQS"></a>AQS</h1><p>AQS有一个voliate修饰的state, 用于标识当前状态. 如果线程获取同步状态state失败时, 会将当前线程及等待信息等构成一个node, 并放入FIFO队列中, 并将这个线程阻塞. 当线程将同步状态state释放时, 会唤醒队列中的头节点, 使其同步状态state.</p>
+<h1 id="LockSupport与syn和lock的区别"><a href="#LockSupport与syn和lock的区别" class="headerlink" title="LockSupport与syn和lock的区别"></a>LockSupport与syn和lock的区别</h1><p>后两者都是针对一部分代码进行上锁和解锁的操作. 而LockSupport是单纯将线程进行线程的阻塞和休眠, 且LockSupport的唤醒通知并不是直接对需要的线程进行唤醒通知, 而是类似于消息中间件的一种通知(只能存储一次).</p>
 <h1 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h1><p>volatile算一个轻量级的synchronized, 他保证可见性,但不保证原子性,禁止了指令重排.<br>解决原子性问题:使用JUC包下的原子包装类(原理为CAS).</p>
+<h1 id="AQS"><a href="#AQS" class="headerlink" title="AQS"></a>AQS</h1><p>AQS有一个voliate修饰的state, 用于标识当前状态. 如果线程获取同步状态state失败时, 会将当前线程及等待信息等构成一个node, 并放入FIFO队列中, 并将这个线程阻塞. 当线程将同步状态state释放时, 会唤醒队列中的头节点, 使其同步状态state.</p>
 <h1 id="JMM-java内存模型"><a href="#JMM-java内存模型" class="headerlink" title="JMM(java内存模型)"></a>JMM(java内存模型)</h1><p>它本身只是一种抽象概念, 描述的是一组规则或规范. 它具有可见性, 原子性以及有序性三大特点.</p>
 <h1 id="集合类线程不安全解决"><a href="#集合类线程不安全解决" class="headerlink" title="集合类线程不安全解决"></a>集合类线程不安全解决</h1><p>1.使用集合类中自带的线程安全的的类<br>2.使用Collections.synchronizedList.();进行修饰<br>3.使用CopyOnWriteArrayList包装类.</p>
 <h1 id="CopyeOnWriteArrayList包装类原理"><a href="#CopyeOnWriteArrayList包装类原理" class="headerlink" title="CopyeOnWriteArrayList包装类原理"></a>CopyeOnWriteArrayList包装类原理</h1><p>集合类线程不安全是因为在next已赋予之后, 尾指针未移动之前又添加了新的next.<br>而CopyOnWriteArrayList是在添加next前将获取list的方式加锁, 将List进行复制, 此时这个新list的地址是非公开的, 所以仅当前线程可以进行数据的添加, 添加完成后再将新的list地址进行公开.</p>
@@ -730,6 +731,11 @@
 <h1 id="Bean的作用域"><a href="#Bean的作用域" class="headerlink" title="Bean的作用域"></a>Bean的作用域</h1><p>singleton:懒汉单例模式<br>protoype:每次调用getBean时返回新实例<br>request:每次HTTP请求创建一个新实例<br>session:每个session使用一个实例</p>
 <h1 id="解决POST和GET请求的中文乱码问题"><a href="#解决POST和GET请求的中文乱码问题" class="headerlink" title="解决POST和GET请求的中文乱码问题"></a>解决POST和GET请求的中文乱码问题</h1><p>POST: 使用过滤器设定encoding<br>GET: 在tomcat的配置文件中设置编码方式</p>
 <h1 id="SpringMVC执行流程"><a href="#SpringMVC执行流程" class="headerlink" title="SpringMVC执行流程"></a>SpringMVC执行流程</h1><p>1.用户向服务器发送请求, 请求被DispatcherServlet捕获<br>2.交由handlerMapping处理判断是否存在映射, 没有就报404<br>3.有的话把对应的映射交给handlerAdapter, handlerAdapter为即将调用的控制器进行一系列的准备工作(提取req的信息, 注入参数, 数据验证等等)<br>4.然后交给prehandler进行处理<br>5.处理后再交给控制器, 控制器进行一些列操作并且设置mv<br>6.再由posthandler处理<br>7.处理后再交给视图解析器进行解析mv并渲染视图<br>8.接着执行拦截器的afterCompletion<br>9.最后把渲染结果交给客户端</p>
+<h1 id="Spring4到5的AOP发生了哪些变化"><a href="#Spring4到5的AOP发生了哪些变化" class="headerlink" title="Spring4到5的AOP发生了哪些变化"></a>Spring4到5的AOP发生了哪些变化</h1><p>4正常:before,after,afterreturning<br>4异常:before,after,afterthrowing<br>5以后after被放在了finally<br>5正常:before,afterreturning,after<br>5正常:before,afterthrowing,after</p>
+<h1 id="消息中间件如何进行消息检测"><a href="#消息中间件如何进行消息检测" class="headerlink" title="消息中间件如何进行消息检测"></a>消息中间件如何进行消息检测</h1><p>生产端使用后置拦截器, 在发送消息前将一个全局唯一id交给消息, 消费端对这个个全局唯一id进行校验.</p>
+<h1 id="消息中间如何防止重复消费"><a href="#消息中间如何防止重复消费" class="headerlink" title="消息中间如何防止重复消费"></a>消息中间如何防止重复消费</h1><p>在消息发送到消费端添加一个额外业务, 将全局唯一id放入数据库并记录该消息已经完成.</p>
+<h1 id="Redis五大数据类型对应落地"><a href="#Redis五大数据类型对应落地" class="headerlink" title="Redis五大数据类型对应落地"></a>Redis五大数据类型对应落地</h1><p>String:数字类记录, json串<br>Hash:购物车<br>List:大量非重复且数量为一的内容<br>Set:用于集合运算<br>Zset:各种排序</p>
+<h1 id="Redis做分布式锁要注意的问题"><a href="#Redis做分布式锁要注意的问题" class="headerlink" title="Redis做分布式锁要注意的问题"></a>Redis做分布式锁要注意的问题</h1><p>服务器卡顿造成锁的误删: 锁的判断与解锁使用lua脚本, 或者使用redisson<br>主从服务器, 主服务器在未同步锁之前挂掉: 使用redlock或者改用zookeeper</p>
 ]]></content>
       <categories>
         <category>知识点解析</category>
@@ -744,6 +750,7 @@
 <span id="more"></span>
 <p>hashcode的计算<br>1、获取hash值h，将h&gt;&gt;&gt;16后再与自身异或。<br>这是因为在计算hashmap存放位置时只取低位，正常运算会丢失高位的信息。这样处理后也可以将高位<br>的信息保留，减少冲突的可能性。<br>2、取模运算:(length-1)&amp;hash。<br>在这里可以解释为什么扩容是是2次幂，一般情况下，计算位置是需要%计算，但当length的长度为2的<br>次幂的时候，取余运算可以转化成上面的位与运算，大大节省了计算时间。</p>
 <p><a href="https://www.cnblogs.com/ysocean/p/9054804.html">来源</a></p>
+<h1 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h1><p>面向对象具有封装, 多态, 继承三大特征.<br>封装保证了代码的高内聚与低耦合, 提高了代码的复用性.<br>多态保证了代码的适用性,增加了代码的可移植性和灵活性.<br>继承保证了代码的复用和修改性.</p>
 <h1 id="为什么重写-equals-还要重写-hashcode？"><a href="#为什么重写-equals-还要重写-hashcode？" class="headerlink" title="为什么重写 equals 还要重写 hashcode？"></a>为什么重写 equals 还要重写 hashcode？</h1><p>因为不重写hashcode在插入到哈希表时不能保证插入到同一位置，不插入到同一位置就无法触发equals判断。</p>
 <h1 id="Queue几种方法的区别"><a href="#Queue几种方法的区别" class="headerlink" title="Queue几种方法的区别"></a>Queue几种方法的区别</h1><p>add,remove,element一旦失败直接抛出异常.<br>offer,peek,poll失败不会抛出异常但会有响应值. 可以添加时间参数暂时升级为下面的方法.<br>put,take,只要失败就一直阻塞, 直到成功, 且不会有响应值</p>
 <h1 id="和-equals-比较的区别"><a href="#和-equals-比较的区别" class="headerlink" title="== 和 equals 比较的区别"></a>== 和 equals 比较的区别</h1><p>对于对象而言，==是在判断地址是否相同，equals是判断内容。</p>
@@ -759,8 +766,8 @@
 <h1 id="实例初始化"><a href="#实例初始化" class="headerlink" title="实例初始化"></a>实例初始化</h1><p>在静态内容初始化结束后, 会对非静态代码块, 非静态变量以及构造器进行初始化.<br>子类实例初始化也会先对父类进行初始化.<br>但是非静态方法前有一个默认对象为this, 如果父类中调用的是子类重写过的非静态方法, 实际是调用子类的方法.<br>非静态代码块和非静态变量会自上向下初始化, 构造器会最后初始化.<br>静态内容只会在类初始化过程中初始化一次.</p>
 <h1 id="包装类对象的不变性"><a href="#包装类对象的不变性" class="headerlink" title="包装类对象的不变性"></a>包装类对象的不变性</h1><p>包装类的数据一旦发生变化, 会为其分配新的地址, 而不是在原有地址上进行修改.</p>
 <h1 id="哪些情况Integer不会创建新对象"><a href="#哪些情况Integer不会创建新对象" class="headerlink" title="哪些情况Integer不会创建新对象"></a>哪些情况Integer不会创建新对象</h1><p>在Integr值在-128到127之间时。这是因为Integer有一个公用的闪存数组，数字在这个区间时会直接返回闪存数组中的对象。</p>
-<h1 id="String的两种创建方式的区别"><a href="#String的两种创建方式的区别" class="headerlink" title="String的两种创建方式的区别"></a>String的两种创建方式的区别</h1><p>不调用构造器直接赋值：<br>先从常量池查看是否有这个字符串，如果有就直接指向，没有则创建再指向，一级指针指向常量池。<br>调用构造器赋值：<br>先在堆中创建空间，里面维护value属性，指向常量池，如果常量池没有，则重新创建再指向，有就直接指向，一级指针指向堆。<br>使用intern方法后会进行规范化，如果常量池有目标字符串指向常量池。使用字符串加和创建的字符串一级指针也是指向堆。</p>
-<h1 id="StringBuffer的优点"><a href="#StringBuffer的优点" class="headerlink" title="StringBuffer的优点"></a>StringBuffer的优点</h1><p>StringBuffer创建的组合字符串不进入常量池，而是在堆中存放，但单个的字符串依旧会进入常量池.使用append方法添加字符串时也不会像String一样在常量池中重新创建新的字符串，而是在原有的字符串基础上进行扩容，当循环使用时比String要快很多。</p>
+<h1 id="String的两种创建方式的区别"><a href="#String的两种创建方式的区别" class="headerlink" title="String的两种创建方式的区别"></a>String的两种创建方式的区别</h1><p>不调用构造器直接赋值：<br>先从常量池查看是否有这个字符串，如果有就直接指向，没有则创建再指向，一级指针指向常量池。<br>调用构造器赋值：<br>先在堆中创建空间，里面维护value属性，指向常量池，如果常量池没有，则重新创建再指向，有就直接指向，一级指针指向堆。<br>使用intern方法后会进行规范化，如果常量池有目标字符串就直接指向常量池。<br>使用字符串加和创建的字符串一级指针也是指向堆。</p>
+<h1 id="StringBuffer的优点"><a href="#StringBuffer的优点" class="headerlink" title="StringBuffer的优点"></a>StringBuffer的优点</h1><p>StringBuffer创建的组合字符串不进入常量池，而是在堆中存放，但单个的字符串依旧会进入常量池.使用append方法添加字符串时也不会像String一样在常量池中重新创建新的字符串，而是在原有的字符串基础上进行扩容，当循环使用时比String要快很多。 在使用toString方法后, 会在常量池存储一个指针指向堆中的这个数据.</p>
 <h1 id="intern方法"><a href="#intern方法" class="headerlink" title="intern方法"></a>intern方法</h1><p>当在常量池有目标字符串时,会直接指向常量池,当常量池没有目标字符串时,会在常量池创建一个引用,这个引用指向堆.<br>那么哪种情况才会在创建字符串时不在常量池创建字符串呢,答案是使用StringBuilder或StringBuffer的时候.</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//这段代码如果intern在b后面则会输出false,在b前面输出true</span><br><span class="line">String a = new String(&quot;abc&quot;)+new String(&quot;def&quot;);</span><br><span class="line">String b = new String(&quot;abcdef&quot;);</span><br><span class="line">System.out.println(a==a.intern());</span><br></pre></td></tr></table></figure>
 <h1 id="java的集合类"><a href="#java的集合类" class="headerlink" title="java的集合类"></a>java的集合类</h1><p><img src="/images/2.png" alt="2.png"></p>
@@ -3960,9 +3967,15 @@
     <url>/2021/12/30/%E7%9F%A5%E8%AF%86%E7%82%B9%E8%A7%A3%E6%9E%90/%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84/</url>
     <content><![CDATA[<h1 id="什么叫高内聚低耦合"><a href="#什么叫高内聚低耦合" class="headerlink" title="什么叫高内聚低耦合"></a>什么叫高内聚低耦合</h1><p>低耦合是要让各个模块间尽可能相互独立, 当一个模块出现问题时, 耦合度越低, 影响的范围也就越低.<br>高内聚是尽可能的让模块的单一性更高, 这样它所需要的大部分内容都依赖于自身, 对外的耦合度也可以降低.</p>
 <h1 id="单例模式设计要点"><a href="#单例模式设计要点" class="headerlink" title="单例模式设计要点"></a>单例模式设计要点</h1><p>1.构造器私有化<br>2.建议使用懒汉式, 饿汉式在并发场景存在一些安全问题.<br>3.使用静态变量保存唯一实例<br>4.当实例创建比较复杂时使用静态代码块创建</p>
+<h1 id="JVM结构"><a href="#JVM结构" class="headerlink" title="JVM结构"></a>JVM结构</h1><p>堆:存贮对象(线程公有)<br>方法区:存储常量池, 类结构, 字段,方法(线程公有), 方法区由元空间构成, 与堆不相连, 但是却共享物理内存.<br>栈:存储基本类型, 对象地址(线程私有)<br>程序计数器:当前正在执行的指令地址, 指令获取后下移获取新指令(线程私有)<br>本地方法栈:native修饰的方法,一般是其他语言交由java运行的方法, 与栈相似(线程私有)</p>
 <h1 id="GC的种类"><a href="#GC的种类" class="headerlink" title="GC的种类"></a>GC的种类</h1><p>次数上较为频繁收集YOUNG区, minor GC<br>次数上少数收集Old区, Full GC<br>基本不动Perm区, 无GC</p>
-<h1 id="GC算法"><a href="#GC算法" class="headerlink" title="GC算法"></a>GC算法</h1><p>1.引用计数法:只要引用就不进行回收(已废弃)<br>2.复制算法:适用于young区, 将不回收的内容从一个地方迁移到另一个地方, 优点是效率高, 没有内存碎片, 缺点是需要双倍空间.<br>3.标记清除法:适用于old区, 将不回收的内容进行标记, 清除没被标记的数据, 优点是空间占用小, 缺点是效率底要扫描两次, 会产生内存碎片.<br>4.标记压缩法:适用于old区, 将标记的内容进行重排, 将剩余的数据集体删除, 优点是不再产生内存碎片, 缺点是耗时进一步被提高.</p>
+<h1 id="GC算法"><a href="#GC算法" class="headerlink" title="GC算法"></a>GC算法</h1><p>1.引用计数法:只要引用就不进行回收(已废弃)<br>2.复制算法:适用于young区, 将不回收的内容从一个地方迁移到另一个地方, 将原来的部分清空.优点是效率高, 没有内存碎片, 缺点是需要双倍空间.<br>3.标记清除法:适用于old区, 将不回收的内容进行标记, 清除没被标记的数据, 优点是空间占用小, 缺点是效率底要扫描两次, 会产生内存碎片.<br>4.标记压缩法:适用于old区, 将标记的内容进行重排, 将剩余的数据集体删除, 优点是不再产生内存碎片, 缺点是耗时进一步被提高.</p>
+<h1 id="垃圾回收器种类-Serial-串行-进行回收时会暂停其他所有线程-使用单线程进行回收-适用于young区-Parallel"><a href="#垃圾回收器种类-Serial-串行-进行回收时会暂停其他所有线程-使用单线程进行回收-适用于young区-Parallel" class="headerlink" title="垃圾回收器种类 Serial(串行):进行回收时会暂停其他所有线程, 使用单线程进行回收, 适用于young区 Parallel"></a>垃圾回收器种类 Serial(串行):进行回收时会暂停其他所有线程, 使用单线程进行回收, 适用于young区 Parallel</h1><p>  (并行):与串行类似, 但是是使用多线程回收, 暂停时间较短, 适用于young区 CMS(并发):回收线程穿插在正常线程之间, 不需要用户线程暂停,<br>  适用于old区 G1:对并发回收进行了升级, 将堆内存分隔为多个区域, 并发的依次将这些区域回收. 利用多核的硬件优势, 整体采用标记整理算法, 局部采用复制算法, 不会产生碎片. 不再区分年轻代和老年代, 停顿时间更短.</p>
+<h1 id="GC-roots"><a href="#GC-roots" class="headerlink" title="GC roots"></a>GC roots</h1><p>通过一系列的GC root节点进行遍历, 找到所有可达节点, 这些节点就说不需要回收的节点.<br>可以作为GC root的对象:<br>1.栈中的对象<br>2.方法区中的静态引用对象<br>3.方法区中常量引用对象<br>4.本地方法栈中的对象</p>
+<h1 id="四种引用类型"><a href="#四种引用类型" class="headerlink" title="四种引用类型"></a>四种引用类型</h1><p>强引用:即使出现OOM也不会被垃圾回收<br>软引用:内存足够不会进行回收, 内存不足时会进行回收<br>弱引用:只要gc就会回收<br>软引用和弱引用可以用于解决图片不放入内存加载过慢, 放入内存又可能造成内存溢出的情况.设计思路是使用map存储.<br>虚引用:这种状态和没有引用几乎一样, 随时可能被gc回收, 它的get方法任何时候返回的都是null. 必须和引用队列一起使用.<br>引用队列:当创建引用队列时, 引用被gc回收时会进入引用队列.</p>
+<h1 id="WeakHashMap"><a href="#WeakHashMap" class="headerlink" title="WeakHashMap"></a>WeakHashMap</h1><p>正常的HashMap因为有map作为地址是强引用, 即使将key的地址置为null, map中的kv也不会被销毁.<br>但是WeakHashMap, 它的map不再视为强引用, 而是视为弱引用, 所以当没有key再指向kv时, 只剩余了一个弱引用来维护这部分数据, 当gc时会被回收.</p>
 <h1 id="类加载过程"><a href="#类加载过程" class="headerlink" title="类加载过程"></a>类加载过程</h1><p>1.读取class文件将其转化为静态数据结构存储在方法区, 并在堆中生成一个便于用户调用的Class类对象.<br>2.对代码进行验证<br>3.准备:将所有静态变量赋予0值<br>4.解析:将一部分引用进行解析, 如果该引用是抽象的, 无法确定具体的实现就延后解析.<br>5.最后进行初始化动作:class层面的初始化.</p>
+<h1 id="双亲委派机制"><a href="#双亲委派机制" class="headerlink" title="双亲委派机制"></a>双亲委派机制</h1><p>因为不同加载器加载相同的类jvm仍会视为不同的类, 所以依据启动类加载,扩展类加载,应用类加载以及用户加载的顺序, 自上向下尝试加载, 这样就不会造成类的重复加载.</p>
 ]]></content>
       <categories>
         <category>知识点解析</category>
@@ -4626,7 +4639,7 @@
 <h1 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h1><h2 id="原因-2"><a href="#原因-2" class="headerlink" title="原因"></a>原因</h2><p>极短时间内, 大量key同时过期.</p>
 <h2 id="表现-2"><a href="#表现-2" class="headerlink" title="表现"></a>表现</h2><p>数据库压力变大服务器崩溃</p>
 <h2 id="解决方法-2"><a href="#解决方法-2" class="headerlink" title="解决方法"></a>解决方法</h2><p>1.构建多级缓存: nginx+redis+其他<br>2.使用锁或者队列<br>3.设置过期标志更新缓存<br>4.将缓存失效时间分散</p>
-<h1 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h1><h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//上锁</span><br><span class="line">setnx k v</span><br><span class="line">//设置过期时间</span><br><span class="line">exprie k seconds</span><br><span class="line">//解锁</span><br><span class="line">del k</span><br></pre></td></tr></table></figure>
+<h1 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h1><h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//上锁(只在key不存在的时候将key设置为value)</span><br><span class="line">setnx k v</span><br><span class="line">//设置过期时间</span><br><span class="line">exprie k seconds</span><br><span class="line">//解锁</span><br><span class="line">del k</span><br></pre></td></tr></table></figure>
 <p>为了防止上锁与设置过期时间之间出现意外, 可以合并操作</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">set k v nx ex seconds</span><br></pre></td></tr></table></figure>
 
@@ -4913,6 +4926,7 @@
     <title>RabbitMQ</title>
     <url>/2022/01/26/%E7%AC%94%E8%AE%B0/RabbitMQ/</url>
     <content><![CDATA[<h1 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h1><p>1.流量削峰<br>2.应用解耦<br>3.异步处理</p>
+<span id="more"></span>
 <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p><a href="https://github.com/rabbitmq/erlang-rpm/releases">https://github.com/rabbitmq/erlang-rpm/releases</a> 选择合适的erlang版本进行下载<br>使用rpm命令进行安装.<br><a href="https://www.rabbitmq.com/install-rpm.html#downloads">https://www.rabbitmq.com/install-rpm.html#downloads</a> 选择合适版本进行下载<br>使用rpm命令进行安装.<br>使用rabbitmq-plugins enable rabbitmq_managemanent安装web页面插件<br>配置开启防火墙,15672端口.</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#配置用户</span><br><span class="line">rabbitmqctl add_user 账号 密码</span><br><span class="line">#设置角色</span><br><span class="line">rabbitmqctl set_user_tags 账号 administrator </span><br><span class="line">#设置权限</span><br><span class="line">rabbitmqctl set_permissions -p &quot;/&quot; admin &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;</span><br><span class="line">#查看账户</span><br><span class="line">rabbitmqctl list_users</span><br></pre></td></tr></table></figure>
 <h1 id="Spring整合"><a href="#Spring整合" class="headerlink" title="Spring整合"></a>Spring整合</h1><p>yml配置</p>
