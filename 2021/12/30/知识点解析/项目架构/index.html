@@ -22,13 +22,13 @@
 
   <meta name="description" content="什么叫高内聚低耦合低耦合是要让各个模块间尽可能相互独立, 当一个模块出现问题时, 耦合度越低, 影响的范围也就越低.高内聚是尽可能的让模块的单一性更高, 这样它所需要的大部分内容都依赖于自身, 对外的耦合度也可以降低. 单例模式设计要点1.构造器私有化2.建议使用懒汉式, 饿汉式在并发场景存在一些安全问题.3.使用静态变量保存唯一实例4.当实例创建比较复杂时使用静态代码块创建 JVM结构堆:存贮对">
 <meta property="og:type" content="article">
-<meta property="og:title" content="项目架构">
+<meta property="og:title" content="项目架构与JVM">
 <meta property="og:url" content="https://390991450.github.io/2021/12/30/%E7%9F%A5%E8%AF%86%E7%82%B9%E8%A7%A3%E6%9E%90/%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84/index.html">
 <meta property="og:site_name" content="每天一点儿">
 <meta property="og:description" content="什么叫高内聚低耦合低耦合是要让各个模块间尽可能相互独立, 当一个模块出现问题时, 耦合度越低, 影响的范围也就越低.高内聚是尽可能的让模块的单一性更高, 这样它所需要的大部分内容都依赖于自身, 对外的耦合度也可以降低. 单例模式设计要点1.构造器私有化2.建议使用懒汉式, 饿汉式在并发场景存在一些安全问题.3.使用静态变量保存唯一实例4.当实例创建比较复杂时使用静态代码块创建 JVM结构堆:存贮对">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-12-30T01:58:37.000Z">
-<meta property="article:modified_time" content="2022-03-08T16:06:21.676Z">
+<meta property="article:modified_time" content="2022-03-14T15:46:19.338Z">
 <meta property="article:author" content="征途">
 <meta name="twitter:card" content="summary">
 
@@ -45,7 +45,7 @@
   };
 </script>
 
-  <title>项目架构 | 每天一点儿</title>
+  <title>项目架构与JVM | 每天一点儿</title>
   
 
 
@@ -201,7 +201,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          项目架构
+          项目架构与JVM
         </h1>
 
         <div class="post-meta">
@@ -218,7 +218,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-09 00:06:21" itemprop="dateModified" datetime="2022-03-09T00:06:21+08:00">2022-03-09</time>
+                <time title="修改时间：2022-03-14 23:46:19" itemprop="dateModified" datetime="2022-03-14T23:46:19+08:00">2022-03-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -258,9 +258,9 @@
         <h1 id="什么叫高内聚低耦合"><a href="#什么叫高内聚低耦合" class="headerlink" title="什么叫高内聚低耦合"></a>什么叫高内聚低耦合</h1><p>低耦合是要让各个模块间尽可能相互独立, 当一个模块出现问题时, 耦合度越低, 影响的范围也就越低.<br>高内聚是尽可能的让模块的单一性更高, 这样它所需要的大部分内容都依赖于自身, 对外的耦合度也可以降低.</p>
 <h1 id="单例模式设计要点"><a href="#单例模式设计要点" class="headerlink" title="单例模式设计要点"></a>单例模式设计要点</h1><p>1.构造器私有化<br>2.建议使用懒汉式, 饿汉式在并发场景存在一些安全问题.<br>3.使用静态变量保存唯一实例<br>4.当实例创建比较复杂时使用静态代码块创建</p>
 <h1 id="JVM结构"><a href="#JVM结构" class="headerlink" title="JVM结构"></a>JVM结构</h1><p>堆:存贮对象(线程公有)<br>方法区:存储常量池, 类结构, 字段,方法(线程公有), 方法区由元空间构成, 与堆不相连, 但是却共享物理内存.<br>栈:存储基本类型, 对象地址(线程私有)<br>程序计数器:当前正在执行的指令地址, 指令获取后下移获取新指令(线程私有)<br>本地方法栈:native修饰的方法,一般是其他语言交由java运行的方法, 与栈相似(线程私有)</p>
-<h1 id="GC的种类"><a href="#GC的种类" class="headerlink" title="GC的种类"></a>GC的种类</h1><p>次数上较为频繁收集YOUNG区, minor GC<br>次数上少数收集Old区, Full GC<br>基本不动Perm区, 无GC</p>
+<h1 id="GC区的种类"><a href="#GC区的种类" class="headerlink" title="GC区的种类"></a>GC区的种类</h1><p>次数上较为频繁收集YOUNG区, minor GC<br>次数上少数收集Old区, Full GC<br>基本不动Perm区, 无GC</p>
 <h1 id="GC算法"><a href="#GC算法" class="headerlink" title="GC算法"></a>GC算法</h1><p>1.引用计数法:只要引用就不进行回收(已废弃)<br>2.复制算法:适用于young区, 将不回收的内容从一个地方迁移到另一个地方, 将原来的部分清空.优点是效率高, 没有内存碎片, 缺点是需要双倍空间.<br>3.标记清除法:适用于old区, 将不回收的内容进行标记, 清除没被标记的数据, 优点是空间占用小, 缺点是效率底要扫描两次, 会产生内存碎片.<br>4.标记压缩法:适用于old区, 将标记的内容进行重排, 将剩余的数据集体删除, 优点是不再产生内存碎片, 缺点是耗时进一步被提高.</p>
-<h1 id="垃圾回收器种类-Serial-串行-进行回收时会暂停其他所有线程-使用单线程进行回收-适用于young区-Parallel"><a href="#垃圾回收器种类-Serial-串行-进行回收时会暂停其他所有线程-使用单线程进行回收-适用于young区-Parallel" class="headerlink" title="垃圾回收器种类 Serial(串行):进行回收时会暂停其他所有线程, 使用单线程进行回收, 适用于young区 Parallel"></a>垃圾回收器种类 Serial(串行):进行回收时会暂停其他所有线程, 使用单线程进行回收, 适用于young区 Parallel</h1><p>  (并行):与串行类似, 但是是使用多线程回收, 暂停时间较短, 适用于young区 CMS(并发):回收线程穿插在正常线程之间, 不需要用户线程暂停,<br>  适用于old区 G1:对并发回收进行了升级, 将堆内存分隔为多个区域, 并发的依次将这些区域回收. 利用多核的硬件优势, 整体采用标记整理算法, 局部采用复制算法, 不会产生碎片. 不再区分年轻代和老年代, 停顿时间更短.</p>
+<h1 id="垃圾回收器种类"><a href="#垃圾回收器种类" class="headerlink" title="垃圾回收器种类"></a>垃圾回收器种类</h1><p>Serial(串行):进行回收时会暂停其他所有线程, 使用单线程进行回收, 适用于young和old区<br>Parallel(并行):与串行类似, 但是是使用多线程回收, 暂停时间较短, 适用于young和old区<br>CMS(并发):回收线程穿插在正常线程之间, 不需要用户线程暂停,适用于old区<br>G1:对并发回收进行了升级, 将堆内存分隔为多个区域, 并发的依次将这些区域回收. 利用多核的硬件优势, 整体采用标记整理算法, 局部采用复制算法, 不会产生碎片. 不再区分年轻代和老年代, 停顿时间更短.</p>
 <h1 id="GC-roots"><a href="#GC-roots" class="headerlink" title="GC roots"></a>GC roots</h1><p>通过一系列的GC root节点进行遍历, 找到所有可达节点, 这些节点就说不需要回收的节点.<br>可以作为GC root的对象:<br>1.栈中的对象<br>2.方法区中的静态引用对象<br>3.方法区中常量引用对象<br>4.本地方法栈中的对象</p>
 <h1 id="四种引用类型"><a href="#四种引用类型" class="headerlink" title="四种引用类型"></a>四种引用类型</h1><p>强引用:即使出现OOM也不会被垃圾回收<br>软引用:内存足够不会进行回收, 内存不足时会进行回收<br>弱引用:只要gc就会回收<br>软引用和弱引用可以用于解决图片不放入内存加载过慢, 放入内存又可能造成内存溢出的情况.设计思路是使用map存储.<br>虚引用:这种状态和没有引用几乎一样, 随时可能被gc回收, 它的get方法任何时候返回的都是null. 必须和引用队列一起使用.<br>引用队列:当创建引用队列时, 引用被gc回收时会进入引用队列.</p>
 <h1 id="WeakHashMap"><a href="#WeakHashMap" class="headerlink" title="WeakHashMap"></a>WeakHashMap</h1><p>正常的HashMap因为有map作为地址是强引用, 即使将key的地址置为null, map中的kv也不会被销毁.<br>但是WeakHashMap, 它的map不再视为强引用, 而是视为弱引用, 所以当没有key再指向kv时, 只剩余了一个弱引用来维护这部分数据, 当gc时会被回收.</p>
@@ -346,7 +346,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E5%8F%AB%E9%AB%98%E5%86%85%E8%81%9A%E4%BD%8E%E8%80%A6%E5%90%88"><span class="nav-number">1.</span> <span class="nav-text">什么叫高内聚低耦合</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E8%AE%BE%E8%AE%A1%E8%A6%81%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">单例模式设计要点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JVM%E7%BB%93%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text">JVM结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GC%E7%9A%84%E7%A7%8D%E7%B1%BB"><span class="nav-number">4.</span> <span class="nav-text">GC的种类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GC%E7%AE%97%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">GC算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E7%A7%8D%E7%B1%BB-Serial-%E4%B8%B2%E8%A1%8C-%E8%BF%9B%E8%A1%8C%E5%9B%9E%E6%94%B6%E6%97%B6%E4%BC%9A%E6%9A%82%E5%81%9C%E5%85%B6%E4%BB%96%E6%89%80%E6%9C%89%E7%BA%BF%E7%A8%8B-%E4%BD%BF%E7%94%A8%E5%8D%95%E7%BA%BF%E7%A8%8B%E8%BF%9B%E8%A1%8C%E5%9B%9E%E6%94%B6-%E9%80%82%E7%94%A8%E4%BA%8Eyoung%E5%8C%BA-Parallel"><span class="nav-number">6.</span> <span class="nav-text">垃圾回收器种类 Serial(串行):进行回收时会暂停其他所有线程, 使用单线程进行回收, 适用于young区 Parallel</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GC-roots"><span class="nav-number">7.</span> <span class="nav-text">GC roots</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E7%A7%8D%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B"><span class="nav-number">8.</span> <span class="nav-text">四种引用类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#WeakHashMap"><span class="nav-number">9.</span> <span class="nav-text">WeakHashMap</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B"><span class="nav-number">10.</span> <span class="nav-text">类加载过程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6"><span class="nav-number">11.</span> <span class="nav-text">双亲委派机制</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E5%8F%AB%E9%AB%98%E5%86%85%E8%81%9A%E4%BD%8E%E8%80%A6%E5%90%88"><span class="nav-number">1.</span> <span class="nav-text">什么叫高内聚低耦合</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E8%AE%BE%E8%AE%A1%E8%A6%81%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">单例模式设计要点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JVM%E7%BB%93%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text">JVM结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GC%E5%8C%BA%E7%9A%84%E7%A7%8D%E7%B1%BB"><span class="nav-number">4.</span> <span class="nav-text">GC区的种类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GC%E7%AE%97%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">GC算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E7%A7%8D%E7%B1%BB"><span class="nav-number">6.</span> <span class="nav-text">垃圾回收器种类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GC-roots"><span class="nav-number">7.</span> <span class="nav-text">GC roots</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E7%A7%8D%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B"><span class="nav-number">8.</span> <span class="nav-text">四种引用类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#WeakHashMap"><span class="nav-number">9.</span> <span class="nav-text">WeakHashMap</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B"><span class="nav-number">10.</span> <span class="nav-text">类加载过程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6"><span class="nav-number">11.</span> <span class="nav-text">双亲委派机制</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
