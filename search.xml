@@ -701,12 +701,16 @@
 <h1 id="ABA问题的解决"><a href="#ABA问题的解决" class="headerlink" title="ABA问题的解决"></a>ABA问题的解决</h1><p>使用AtomicStampedReference, 它在原子引用类上的基础上添加了一个stamp, 在cas时不但要求value值符合要求, 同时要求stamp也符合相应的要求.</p>
 <h1 id="LockSupport与syn和lock的区别"><a href="#LockSupport与syn和lock的区别" class="headerlink" title="LockSupport与syn和lock的区别"></a>LockSupport与syn和lock的区别</h1><p>后两者都是针对一部分代码进行上锁和解锁的操作. 而LockSupport是单纯将线程进行线程的阻塞和休眠, 且LockSupport的唤醒通知并不是直接对需要的线程进行唤醒通知, 而是类似于消息中间件的一种通知(只能存储一次).</p>
 <h1 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h1><p>volatile算一个轻量级的synchronized, 他保证可见性,但不保证原子性,禁止了指令重排.<br>解决原子性问题:使用JUC包下的原子包装类(原理为CAS).</p>
-<h1 id="AQS"><a href="#AQS" class="headerlink" title="AQS"></a>AQS</h1><p>AQS有一个voliate修饰的state, 用于标识当前状态. 如果线程获取同步状态state失败时, 会将当前线程及等待信息等构成一个node, 并放入FIFO队列中, 并将这个线程阻塞. 当线程将同步状态state释放时, 会唤醒队列中的头节点, 使其同步状态state.</p>
+<h1 id="AQS"><a href="#AQS" class="headerlink" title="AQS"></a>AQS</h1><p>AQS是一种并发容器.<br>AQS有一个voliate修饰的state, 用于标识当前状态. 如果线程获取同步状态state失败时, 会将当前线程及等待信息等构成一个node, 并放入FIFO队列中, 并将这个线程阻塞. 当线程将同步状态state释放时, 会唤醒队列中的头节点, 使其同步状态state.</p>
 <h1 id="JMM-java内存模型"><a href="#JMM-java内存模型" class="headerlink" title="JMM(java内存模型)"></a>JMM(java内存模型)</h1><p>它本身只是一种抽象概念, 描述的是一组规则或规范. 它具有可见性, 原子性以及有序性三大特点.</p>
 <h1 id="集合类线程不安全解决"><a href="#集合类线程不安全解决" class="headerlink" title="集合类线程不安全解决"></a>集合类线程不安全解决</h1><p>1.使用集合类中自带的线程安全的的类<br>2.使用Collections.synchronizedList.();进行修饰<br>3.使用CopyOnWriteArrayList包装类(效率最高).</p>
 <h1 id="CopyeOnWriteArrayList包装类原理"><a href="#CopyeOnWriteArrayList包装类原理" class="headerlink" title="CopyeOnWriteArrayList包装类原理"></a>CopyeOnWriteArrayList包装类原理</h1><p>集合类线程不安全是因为在next已赋予之后, 尾指针未移动之前又添加了新的next.<br>而CopyOnWriteArrayList是在添加next前将获取list的方式加锁, 将List进行复制, 此时这个新list的地址是非公开的, 所以仅当前线程可以进行数据的添加, 添加完成后再将新的list地址进行公开.</p>
 <h1 id="CountDownLatch-CyclicBarrier-Semaphore"><a href="#CountDownLatch-CyclicBarrier-Semaphore" class="headerlink" title="CountDownLatch/CyclicBarrier/Semaphore"></a>CountDownLatch/CyclicBarrier/Semaphore</h1><p>CountDowenLatch: 类似一个倒计时计数器, 当需要的线程都结束之前(CountDownLatch计数归零), 使用await对当前方法进行阻塞.<br>CyclicBarrier: 设置数量及要执行的方法, 使用await对线程进行阻塞, 直到阻塞线程到达规定的数量才集体放行并执行写入的方法.<br>Semaphore: 设置允许的线程数, 通过acquire方法争抢资源.</p>
 <h1 id="什么时候需要用到Callable接口"><a href="#什么时候需要用到Callable接口" class="headerlink" title="什么时候需要用到Callable接口"></a>什么时候需要用到Callable接口</h1><p>Callable接口相较于Runnable接口拥有返回值且能抛出异常, 更利于线程的管理. 且利用Callable接口可以返回数据的特点, 可以将一个任务拆分为多个任务交由不同线程处理, 最后进行汇总.</p>
+<h1 id="线程的生命周期"><a href="#线程的生命周期" class="headerlink" title="线程的生命周期"></a>线程的生命周期</h1><p>新建：就是刚使用new方法，new出来的线程；<br>就绪：就是调用的线程的start()方法后，这时候线程处于等待CPU分配资源阶段，谁先抢的CPU资源，谁开始执行;<br>运行：当就绪的线程被调度并获得CPU资源时，便进入运行状态，run方法定义了线程的操作和功能;<br>阻塞：在运行状态的时候，可能因为某些原因导致运行状态的线程变成了阻塞状态，比如sleep()、wait()之后线程就处于了阻塞状态，这个时候需要其他机制将处于阻塞状态的线程唤醒，比如调用notify或者notifyAll()方法。唤醒的线程不会立刻执行run方法，它们要再次等待CPU分配资源进入运行状态;<br>销毁：如果线程正常执行完毕后或线程被提前强制性的终止或出现异常导致结束，那么线程就要被销毁，释放资源;</p>
+<h1 id="线程的上下文切换"><a href="#线程的上下文切换" class="headerlink" title="线程的上下文切换"></a>线程的上下文切换</h1><p>当线程数大于CPU核数时就需要使用线程的上下文切换.<br>cpu会为每个线程分一个时间片, 当线程时间片用完时, cpu就会将当前线程状态进行保存, 将这个任务的上下文存于内存中, 接着取出下一个任务的上下文进行任务的恢复.</p>
+<h1 id="sleep和wait的区别"><a href="#sleep和wait的区别" class="headerlink" title="sleep和wait的区别"></a>sleep和wait的区别</h1><p>sleep是使当前线程休眠, 不会释放锁.<br>wait是使前期线程让出资源, 会将锁释放.</p>
+<h1 id="start和run的区别"><a href="#start和run的区别" class="headerlink" title="start和run的区别"></a>start和run的区别</h1><p>start是将一个线程启动<br>run只是线程的一个方法, 通常是由虚拟机创建新线程并调用, 如果在一个线程中调用只是在当前线程执行对应方法而已.</p>
 <h1 id="线程池的作用"><a href="#线程池的作用" class="headerlink" title="线程池的作用"></a>线程池的作用</h1><p>1.没有了重复的创建和销毁, 降低了资源消耗.<br>2.可以直接拿来使用, 提高了响应速度.<br>3.提高了线程的管理性.</p>
 <h1 id="三个常见的线程池"><a href="#三个常见的线程池" class="headerlink" title="三个常见的线程池"></a>三个常见的线程池</h1><p>Executors.newFixedThreadPool(int): 固定数量的线程池, 执行长期任务的线程<br>Executors.newSingleThreadExecutor(): 一个池一个线程, 适用于排队任务.<br>Executors.newCachedThreadPool(): 一个池多个线程, 适用于执行很多短的任务.</p>
 <h1 id="线程池的运行过程"><a href="#线程池的运行过程" class="headerlink" title="线程池的运行过程"></a>线程池的运行过程</h1><p>初始时只有设定的常驻线程数, 当任务增加时, 会先占用常驻线程, 再使用阻塞队列进行排队, 接着当阻塞队列满时, 开始扩容线程数, 直到达到最大线程数且阻塞队列也满时, 调用拒绝策略对多余任务进行处理. 当任务减少时, 扩容线程空闲时间到达设定的时间时会进行销毁.</p>
@@ -744,9 +748,11 @@
 <h1 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h1><p>原因:<br>极短时间内, 大量key同时过期.<br>表现:<br>数据库压力变大服务器崩溃<br>解决方法:<br>1.构建多级缓存: nginx+redis+其他<br>2.使用锁或者队列<br>3.设置过期标志更新缓存<br>4.将缓存失效时间分散</p>
 <h1 id="Redis缓存如何删除的"><a href="#Redis缓存如何删除的" class="headerlink" title="Redis缓存如何删除的"></a>Redis缓存如何删除的</h1><p>1.分批循环轮询确认是否过期<br>2.使用的时候查询是否过期</p>
 <h1 id="分布式锁有哪些解决方案"><a href="#分布式锁有哪些解决方案" class="headerlink" title="分布式锁有哪些解决方案"></a>分布式锁有哪些解决方案</h1><p>1.Redis做分布式锁,用setnx,Redisson<br>2.基于zookeeper的临时节点和顺序节点</p>
+<h1 id="Zookeeper的选举机制"><a href="#Zookeeper的选举机制" class="headerlink" title="Zookeeper的选举机制"></a>Zookeeper的选举机制</h1><p>选举依据:服务器ID以及版本号越大越好,半数通过后成为leader<br>全新集群选举(第一次启动):假设5台机器, 它会以服务器ID顺序启动, 1号先给自己投票, 其他未开启不需要交换意见.<br>2号启动, 先给自己投一票, 此时1号开机进行意见交换, 2号ID大, 1号投给2号. 如此到3号时, 半数会通过, 3号成为Leader.<br>非全新集群选举(leader宕机):首先统计逻辑时钟(投票次数), 如果逻辑是钟小说明投票过程出现宕机, 重新投票.<br>选出数据ID越大的, 如果相同就比较服务器ID.</p>
 <h1 id="计数器算法是什么"><a href="#计数器算法是什么" class="headerlink" title="计数器算法是什么"></a>计数器算法是什么</h1><p>是指在一个时间范围内限定访问次数的一种算法.<br>实现靠的是set k v nx ex time实现的, 同时使用redis的原子自增语句进行次数统计.<br>缺点是这种限制是离散的, 非均匀的.</p>
 <h1 id="什么是Nginx"><a href="#什么是Nginx" class="headerlink" title="什么是Nginx"></a>什么是Nginx</h1><p>它是一个高性能的web服务器, 主要用于动静分离, 负载均衡, 以及反向代理.</p>
 <h1 id="Nginx的特点"><a href="#Nginx的特点" class="headerlink" title="Nginx的特点"></a>Nginx的特点</h1><p>Apache和Nginx都可以作为WEB服务器使用；<br>Apache想较于Nginx稳定性要高，但是Nginx比Apache占用更少的系统资源与内存，基于此Nginx常常作为负载均衡器使用；</p>
+<h1 id="负载均衡算法"><a href="#负载均衡算法" class="headerlink" title="负载均衡算法"></a>负载均衡算法</h1><p>随机:<br>加权随机:<br>轮询:<br>加权轮询:权重高的在轮询时重复次数更多<br>平滑加权轮询:在加权轮询的基础上不再进行重复, 而是将它们打散<br>一致性哈希:依据服务器ip进行一个哈希运算, 然后再根据用户ip进行一次哈希运算, 再将两者打通</p>
 <h1 id="什么是IOC"><a href="#什么是IOC" class="headerlink" title="什么是IOC"></a>什么是IOC</h1><p>IOC是一种思想, 传统应程序是主动创建依赖对象, 从而导致类与类之间高耦合. 有了IOC容器后, 把创建和查找依赖对象的控制权交给了容器(转交这个控制权就是控制反转), 由容器进行注入组合对象, 所以对象与对象之间是松散耦合. 而实现IOC有两种方式, 分为DI和DL, 前者是当需要的时候直接注入, 后者是需要的时候主动寻找.</p>
 <h1 id="SpringMVC执行流程"><a href="#SpringMVC执行流程" class="headerlink" title="SpringMVC执行流程"></a>SpringMVC执行流程</h1><p>1.用户向服务器发送请求, 请求被DispatcherServlet捕获<br>2.交由handlerMapping处理判断是否存在映射, 没有就报404<br>3.有的话把对应的映射交给handlerAdapter, handlerAdapter为即将调用的控制器进行一系列的准备工作(提取req的信息, 注入参数, 数据验证等等)<br>4.然后交给prehandler进行处理<br>5.处理后再交给控制器, 控制器进行一些列操作并且设置mv<br>6.再由posthandler处理<br>7.处理后再交给视图解析器进行解析mv并渲染视图<br>8.接着执行拦截器的afterCompletion<br>9.最后把渲染结果交给客户端</p>
 <h1 id="Spring4到5的AOP发生了哪些变化"><a href="#Spring4到5的AOP发生了哪些变化" class="headerlink" title="Spring4到5的AOP发生了哪些变化"></a>Spring4到5的AOP发生了哪些变化</h1><p>4正常:before,after,afterreturning<br>4异常:before,after,afterthrowing<br>5以后after被放在了finally<br>5正常:before,afterreturning,after<br>5正常:before,afterthrowing,after</p>
@@ -755,6 +761,9 @@
 <h1 id="Spring的三级缓存"><a href="#Spring的三级缓存" class="headerlink" title="Spring的三级缓存"></a>Spring的三级缓存</h1><p>一级缓存:单例池,存储已经经历完整生命周期的Bean<br>二级缓存:早期单例对象的高速缓存,存储已经实例化但未初始化的Bean<br>三级缓存:单例工厂池,存储生成Bean的工厂</p>
 <h1 id="Spring的AOP的底层实现原理"><a href="#Spring的AOP的底层实现原理" class="headerlink" title="Spring的AOP的底层实现原理"></a>Spring的AOP的底层实现原理</h1><p>aop是ioc的一个扩展功能, 在ioc中有一个方法叫做BeanPostProcessor, 这个方法主要是对生成的Bean对象进行一个后置处理, 使用这个方法就可以进行动态代理从而实现AOP.<br>实现过程:<br>1.使用通知,切面以及切入点创建整个代理对象<br>2.使用JDK或CGLIB来获取代理对象<br>3.根据定义好的通知形成一个过滤器链<br>4.依据过滤器链的顺序开始依次执行</p>
 <h1 id="Spring如何实现事务操作的"><a href="#Spring如何实现事务操作的" class="headerlink" title="Spring如何实现事务操作的"></a>Spring如何实现事务操作的</h1><p>spring的事务是使用AOP实现的, 正常情况是要使用环绕通知来实现整个流程, 但鉴于事务的常用性, 专门设置了TransactionInterceptor实现这些操作.<br>1.先做准备工作, 确定当前方法上事务相关的属性, 依据事务属性决定是否开启新事务.<br>2.需要开启时, 获取数据库连接, 关闭自动提交, 开启事务<br>3.出现问题使用AfterThrowing中的回滚方法进行回滚<br>4.没出现问题则使用AfterReturning中的提交事务方法进行事务的提交<br>5.最后当事务执行完毕后清除相关的事务信息</p>
+<h1 id="Bean的作用域-1"><a href="#Bean的作用域-1" class="headerlink" title="Bean的作用域"></a>Bean的作用域</h1><p>1.singleton:整个容器只有一个实例, 默认作用域<br>2.prototype:每次获取都产生一个新实例<br>3.request:每次request中使用一个实例<br>4.session:每个session空间中使用一个实例<br>5.global session:全部session公用一个实例</p>
+<h1 id="Bean的生命周期"><a href="#Bean的生命周期" class="headerlink" title="Bean的生命周期"></a>Bean的生命周期</h1><p>1.实例化<br>2.属性设置<br>3.初始化<br>4.销毁</p>
+<h1 id="依赖注入-DI-的三种方法"><a href="#依赖注入-DI-的三种方法" class="headerlink" title="依赖注入(DI)的三种方法"></a>依赖注入(DI)的三种方法</h1><p>1.接口注入<br>2.构造器注入<br>3.Setter注入</p>
 ]]></content>
       <categories>
         <category>知识点解析</category>
@@ -774,6 +783,7 @@
 <h1 id="为什么重写-equals-还要重写-hashcode？"><a href="#为什么重写-equals-还要重写-hashcode？" class="headerlink" title="为什么重写 equals 还要重写 hashcode？"></a>为什么重写 equals 还要重写 hashcode？</h1><p>因为不重写hashcode在插入到哈希表时不能保证插入到同一位置，不插入到同一位置就无法触发equals判断。</p>
 <h1 id="Queue几种方法的区别"><a href="#Queue几种方法的区别" class="headerlink" title="Queue几种方法的区别"></a>Queue几种方法的区别</h1><p>add,remove,element一旦失败直接抛出异常.<br>offer,peek,poll失败不会抛出异常但会有响应值. 可以添加时间参数暂时升级为下面的方法.<br>put,take,只要失败就一直阻塞, 直到成功, 且不会有响应值</p>
 <h1 id="和-equals-比较的区别"><a href="#和-equals-比较的区别" class="headerlink" title="== 和 equals 比较的区别"></a>== 和 equals 比较的区别</h1><p>对于对象而言，==是在判断地址是否相同，equals是判断内容。</p>
+<h1 id="异常的分类"><a href="#异常的分类" class="headerlink" title="异常的分类"></a>异常的分类</h1><p>异常总体分为错误和异常两大类.<br>错误分为栈溢出和内存不足两大错误.<br>异常分为编译异常和运行时异常两大类.</p>
 <h1 id="为什么浮点数运算会不精准"><a href="#为什么浮点数运算会不精准" class="headerlink" title="为什么浮点数运算会不精准"></a>为什么浮点数运算会不精准</h1><p>因为计算机的浮点数是用二进制的科学计数保存的，它可以保存1/2，1/4等，但却因为进制问题不能表示0.1这种数字，只能近似，所以在保存这些数字的时候会丢失精度。</p>
 <h1 id="为什么定义long类型与float类型时要加l和f"><a href="#为什么定义long类型与float类型时要加l和f" class="headerlink" title="为什么定义long类型与float类型时要加l和f"></a>为什么定义long类型与float类型时要加l和f</h1><p>这是因为定义变量的过程本质是使用指针将两个内存块连接的过程。long类型常量不加l修饰会这个常量只会被当作int型，分配的空间也只有int型的大小。而浮点型默认是double，如果不加f，相当于把double直接赋予float，编译器会不通过。</p>
 <h1 id="创建子类对象"><a href="#创建子类对象" class="headerlink" title="创建子类对象"></a>创建子类对象</h1><p>创建子类对象时会默认调用父类的无参构造器方法来初始化属性，如果没有无参构造器，则需要使用super方法声明构造器的使用。<br>调用父类构造器是考虑到父类的一些私有属性可能要使用自己的构造器进行初始化。</p>
@@ -3996,7 +4006,7 @@
 <h1 id="GC-roots"><a href="#GC-roots" class="headerlink" title="GC roots"></a>GC roots</h1><p>通过一系列的GC root节点进行遍历, 找到所有可达节点, 这些节点就说不需要回收的节点.<br>可以作为GC root的对象:<br>1.栈中的对象<br>2.方法区中的静态引用对象<br>3.方法区中常量引用对象<br>4.本地方法栈中的对象</p>
 <h1 id="四种引用类型"><a href="#四种引用类型" class="headerlink" title="四种引用类型"></a>四种引用类型</h1><p>强引用:即使出现OOM也不会被垃圾回收<br>软引用:内存足够不会进行回收, 内存不足时会进行回收<br>弱引用:只要gc就会回收<br>软引用和弱引用可以用于解决图片不放入内存加载过慢, 放入内存又可能造成内存溢出的情况.设计思路是使用map存储.<br>虚引用:这种状态和没有引用几乎一样, 随时可能被gc回收, 它的get方法任何时候返回的都是null. 必须和引用队列一起使用.<br>引用队列:当创建引用队列时, 引用被gc回收时会进入引用队列.</p>
 <h1 id="WeakHashMap"><a href="#WeakHashMap" class="headerlink" title="WeakHashMap"></a>WeakHashMap</h1><p>正常的HashMap因为有map作为地址是强引用, 即使将key的地址置为null, map中的kv也不会被销毁.<br>但是WeakHashMap, 它的map不再视为强引用, 而是视为弱引用, 所以当没有key再指向kv时, 只剩余了一个弱引用来维护这部分数据, 当gc时会被回收.</p>
-<h1 id="类加载过程"><a href="#类加载过程" class="headerlink" title="类加载过程"></a>类加载过程</h1><p>1.读取class文件将其转化为静态数据结构存储在方法区, 并在堆中生成一个便于用户调用的Class类对象.<br>2.对代码进行验证<br>3.准备:将所有静态变量赋予0值<br>4.解析:将一部分引用进行解析, 如果该引用是抽象的, 无法确定具体的实现就延后解析.<br>5.最后进行初始化动作:class层面的初始化.</p>
+<h1 id="类加载过程"><a href="#类加载过程" class="headerlink" title="类加载过程"></a>类加载过程</h1><p>1.加载:读取class文件将其转化为静态数据结构存储在方法区, 并在堆中生成一个便于用户调用的Class类对象.<br>2.验证:对代码进行验证<br>3.准备:将所有静态变量赋予0值<br>4.解析:将一部分引用进行解析, 如果该引用是抽象的, 无法确定具体的实现就延后解析.<br>5.最后进行初始化动作:class层面的初始化.</p>
 <h1 id="双亲委派机制"><a href="#双亲委派机制" class="headerlink" title="双亲委派机制"></a>双亲委派机制</h1><p>因为不同加载器加载相同的类jvm仍会视为不同的类, 所以依据启动类加载,扩展类加载,应用类加载以及用户加载的顺序, 自上向下尝试加载, 这样就不会造成类的重复加载.</p>
 ]]></content>
       <categories>
@@ -4710,6 +4720,9 @@
     <url>/2021/12/07/%E7%9F%A5%E8%AF%86%E7%82%B9%E8%A7%A3%E6%9E%90/%E6%95%B0%E6%8D%AE%E5%BA%93/</url>
     <content><![CDATA[<h1 id="InnoDB-和-MyIsam-引擎的区别？"><a href="#InnoDB-和-MyIsam-引擎的区别？" class="headerlink" title="InnoDB 和 MyIsam 引擎的区别？"></a>InnoDB 和 MyIsam 引擎的区别？</h1><span id="more"></span>
 <p>1.InnoDB支持事务，MyIsam不支持事务。<br>2.InnoDB支持外键，MyIsam不支持。<br>3.InnoDB是聚簇索引，MyIsam是非聚簇索引。<br>4.InnoDB不支持全文索引但能拿插件实现且效果更好，MyIsam支持全文索引。<br>5.InnoDB最小锁粒度是行锁，MyIsam最小锁粒度是表锁。</p>
+<h1 id="MyIsam存储引擎的实现"><a href="#MyIsam存储引擎的实现" class="headerlink" title="MyIsam存储引擎的实现"></a>MyIsam存储引擎的实现</h1><p>MyIsam是非聚簇索引, 它是使用主键+一个表地址形成一个B+树进行检索, 当使用主键进行查询是先走B+树, 再用拿到的表地址去表中查询信息.</p>
+<h1 id="InnoDB存储引擎的实现"><a href="#InnoDB存储引擎的实现" class="headerlink" title="InnoDB存储引擎的实现"></a>InnoDB存储引擎的实现</h1><p>InnoDB是聚簇索引, 它是将主键以及其他信息都存贮在B+树, 使用主键进行查询时也只会在主键B+树中进行检索.</p>
+<h1 id="数据库三大范式"><a href="#数据库三大范式" class="headerlink" title="数据库三大范式"></a>数据库三大范式</h1><p>1.每个列都不可以拆分<br>2.非主键列完全依赖于主键, 不可以依赖于主键的一部分<br>3.非主键列只依赖于主键而不依赖于其他非主键</p>
 <h1 id="聚簇索引和非聚簇索引"><a href="#聚簇索引和非聚簇索引" class="headerlink" title="聚簇索引和非聚簇索引"></a>聚簇索引和非聚簇索引</h1><p>聚簇索引：数据与索引一体，表数据的顺序与索引顺序一致。<br>    聚簇索引默认是主键，如果表中没有主键，InnoDB会选择一个唯一非空索引代替。<br>    如果没有这样的索引InnoDB会在内部生成一个隐式索引。<br>非聚簇索引：数据与索引分开存放，表数据顺序与索引顺序无关, 普通索引就是非聚簇索引.</p>
 <h1 id="回表查询"><a href="#回表查询" class="headerlink" title="回表查询"></a>回表查询</h1><p>查询过程是通过普通索引的b+树查到对应的主键, 再拿着这个主键去主键的b+树进行查询. 如果使用普通索引查询主键, 则不需要回表.</p>
 <h1 id="索引下推"><a href="#索引下推" class="headerlink" title="索引下推"></a>索引下推</h1><p>在没有索引下推时, 如果使用a,b两个字段建立了联合索引, 当对a进行模糊查询, 对b进行具体查询时, 会直接使用模糊查询a的结果得到的多个主键进行回表查询, 并不会在二级索引中对b进行查询.<br>在有索引下推后, 如果二级索引包含了b, 则会在二级索引得到的信息中进行一个过滤, 再使用得到的主键进行回表查询.</p>
@@ -4725,6 +4738,7 @@
 <h1 id="行式数据库与列式数据库的优劣"><a href="#行式数据库与列式数据库的优劣" class="headerlink" title="行式数据库与列式数据库的优劣"></a>行式数据库与列式数据库的优劣</h1><p>行式存储更适合针对对象的查询, 列式存储更适合对综合数据的处理</p>
 <h1 id="数据库事务的并发问题"><a href="#数据库事务的并发问题" class="headerlink" title="数据库事务的并发问题"></a>数据库事务的并发问题</h1><p>脏读: 读取到未提交的数据<br>不可重复读: 多次读取期间数据被提交修改<br>幻读: 多次读取期间, 拆入了新的数据</p>
 <h1 id="四种隔离级别的实现"><a href="#四种隔离级别的实现" class="headerlink" title="四种隔离级别的实现"></a>四种隔离级别的实现</h1><p>读未提交: 完全放任不进行管控<br>读已提交: 在执行事务期间使用临时的一个表, 知道提交再将临时表的数据刷入原表<br>可重复读(默认): 在读取期间对该条数据添加行锁<br>串行化: 读取期间使用表锁</p>
+<h1 id="MySQL的缓存"><a href="#MySQL的缓存" class="headerlink" title="MySQL的缓存"></a>MySQL的缓存</h1><p>它有两级缓存, 第一级是sqlsession级别的,默认开启.<br>二级缓存需要手动开启, 当一次sql结束后会将sql交给二级缓存. </p>
 <h1 id="MyBatis中当实体类中的属性名和表中的字段名不同时怎么办"><a href="#MyBatis中当实体类中的属性名和表中的字段名不同时怎么办" class="headerlink" title="MyBatis中当实体类中的属性名和表中的字段名不同时怎么办"></a>MyBatis中当实体类中的属性名和表中的字段名不同时怎么办</h1><p>1.在sql语句中使用别名<br>2.在yml配置中开启小驼峰识别<br>3.在Mapper映射文件中使用resultMap来自定义映射</p>
 <h1 id="Redis两种持久化的区别"><a href="#Redis两种持久化的区别" class="headerlink" title="Redis两种持久化的区别"></a>Redis两种持久化的区别</h1><p>RDB:fork出一个快照, 将快照写入内存. 备份时不会影响主线程, 但数据库过大时fork会消耗性能.<br>AOF:以日志形式记录操作, 会进行增加不会替换, 恢复时复现操作. 恢复速度没RDB快,占用磁盘空间大.</p>
 <h1 id="如何解决消息队列的不确定性"><a href="#如何解决消息队列的不确定性" class="headerlink" title="如何解决消息队列的不确定性"></a>如何解决消息队列的不确定性</h1><p>当在redis端抢到课程后, 返回一个等待页面, 等待消息在数据库是否成功进行的一个回复, 或者主动进行查询.</p>
@@ -5042,6 +5056,18 @@
 ]]></content>
       <categories>
         <category>异常处理</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>408</title>
+    <url>/2022/03/15/%E7%9F%A5%E8%AF%86%E7%82%B9%E8%A7%A3%E6%9E%90/408/</url>
+    <content><![CDATA[<h1 id="七层架构和五层架构"><a href="#七层架构和五层架构" class="headerlink" title="七层架构和五层架构"></a>七层架构和五层架构</h1><p>七层架构是OSI提出的:应用层,表示层,会话层,运输层,网络层,数据链路层,物理层.<br>但七层架构虽然理论清晰, 概念完整, 但在实际开发场景不好用.<br>于是简化成了五层架构:应用层,运输层,网络层,数据链路层,物理层</p>
+<h1 id="TCP-IP"><a href="#TCP-IP" class="headerlink" title="TCP/IP"></a>TCP/IP</h1><p>应用层,传输层,网际层,网络接口层<br>三次握手:A:在么? B:在. A:好,我给你发数据<br>四次挥手:A:我要睡了. B:好的. B:晚安. A:晚安</p>
+<h1 id="TCP与UDP"><a href="#TCP与UDP" class="headerlink" title="TCP与UDP"></a>TCP与UDP</h1><p>打电话和发电报</p>
+<h1 id="CDN"><a href="#CDN" class="headerlink" title="CDN"></a>CDN</h1><p>内容分发网络:因为直接从源服务器获取数据会很慢, 就需要在本地建立内容分发王路平, 作用类似于缓存的实现</p>
+]]></content>
+      <categories>
+        <category>知识点解析</category>
       </categories>
   </entry>
 </search>
