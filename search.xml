@@ -5061,16 +5061,4 @@
         <category>异常处理</category>
       </categories>
   </entry>
-  <entry>
-    <title>408</title>
-    <url>/2022/03/15/%E7%9F%A5%E8%AF%86%E7%82%B9%E8%A7%A3%E6%9E%90/408/</url>
-    <content><![CDATA[<h1 id="七层架构和五层架构"><a href="#七层架构和五层架构" class="headerlink" title="七层架构和五层架构"></a>七层架构和五层架构</h1><p>七层架构是OSI提出的:应用层,表示层,会话层,运输层,网络层,数据链路层,物理层.<br>但七层架构虽然理论清晰, 概念完整, 但在实际开发场景不好用.<br>于是简化成了五层架构:应用层,运输层,网络层,数据链路层,物理层</p>
-<h1 id="TCP-IP"><a href="#TCP-IP" class="headerlink" title="TCP/IP"></a>TCP/IP</h1><p>应用层,传输层,网际层,网络接口层<br>三次握手:A:在么? B:在. A:好,我给你发数据<br>四次挥手:A:我要睡了. B:好的. B:晚安. A:晚安</p>
-<h1 id="TCP与UDP"><a href="#TCP与UDP" class="headerlink" title="TCP与UDP"></a>TCP与UDP</h1><p>打电话和发电报</p>
-<h1 id="CDN"><a href="#CDN" class="headerlink" title="CDN"></a>CDN</h1><p>内容分发网络:因为直接从源服务器获取数据会很慢, 就需要在本地建立内容分发王路平, 作用类似于缓存的实现</p>
-]]></content>
-      <categories>
-        <category>知识点解析</category>
-      </categories>
-  </entry>
 </search>

@@ -185,148 +185,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://390991450.github.io/2021/12/31/%E9%A1%B9%E7%9B%AE/%E6%A0%A1%E5%9B%AD%E5%8D%A1%E9%A1%B9%E7%9B%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="征途">
-      <meta itemprop="description" content="我的学习笔记">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="每天一点儿">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/31/%E9%A1%B9%E7%9B%AE/%E6%A0%A1%E5%9B%AD%E5%8D%A1%E9%A1%B9%E7%9B%AE/" class="post-title-link" itemprop="url">校园卡项目</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-12-31 11:13:08" itemprop="dateCreated datePublished" datetime="2021-12-31T11:13:08+08:00">2021-12-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-04 00:17:38" itemprop="dateModified" datetime="2022-03-04T00:17:38+08:00">2022-03-04</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">项目</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>7.7k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>7 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="项目架构"><a href="#项目架构" class="headerlink" title="项目架构"></a>项目架构</h1><h2 id="学生端"><a href="#学生端" class="headerlink" title="学生端"></a>学生端</h2><h3 id="登录"><a href="#登录" class="headerlink" title="登录"></a>登录</h3><p>使用身份证和账号密码登录.</p>
-<h3 id="注册"><a href="#注册" class="headerlink" title="注册"></a>注册</h3><p>使用姓名,身份证,密码,手机进行注册.-&gt;前往缴费端进行激活</p>
-<h3 id="挂失"><a href="#挂失" class="headerlink" title="挂失"></a>挂失</h3><p>登陆后提交挂失申请, 在数据库中修改对应的学生卡状状态, 冻结学生卡.</p>
-<h3 id="查询余额"><a href="#查询余额" class="headerlink" title="查询余额"></a>查询余额</h3><p>从数据库拉取余额.</p>
-<h3 id="明细"><a href="#明细" class="headerlink" title="明细"></a>明细</h3><p>使用当前账号的身份证号查询交易明细数据库并导出数据</p>
-<h3 id="月报"><a href="#月报" class="headerlink" title="月报"></a>月报</h3><p>食堂, 打水, 超市, 洗澡消费占比,金额<br>最高充值金额<br>消费次数<br>总计消费金额<br>餐厅就餐天数<br>挂失次数<br>图书馆学习时间<br>图书馆最长学习时间<br>洗澡次数<br>打水喝水总量</p>
-<h3 id="年报"><a href="#年报" class="headerlink" title="年报"></a>年报</h3><h2 id="图书馆出入"><a href="#图书馆出入" class="headerlink" title="图书馆出入"></a>图书馆出入</h2><p>图书馆出入登记</p>
-<h2 id="图书馆借书"><a href="#图书馆借书" class="headerlink" title="图书馆借书"></a>图书馆借书</h2><p>通过书籍id进行图书馆的借书还书操作<br>判断借书是否逾期, 借书上限</p>
-<h2 id="收费端"><a href="#收费端" class="headerlink" title="收费端"></a>收费端</h2><p>依据服务种类为收费端分配不同的前缀id<br>输入金额, 扣费</p>
-<h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><p>所有数据都需要经过学生数据库将芯片编号转换为学生身份证</p>
-<h3 id="芯片编号映射表"><a href="#芯片编号映射表" class="headerlink" title="芯片编号映射表"></a>芯片编号映射表</h3><p>芯片编号, 学生身份证</p>
-<h3 id="学生数据库student"><a href="#学生数据库student" class="headerlink" title="学生数据库student"></a>学生数据库student</h3><p>学生身份证, 学生姓名,  账号密码, 学生手机, 学生邮箱, 学生卡状态(0为未激活,1为激活,2为挂失), 余额</p>
-<h3 id="交易明细数据库transaction-details"><a href="#交易明细数据库transaction-details" class="headerlink" title="交易明细数据库transaction_details"></a>交易明细数据库transaction_details</h3><p>学生身份证,  消费端id, 消费类型, 消费金额(可正可负), 消费时间</p>
-<h3 id="图书馆进出数据库-考虑停电情况-library-records"><a href="#图书馆进出数据库-考虑停电情况-library-records" class="headerlink" title="图书馆进出数据库(考虑停电情况)library_records"></a>图书馆进出数据库(考虑停电情况)library_records</h3><p>学生身份证, 开始时间, 结束时间</p>
-<h3 id="图书馆借书记录数据库-关联图书馆系统取得书籍名称-borrow-records"><a href="#图书馆借书记录数据库-关联图书馆系统取得书籍名称-borrow-records" class="headerlink" title="图书馆借书记录数据库(关联图书馆系统取得书籍名称)borrow_records"></a>图书馆借书记录数据库(关联图书馆系统取得书籍名称)borrow_records</h3><p>学生身份证, 书籍名, 书籍id, 借入时间, 约定归还时间, 归还时间</p>
-<h3 id="书籍id映射表"><a href="#书籍id映射表" class="headerlink" title="书籍id映射表"></a>书籍id映射表</h3><p>书籍id, 书籍名</p>
-<h3 id="收费端数据库"><a href="#收费端数据库" class="headerlink" title="收费端数据库"></a>收费端数据库</h3><p>id, 收入, 时间</p>
-<h3 id="月报数据库"><a href="#月报数据库" class="headerlink" title="月报数据库"></a>月报数据库</h3><h3 id="年报数据库"><a href="#年报数据库" class="headerlink" title="年报数据库"></a>年报数据库</h3><h1 id="项目优化内容"><a href="#项目优化内容" class="headerlink" title="项目优化内容"></a>项目优化内容</h1><h2 id="使用覆盖索引"><a href="#使用覆盖索引" class="headerlink" title="使用覆盖索引."></a>使用覆盖索引.</h2><p>采用join on语句进行自关联查询查询, 使用覆盖索引先获取对应的key再用于整体的查询, 可以极大优化分页查询速度</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT t1.* FROM transaction_details t1</span><br><span class="line">        JOIN (SELECT `key` from transaction_details WHERE id=#&#123;id&#125;</span><br><span class="line">        AND `time` between #&#123;start&#125; and #&#123;end&#125; limit #&#123;index&#125;,10) t2</span><br><span class="line">        ON t1.key = t2.key</span><br></pre></td></tr></table></figure>
-
-<h2 id="使用aop实现mapping的自动注入"><a href="#使用aop实现mapping的自动注入" class="headerlink" title="使用aop实现mapping的自动注入"></a>使用aop实现mapping的自动注入</h2><p>因为磁卡书籍条形码都与身份证或书籍名称存在映射, 每次查询时都需要调用对应的映射, 所以采用aop进行目标属性的自动注入</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">@Aspect</span><br><span class="line">public class GetId &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    LibraryMapper libraryMapper;</span><br><span class="line"></span><br><span class="line">    //设置全服务层方法切入点</span><br><span class="line">    @Pointcut(&quot;execution(* com.mtid.student.service.*.*(..))&quot;)</span><br><span class="line">    public void servicePoint()&#123;&#125;</span><br><span class="line"></span><br><span class="line">    //设置admin类方法切入点</span><br><span class="line">    @Pointcut(&quot;execution(* com.mtid.student.service.AdminService.*(..))&quot;)</span><br><span class="line">    public void adminServicePoint()&#123;&#125;</span><br><span class="line"></span><br><span class="line">    //设置student类方法切入点</span><br><span class="line">    @Pointcut(&quot;execution(* com.mtid.student.service.StudentService.*(..))&quot;)</span><br><span class="line">    public void studentServicePoint()&#123;&#125;</span><br><span class="line"></span><br><span class="line">    @Around(value = &quot;servicePoint()&amp;&amp;!(studentServicePoint()||adminServicePoint())&quot; )</span><br><span class="line">    public Object getId(ProceedingJoinPoint joinPoint) throws Throwable &#123;</span><br><span class="line">        Signature signature = joinPoint.getSignature();</span><br><span class="line">        MethodSignature methodSignature = (MethodSignature)signature;</span><br><span class="line">        //取得参数名, 寻找chipNumber</span><br><span class="line">        String[] parameterNames = methodSignature.getParameterNames();</span><br><span class="line">        Object[] args = joinPoint.getArgs();</span><br><span class="line">        String chipNumber = new String();</span><br><span class="line">        for (int i = 0;i&lt;args.length;i++)&#123;</span><br><span class="line">            if (parameterNames[i].equals(&quot;chipNumber&quot;))&#123;</span><br><span class="line">                chipNumber = (String) args[i];</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if (chipNumber!=null)&#123;</span><br><span class="line">            String id = libraryMapper.getId(chipNumber);</span><br><span class="line">            for (int i = 0;i&lt;args.length;i++)&#123;</span><br><span class="line">                if (parameterNames[i].equals(&quot;id&quot;))&#123;</span><br><span class="line">                    args[i] = id;</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return (Object) joinPoint.proceed(args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h1 id="具体功能实现"><a href="#具体功能实现" class="headerlink" title="具体功能实现"></a>具体功能实现</h1><p>版本1使用boot加mybatis实现.</p>
-<h2 id="数据库分析"><a href="#数据库分析" class="headerlink" title="数据库分析"></a>数据库分析</h2><p>原本是想将id与芯片编号都存储在学生表中, 但考虑到二者在查询时可能都会使用, 为了应对索引失效, 创建单独的一张映射表.</p>
-<p>芯片编号映射表以及学生表具有唯一性, 使用主键索引.</p>
-<p>交易明细数据库使用联合索引, 最主要的是时间与id查询, 为了降低b+树在插入时的变动程度, 把时间设置为第一索引, 同时为了优化查询速度, 将时间设为主键, 实现聚簇索引, 同时因为时间为主键与联合索引的第一索引, 即使单独查询id也不会导致联合索引失效.</p>
-<p>图书馆进出记录表需要两个时间戳, 但是TIMESTAMP只能设置一个, 所以另一个只能使用datetime.</p>
-<p>借书数据库需要与图书馆自己的书籍id映射表关联.</p>
-<h3 id="数据库优化"><a href="#数据库优化" class="headerlink" title="数据库优化"></a>数据库优化</h3><p>不再使用char类型存储身份证, 改用long型存储身份证号, 特殊处理X即可, 刚好19位. 这么处理后在创建b+树的时候单个节点存储内容更大, b+树深度低.</p>
-<p>尽量使用覆盖索引.</p>
-<p>对交易明细表进行优化, 使分页查询可以利用索引: 分页查询优化需要主键, 交易明细表所有内容均不唯一, 所以要自定义一个自增主键key(一定程度上顶替时间), 接着对sql语句进行优化 为了不使联合索引失效, id定为一级索引, time定位二级索引.</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT t1.* FROM transaction_details t1</span><br><span class="line">        JOIN (SELECT `key` from transaction_details WHERE id=#&#123;id&#125;</span><br><span class="line">        AND `time` between #&#123;start&#125; and #&#123;end&#125; limit #&#123;index&#125;,10) t2</span><br><span class="line">        ON t1.key = t2.key</span><br></pre></td></tr></table></figure>
-<h2 id="学生端服务层"><a href="#学生端服务层" class="headerlink" title="学生端服务层"></a>学生端服务层</h2><p>注册<br>要求id, 邮箱, 手机号不可重复, 为了方便检查绑定失去焦点事件, 为邮箱和手机号创建索引, 且直接查询自身, 实现覆盖索引.</p>
-<p>登录<br>使用邮箱或者手机号都可以登录</p>
-<p>修改密码<br>写入旧密码, 写入新密码进行更改. 旧密码由controller进行验证.</p>
-<p>交易明细<br>这里第一次出现了时区问题, 要统一数据库与java的时区<br>交易明细, 使用分页查询一次查10条. 在此进行分页查询优化. 输入查询开始时间,结束时间进行查询.<br>交易明细要再添加一个方法, 用于返回当前时间段数据总数, 使用覆盖查询, 为了降低数据库访问次数, 第一次查询后将总数据数放入域对象中.</p>
-<p>查询余额<br>使用域对象的id直接查询余额即可</p>
-<h2 id="学生端控制层"><a href="#学生端控制层" class="headerlink" title="学生端控制层"></a>学生端控制层</h2><p>登录<br>主要进行是否取得student对象的判断, 选择进入登录页面还是主页<br>拦截器, 对所有需要student域对象的网页进行过滤, 如果发现没有student域对象, 返回登录页面</p>
-<p>退出登录<br>直接删除session中的student对象</p>
-<p>注册<br>注册完成后跳转登录页面实现自动登录, 注册失败返回注册页面<br>为id, 手机号, 邮箱绑定失去焦点事件, 快速检查是否重复</p>
-<p>修改密码<br>使用域对象比对输入的旧密码, 成功后添加新密码, 修改完成后删除域对象, 跳转至登录页面</p>
-<p>查询余额</p>
-<p>存储金额</p>
-<p>交易明细<br>输入开始时间, 结束时间, 获取数据, 第一查询返回总页数.</p>
-<p>挂失服务<br>==================学生端暂时结束,年报月报功能等待其他端构建完成后构建</p>
-<h2 id="管理端"><a href="#管理端" class="headerlink" title="管理端"></a>管理端</h2><p>位管理员层配置管理员过滤器, 出于方便就不单独再为管理员建库, 分配前1000id为管理员权限, 第一次访问过滤器时判断session中id, 判断成功后将这个session对象转为administration<br>激活<br>将磁卡id与用户身份证进行绑定, 同时更改student数据库中的state<br>因为是使用身份证进行绑定, 绑定前要进行是否在student中注册的确认以及是否身份证已经绑定的判断<br>改绑新卡<br>与激活类似, 只是去掉激活中是否身份证已经绑定的判断<br>================================</p>
-<h2 id="图书馆"><a href="#图书馆" class="headerlink" title="图书馆"></a>图书馆</h2><p>图书馆进出登记<br>timestamp在update的时候会自动更新,所以要把end时间设为timestamp类型, 也可以手动设置<br>这里开始后所有的操作都需要将磁卡id转换为身份证, 所以使用aop将获取身份证的方法切入, 实现用磁卡id为身份证的自动注入</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">@Aspect</span><br><span class="line">public class GetId &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    LibraryMapper libraryMapper;</span><br><span class="line"></span><br><span class="line">    //设置全服务层方法切入点</span><br><span class="line">    @Pointcut(&quot;execution(* com.mtid.student.service.*.*(..))&quot;)</span><br><span class="line">    public void servicePoint()&#123;&#125;</span><br><span class="line"></span><br><span class="line">    //设置admin类方法切入点</span><br><span class="line">    @Pointcut(&quot;execution(* com.mtid.student.service.AdminService.*(..))&quot;)</span><br><span class="line">    public void adminServicePoint()&#123;&#125;</span><br><span class="line"></span><br><span class="line">    //设置student类方法切入点</span><br><span class="line">    @Pointcut(&quot;execution(* com.mtid.student.service.StudentService.*(..))&quot;)</span><br><span class="line">    public void studentServicePoint()&#123;&#125;</span><br><span class="line"></span><br><span class="line">    @Around(value = &quot;servicePoint()&amp;&amp;!(studentServicePoint()||adminServicePoint())&quot; )</span><br><span class="line">    public Object getId(ProceedingJoinPoint joinPoint) throws Throwable &#123;</span><br><span class="line">        Signature signature = joinPoint.getSignature();</span><br><span class="line">        MethodSignature methodSignature = (MethodSignature)signature;</span><br><span class="line">        //取得参数名, 寻找chipNumber</span><br><span class="line">        String[] parameterNames = methodSignature.getParameterNames();</span><br><span class="line">        Object[] args = joinPoint.getArgs();</span><br><span class="line">        String chipNumber = new String();</span><br><span class="line">        for (int i = 0;i&lt;args.length;i++)&#123;</span><br><span class="line">            if (parameterNames[i].equals(&quot;chipNumber&quot;))&#123;</span><br><span class="line">                chipNumber = (String) args[i];</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if (chipNumber!=null)&#123;</span><br><span class="line">            String id = libraryMapper.getId(chipNumber);</span><br><span class="line">            for (int i = 0;i&lt;args.length;i++)&#123;</span><br><span class="line">                if (parameterNames[i].equals(&quot;id&quot;))&#123;</span><br><span class="line">                    args[i] = id;</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return (Object) joinPoint.proceed(args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>图书馆借书登记<br>创建书籍条形码与书籍名称的映射, 使用aop为图书馆类的方法添加映射<br>实现获取书籍条形码与学生磁卡id在数据库生成对应的学生身份证以及书籍名称<br>借书登记<br>借书前进行已借书籍判断, 查看是超过借书上限或者有书籍逾期<br>还书登记<br>将书籍id设为键, 直接查询选择最后一条进行更新, 同时判断是否逾期<br>=====================================</p>
-<h2 id="收费端-1"><a href="#收费端-1" class="headerlink" title="收费端"></a>收费端</h2><p>=====================================</p>
-<h2 id="月报功能实现"><a href="#月报功能实现" class="headerlink" title="月报功能实现"></a>月报功能实现</h2><p>食堂, 打水, 超市, 洗澡消费占比,金额<br>最高充值金额<br>消费次数<br>总计消费金额<br>餐厅就餐天数<br>挂失次数<br>图书馆学习时间<br>图书馆最长学习时间</p>
-<h2 id="抢课系统优化"><a href="#抢课系统优化" class="headerlink" title="抢课系统优化"></a>抢课系统优化</h2><p>使用cookie+Sentinel限制每人QPS</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@GetMapping(&quot;/rushclass&quot;)</span><br><span class="line">@SentinelResource(value = &quot;rushclass&quot;,blockHandler = &quot;breakRush&quot;)</span><br><span class="line">public String rushCourse(@CookieValue(value = &quot;cantRush&quot;,defaultValue = &quot;1&quot;)String canRush, int studentId, int classId, HttpServletResponse response)&#123;</span><br><span class="line">    if (rushClassServer.RushClassService(studentId,classId))&#123;</span><br><span class="line">        Cookie cantRush = new Cookie(&quot;cantRush&quot;, &quot;1&quot;);</span><br><span class="line">        cantRush.setMaxAge(60);</span><br><span class="line">        response.addCookie(cantRush);</span><br><span class="line">        return &quot;抢课成功&quot;;</span><br><span class="line">    &#125;else &#123;</span><br><span class="line">        return &quot;抢课失败&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">public String breakRush(String canRush, int studentId, int classId, HttpServletResponse response,BlockException exception)&#123;</span><br><span class="line">    return &quot;请求过于频繁&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>使用Redis将学生与选到的课程进行缓存.<br>Redis提前预存热门课程</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">@RestController</span><br><span class="line">public class RushClassController implements InitializingBean &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    RedisTemplate redisTemplate;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    RushClassServer rushClassServer;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    MQSender mqSender;</span><br><span class="line">    //创建一个map方便redis查询是否有库存</span><br><span class="line">    Map&lt;Long,Boolean&gt; emptyClassMap = new HashMap&lt;&gt;();</span><br><span class="line">    //系统初始化操作</span><br><span class="line">    @Override</span><br><span class="line">    public void afterPropertiesSet() throws Exception &#123;</span><br><span class="line">        //将数据库信息迁移到Reids</span><br><span class="line">        List&lt;ClassList&gt; classList = rushClassServer.getClassList();</span><br><span class="line">        classList.forEach(classList1 -&gt; &#123;</span><br><span class="line">            redisTemplate.opsForValue().set(&quot;rushClass:&quot;+classList1.classId,classList1.classNumber);</span><br><span class="line">            emptyClassMap.put((long)classList1.getClassId(),false);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    @GetMapping(&quot;/&quot;)</span><br><span class="line">    public String rushClassByRedis(int studentId, int classId)&#123;</span><br><span class="line">        ValueOperations valueOperations = redisTemplate.opsForValue();</span><br><span class="line">        //此语句为原语,好用</span><br><span class="line">        if (emptyClassMap.get(classId))&#123;</span><br><span class="line">            return &quot;抢课失败&quot;;</span><br><span class="line">        &#125;else &#123;</span><br><span class="line">            //此语句为原语,好用</span><br><span class="line">            Long classNumber = valueOperations.decrement(classId);</span><br><span class="line">            if (classNumber&lt;=0)&#123;</span><br><span class="line">                emptyClassMap.put((long)classId,true);</span><br><span class="line">            &#125;</span><br><span class="line">            //这里添加Rabbitmq实现异步操作</span><br><span class="line">            //先将学生抢课的记录存入Redis</span><br><span class="line">            redisTemplate.opsForValue().set(&quot;studentClass:&quot;+studentId,classId);</span><br><span class="line">            StudentClass studentClass = new StudentClass(studentId, classId);</span><br><span class="line">            mqSender.sendRushMessage(JsonUtil.objectToJson(studentClass));</span><br><span class="line">            return &quot;排队中...&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://390991450.github.io/2021/12/31/leetcode%E9%A2%98%E8%A7%A3/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E7%9A%84%E5%90%8E%E5%BA%8F%E9%81%8D%E5%8E%86%E5%BA%8F%E5%88%97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1162,6 +1020,99 @@
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://390991450.github.io/2021/12/27/leetcode%E9%A2%98%E8%A7%A3/%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91%E5%88%A4%E6%96%AD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="征途">
+      <meta itemprop="description" content="我的学习笔记">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="每天一点儿">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/27/leetcode%E9%A2%98%E8%A7%A3/%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91%E5%88%A4%E6%96%AD/" class="post-title-link" itemprop="url">平衡二叉树判断</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-12-27 22:08:28 / 修改时间：22:12:38" itemprop="dateCreated datePublished" datetime="2021-12-27T22:08:28+08:00">2021-12-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/leetcode%E8%A7%A3%E6%9E%90/" itemprop="url" rel="index"><span itemprop="name">leetcode解析</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/leetcode%E8%A7%A3%E6%9E%90/%E6%9C%80%E4%BC%98/" itemprop="url" rel="index"><span itemprop="name">最优</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span></span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>NaN:aN</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p>输入一棵二叉树的根节点，判断该树是不是平衡二叉树。如果某二叉树中任意节点的左右子树的深度相差不超过1，那么它就是一棵平衡二叉树</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/27/leetcode%E9%A2%98%E8%A7%A3/%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91%E5%88%A4%E6%96%AD/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -1233,7 +1184,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">96</span>
+          <span class="site-state-item-count">95</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
