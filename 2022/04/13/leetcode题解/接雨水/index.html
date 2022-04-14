@@ -20,19 +20,21 @@
     var CONFIG = {"hostname":"390991450.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="什么是IOCioc就是控制反转, 它是一种思想, 不再自己主动创建依赖对象, 而是把创建和查找依赖对象的权限交给容器. IOC与DIDI是IOC的一种实现方式, 它指的是在ioc容器运行期间, 利用依赖关系进行注入, 从而实现解耦. 什么是DIDI即依赖注入, 它是接口编程的一种特殊表现, 在注入时不关注细节, 而是依赖于抽象, 从而实现解耦. 什么是AOPAOP即面向切面编程,利用AOP可以对业">
+  <meta name="description" content="题目给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="框架">
-<meta property="og:url" content="https://390991450.github.io/2021/12/30/%E7%9F%A5%E8%AF%86%E7%82%B9%E8%A7%A3%E6%9E%90/%E6%A1%86%E6%9E%B6/index.html">
+<meta property="og:title" content="接雨水">
+<meta property="og:url" content="https://390991450.github.io/2022/04/13/leetcode%E9%A2%98%E8%A7%A3/%E6%8E%A5%E9%9B%A8%E6%B0%B4/index.html">
 <meta property="og:site_name" content="每天一点儿">
-<meta property="og:description" content="什么是IOCioc就是控制反转, 它是一种思想, 不再自己主动创建依赖对象, 而是把创建和查找依赖对象的权限交给容器. IOC与DIDI是IOC的一种实现方式, 它指的是在ioc容器运行期间, 利用依赖关系进行注入, 从而实现解耦. 什么是DIDI即依赖注入, 它是接口编程的一种特殊表现, 在注入时不关注细节, 而是依赖于抽象, 从而实现解耦. 什么是AOPAOP即面向切面编程,利用AOP可以对业">
+<meta property="og:description" content="题目给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-12-30T01:51:51.000Z">
-<meta property="article:modified_time" content="2021-12-30T03:07:49.091Z">
+<meta property="article:published_time" content="2022-04-13T13:43:32.000Z">
+<meta property="article:modified_time" content="2022-04-13T13:47:15.807Z">
 <meta property="article:author" content="征途">
+<meta property="article:tag" content="动态规划">
+<meta property="article:tag" content="双指针">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://390991450.github.io/2021/12/30/%E7%9F%A5%E8%AF%86%E7%82%B9%E8%A7%A3%E6%9E%90/%E6%A1%86%E6%9E%B6/">
+<link rel="canonical" href="https://390991450.github.io/2022/04/13/leetcode%E9%A2%98%E8%A7%A3/%E6%8E%A5%E9%9B%A8%E6%B0%B4/">
 
 
 <script id="page-configurations">
@@ -45,7 +47,7 @@
   };
 </script>
 
-  <title>框架 | 每天一点儿</title>
+  <title>接雨水 | 每天一点儿</title>
   
 
 
@@ -188,7 +190,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://390991450.github.io/2021/12/30/%E7%9F%A5%E8%AF%86%E7%82%B9%E8%A7%A3%E6%9E%90/%E6%A1%86%E6%9E%B6/">
+    <link itemprop="mainEntityOfPage" href="https://390991450.github.io/2022/04/13/leetcode%E9%A2%98%E8%A7%A3/%E6%8E%A5%E9%9B%A8%E6%B0%B4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -201,7 +203,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          框架
+          接雨水
         </h1>
 
         <div class="post-meta">
@@ -212,7 +214,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-12-30 09:51:51 / 修改时间：11:07:49" itemprop="dateCreated datePublished" datetime="2021-12-30T09:51:51+08:00">2021-12-30</time>
+              <time title="创建时间：2022-04-13 21:43:32 / 修改时间：21:47:15" itemprop="dateCreated datePublished" datetime="2022-04-13T21:43:32+08:00">2022-04-13</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -220,7 +222,11 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%9F%A5%E8%AF%86%E7%82%B9%E8%A7%A3%E6%9E%90/" itemprop="url" rel="index"><span itemprop="name">知识点解析</span></a>
+                  <a href="/categories/leetcode%E8%A7%A3%E6%9E%90/" itemprop="url" rel="index"><span itemprop="name">leetcode解析</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/leetcode%E8%A7%A3%E6%9E%90/%E5%9B%B0%E9%9A%BE/" itemprop="url" rel="index"><span itemprop="name">困难</span></a>
                 </span>
             </span>
 
@@ -230,14 +236,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span></span>
+              <span>932</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>NaN:aN</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -249,11 +255,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="什么是IOC"><a href="#什么是IOC" class="headerlink" title="什么是IOC"></a>什么是IOC</h1><p>ioc就是控制反转, 它是一种思想, 不再自己主动创建依赖对象, 而是把创建和查找依赖对象的权限交给容器.</p>
-<h1 id="IOC与DI"><a href="#IOC与DI" class="headerlink" title="IOC与DI"></a>IOC与DI</h1><p>DI是IOC的一种实现方式, 它指的是在ioc容器运行期间, 利用依赖关系进行注入, 从而实现解耦.</p>
-<h1 id="什么是DI"><a href="#什么是DI" class="headerlink" title="什么是DI"></a>什么是DI</h1><p>DI即依赖注入, 它是接口编程的一种特殊表现, 在注入时不关注细节, 而是依赖于抽象, 从而实现解耦.</p>
-<h1 id="什么是AOP"><a href="#什么是AOP" class="headerlink" title="什么是AOP"></a>什么是AOP</h1><p>AOP即面向切面编程,利用AOP可以对业务逻辑的各个部分进行隔离,降低耦合度.<br>OOP使代码被划分到了一个个类中, 降低了代码的复杂度, 使类可复用, 但这样划分会使得代码重复度增高.  因此产生了AOP, 它是一种在运行时, 动态的将代码切入到指定类的指定方法的指定位置上的一种编程思想.<br>这种编程思想也很好的符合了开闭原则, 对扩展开放, 对修改关闭.</p>
-
+        <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。</p>
+<span id="more"></span>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>判断一个位置的高度, 需要看它的左右最高的小值, 设需要查看n位置的高度, 则需要start-(n-1)的max以及(n+1)-end的max的min. 这两个数据可以放入两个数组重进行记录, 同时使用动态规划进行优化.</p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">public int trap(int[] height) &#123;</span><br><span class="line">    //创建一个数组记录接完雨水的高度</span><br><span class="line">    int[] newHeight = new int[height.length];</span><br><span class="line">    //判断第n个位置高度, 需要0-(n-1)间最高值, (n+1)-last间最高值</span><br><span class="line">    //直接先算出这些最高值</span><br><span class="line">    int[] rightHeight = new int[height.length];</span><br><span class="line">    int[] leftHeight = new int[height.length];</span><br><span class="line">    rightHeight[0] = height[0];</span><br><span class="line">    for (int i = 1;i&lt;height.length;i++)&#123;</span><br><span class="line">        rightHeight[i] = Math.max(rightHeight[i-1],height[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    leftHeight[height.length-1] = height[height.length-1];</span><br><span class="line">    for (int i = height.length-2;i&gt;=0;i--)&#123;</span><br><span class="line">        leftHeight[i] = Math.max(leftHeight[i+1],height[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    //开始统计</span><br><span class="line">    for (int i = 1; i &lt; height.length-1;i++)&#123;</span><br><span class="line">        newHeight[i] = Math.min(rightHeight[i-1],leftHeight[i+1]);</span><br><span class="line">    &#125;</span><br><span class="line">    int sum = 0;</span><br><span class="line">    for (int i = 1; i &lt; height.length-1;i++)&#123;</span><br><span class="line">        int h = newHeight[i] - height[i];</span><br><span class="line">        if (h&gt;0)&#123;</span><br><span class="line">            sum += h;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -261,6 +266,10 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag"># 动态规划</a>
+              <a href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88/" rel="tag"># 双指针</a>
+          </div>
 
         
 
@@ -268,13 +277,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/12/30/leetcode%E9%A2%98%E8%A7%A3/%E6%95%B0%E5%80%BC%E7%9A%84%E6%95%B4%E6%95%B0%E6%AC%A1%E6%96%B9/" rel="prev" title="数值的整数次方">
-      <i class="fa fa-chevron-left"></i> 数值的整数次方
+    <a href="/2022/02/27/leetcode%E9%A2%98%E8%A7%A3/%E5%AE%8C%E6%88%90%E6%97%85%E9%80%94%E7%9A%84%E6%9C%80%E5%B0%91%E6%97%B6%E9%97%B4/" rel="prev" title="完成旅途的最少时间">
+      <i class="fa fa-chevron-left"></i> 完成旅途的最少时间
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/12/30/%E7%9F%A5%E8%AF%86%E7%82%B9%E8%A7%A3%E6%9E%90/%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84/" rel="next" title="项目架构与JVM">
-      项目架构与JVM <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -333,7 +339,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFIOC"><span class="nav-number">1.</span> <span class="nav-text">什么是IOC</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IOC%E4%B8%8EDI"><span class="nav-number">2.</span> <span class="nav-text">IOC与DI</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFDI"><span class="nav-number">3.</span> <span class="nav-text">什么是DI</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFAOP"><span class="nav-number">4.</span> <span class="nav-text">什么是AOP</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text">代码</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
